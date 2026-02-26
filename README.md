@@ -1,90 +1,91 @@
-Used Car Dealership Web Application
+# Used Car Dealership Web Application
 
-CSE 340 – Web Backend Development
+## CSE 340 – Web Backend Development
 
-Project Overview
+## Project Overview
 
 This project is a full-stack, server-side rendered web application for a Used Car Dealership. The application will allow customers to browse vehicle inventory, leave reviews, and submit service requests. Employees and administrators will have management capabilities for vehicles, service workflows, and user-generated content.
 
 The purpose of this project is to demonstrate mastery of:
 
-Database design and relationships
+1. Database design and relationships
 
-Authentication and role-based authorization
+2. Authentication and role-based authorization
 
-MVC architecture
+3. MVC architecture
 
-Server-side rendering with EJS
+4. Server-side rendering with EJS
 
-Multi-stage workflow implementation
+5. Multi-stage workflow implementation
 
-Secure backend development practices
+6. Secure backend development practices
 
-Production deployment with PostgreSQL on Render
+7. Production deployment with PostgreSQL on Render
 
 This repository currently contains initial planning documentation and will be updated incrementally throughout development.
 
-Planned Technology Stack
+## Planned Technology Stack
 
-Node.js
+* Node.js
 
-Express.js
+* Express.js
 
-EJS (server-side rendering)
+* EJS (server-side rendering)
 
-PostgreSQL
+* PostgreSQL
 
-ES Modules (ESM)
+* ES Modules (ESM)
 
-express-session (session-based authentication)
+* express-session (session-based authentication)
 
-bcrypt (password hashing)
+* bcrypt (password hashing)
 
-Render (deployment)
+* Render (deployment)
 
-Environment variables via process.env
+* Environment variables via process.env
 
-Planned Core Features
-Public Features
+# Planned Core Features 
 
-Home page with featured vehicles
+## Public Features
 
-Browse vehicles by category
+* Home page with featured vehicles
 
-Individual vehicle detail pages
+* Browse vehicles by category
 
-Contact form (saved to database)
+* Individual vehicle detail pages
 
-Standard User Features (Authenticated)
+* Contact form (saved to database)
 
-User registration and login
+* Standard User Features (Authenticated)
 
-Leave vehicle reviews
+* User registration and login
 
-Edit/delete own reviews
+* Leave vehicle reviews
 
-Submit service requests
+* Edit/delete own reviews
 
-View service request status history
+* Submit service requests
 
-Employee Features
+* View service request status history
 
-Edit vehicle details (price, availability, description)
+## Employee Features
 
-Manage service requests
+* Edit vehicle details (price, availability, description)
 
-Update status (Submitted → In Progress → Completed)
+* Manage service requests
 
-Add notes
+* Update status (Submitted → In Progress → Completed)
 
-Moderate/delete reviews
+* Add notes
 
-View contact form submissions
+* Moderate/delete reviews
 
-Admin (Owner) Features
+* View contact form submissions
 
-Add/edit/delete vehicle categories
+## Admin (Owner) Features
 
-Add/edit/delete vehicles
+* Add/edit/delete vehicle categories
 
-View and manage user roles (planned)
+* Add/edit/delete vehicles
+
+* View and manage user roles (planned)
