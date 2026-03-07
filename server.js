@@ -7,6 +7,16 @@ import express from 'express';
 import routes from './src/controllers/routes.js';
 import { addLocalVariables } from './src/middleware/global.js';
 
+import { setupDatabase, testConnection } from './src/models/setup.js';
+
+import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
+import { caCert } from './src/models/db.js';
+
+import { startSessionCleanup } from './src/utils/session-cleanup.js';
+
+import flash from './src/middleware/flash.js';
+
 /**
  * Declare Important Variables
  */
@@ -20,12 +30,47 @@ const PORT = process.env.PORT || 3000;
  */
 const app = express();
 
+app.set('trust proxy', 1);
+
+// Initialize PostgreSQL session store
+const pgSession = connectPgSimple(session);
+
+// Configure session middleware
+app.use(session({
+    store: new pgSession({
+        conObject: {
+            connectionString: process.env.DB_URL,
+            // Configure SSL for session store connection (required by BYU-I databases)
+            ssl: {
+                ca: caCert,
+                rejectUnauthorized: true,
+                checkServerIdentity: () => { return undefined; }
+            }
+        },
+        tableName: 'session',
+        createTableIfMissing: true
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: NODE_ENV.includes('dev') !== true,
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000
+    }
+}));
+
+startSessionCleanup();
+
 /**
  * Configure Express middleware
  */
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 /**
  * Global template variables middleware
@@ -35,6 +80,22 @@ app.set('views', path.join(__dirname, 'src/views'));
  */
 app.use(addLocalVariables);
 
+app.use(flash);
+
+app.use((req, res, next) => {
+    // Skip logging for routes that start with /. (like /.well-known/)
+    if (!req.path.startsWith('/.')) {
+        console.log(`${req.method} ${req.url}`);
+    }
+    next(); // Pass control to the next middleware or route
+});
+
+app.use((req, res, next) => {
+    // Make req.query available to all templates for debugging and conditional rendering
+    res.locals.queryParams = req.query || {};
+
+    next();
+});
 
 /**
  * Routes
@@ -112,6 +173,8 @@ if (NODE_ENV.includes('dev')) {
 }
 
 // Start the server and listen on the specified port
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+    await setupDatabase();
+    await testConnection();
     console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
