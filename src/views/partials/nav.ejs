@@ -1,0 +1,23 @@
+        <nav>
+            <ul>
+                <li><a href=<%= links.homepage %>>Home</a></li>
+                <li><a href=<%= links.about %>>About</a></li>
+                <li><a href=<%= links.catalog %>>Course Catalog</a></li>
+                <li><a href=<%= links.faculty %>>Faculty Directory</a></li>
+                <li><a href=<%= links.contact %>>Contact</a></li>
+                <li><a href=<%= links.demo %>>Middleware Demo</a></li>
+                
+                <% if (isLoggedIn) { %>
+                    <li><a href=<%= links.dashboard %>>Dashboard</a></li>
+                    <li><a href=<%= links.registrationList %>>Registration List</a></li>
+                    <li><a href=<%= links.contactResponses %>>Contact Responses</a></li>
+                    <li><a href=<%= links.logout %>>Logout</a></li>
+                <% } %>
+
+                
+                <% if (!isLoggedIn) { %>
+                    <li><a href=<%= links.login %>>Login</a></li>
+                    <li><a href=<%= links.registration %>>Register</a></li>
+                <% } %>
+            </ul>
+        </nav>
