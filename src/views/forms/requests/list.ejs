@@ -1,7 +1,39 @@
-<%- include('partials/head') %>
-<%- include('partials/header') %>
-<main>
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+<main class=\"requests-list-container\">
     <h1><%= title %></h1>
     
+    <a href=\"/requests\" class=\"btn btn-primary\">Submit New Request</a>
+
+    <% if (requests && requests.length > 0) { %>
+        <table class=\"requests-table\">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Name</th>
+                    <th>Vehicle</th>
+                    <th>Service Type</th>
+                    <th>Status</th>
+                    <th>Submitted</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% requests.forEach(request => { %>
+                    <tr>
+                        <td>#<%= request.id %></td>
+                        <td><%= request.name %></td>
+                        <td><%= request.vehicle_make %> <%= request.vehicle_model %></td>
+                        <td><%= request.subject %></td>
+                        <td><span class=\"status-badge status-<%= request.status.toLowerCase() %>\"><%= request.status %></span></td>
+                        <td><%= new Date(request.submitted_at).toLocaleDateString() %></td>
+                        <td><a href=\"/requests/<%= request.id %>\" class=\"btn btn-sm btn-view\">View</a></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No service requests found.</p>
+    <% } %>
 </main>
-<%- include('partials/footer') %>
+<%- include('../../partials/footer') %>

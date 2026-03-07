@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
-import { createServiceRequest, getAllServiceRequests } from '../../models/forms/requests.js';
+import { createServiceRequest, getAllServiceRequests, getServiceRequestById, updateServiceRequestStatus } from '../../models/forms/requests.js';
 
 const router = Router();
 
@@ -14,12 +14,9 @@ const showRequestForm = (req, res) => {
 };
 
 /**
- * Handle contact form submission with validation.
- * If validation passes, save to database and redirect.
- * If validation fails, log errors and redirect back to form.
+ * Handle service request submission with validation.
  */
 const handleServiceRequestSubmission = async (req, res) => {
-    // Check for validation errors
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -30,7 +27,6 @@ const handleServiceRequestSubmission = async (req, res) => {
     }
 
     try {
-        // Extract fields from form
         const {
             name,
             phone,
@@ -42,7 +38,6 @@ const handleServiceRequestSubmission = async (req, res) => {
             message
         } = req.body;
 
-        // Prepare request object for future DB integration
         const serviceRequest = {
             name,
             phone,
@@ -52,12 +47,11 @@ const handleServiceRequestSubmission = async (req, res) => {
             message,
             status: 'Submitted',
             submittedAt: new Date(),
-            scheduledFor: scheduledDate && scheduledTime ? new Date(`${scheduledDate}T${scheduledTime}`) : null
+            scheduledFor: scheduledDate && scheduledTime ? new Date(`${scheduledDate}T${scheduledTime}`) : null,
+            userId: req.session?.userId || null
         };
 
-        // TODO: Save to database in the future
-        // await createServiceRequest(serviceRequest);
-
+        await createServiceRequest(serviceRequest);
         req.flash('success', 'Thank you for submitting your service request! We will respond soon.');
         res.redirect('/requests');
     } catch (error) {
@@ -83,6 +77,57 @@ const showRequestList = async (req, res) => {
         title: 'Service Request Submissions',
         requests
     });
+};
+
+/**
+ * Display a single service request with details.
+ */
+const showRequestDetail = async (req, res) => {
+    const { requestId } = req.params;
+
+    try {
+        const request = await getServiceRequestById(requestId);
+
+        if (!request) {
+            req.flash('error', 'Service request not found.');
+            return res.redirect('/requests');
+        }
+
+        res.render('forms/requests/detail', {
+            title: `Service Request #${requestId}`,
+            request
+        });
+    } catch (error) {
+        console.error('Error retrieving service request:', error);
+        req.flash('error', 'Unable to load request details.');
+        res.redirect('/requests');
+    }
+};
+
+/**
+ * Handle status update (employee/admin only).
+ */
+const handleStatusUpdate = async (req, res) => {
+    const { requestId } = req.params;
+    const { status, notes } = req.body;
+
+    // Check for proper role (employee or admin)
+    // TODO: Implement role checking middleware
+    const userRole = req.session?.userRole;
+    if (!['employee', 'admin'].includes(userRole)) {
+        req.flash('error', 'You do not have permission to update request status.');
+        return res.redirect(`/requests/${requestId}`);
+    }
+
+    try {
+        await updateServiceRequestStatus(requestId, status, notes);
+        req.flash('success', 'Service request status updated successfully.');
+        res.redirect(`/requests/${requestId}`);
+    } catch (error) {
+        console.error('Error updating service request:', error);
+        req.flash('error', 'Unable to update request status. Please try again.');
+        res.redirect(`/requests/${requestId}`);
+    }
 };
 
 router.get('/', showRequestForm);
@@ -126,8 +171,29 @@ router.post(
 );
 
 /**
- * GET /contact/responses - Display all contact form submissions
+ * GET /requests/list - Display all service request submissions
  */
 router.get('/list', showRequestList);
+
+/**
+ * GET /requests/:requestId - Display service request details
+ */
+router.get('/:requestId', showRequestDetail);
+
+/**
+ * POST /requests/:requestId/status - Update service request status
+ */
+router.post(
+    '/:requestId/status',
+    [
+        body('status')
+            .isIn(['Submitted', 'In Progress', 'Completed'])
+            .withMessage('Invalid status'),
+        body('notes')
+            .trim()
+            .isLength({ max: 1000 }).withMessage('Notes must be less than 1000 characters')
+    ],
+    handleStatusUpdate
+);
 
 export default router;

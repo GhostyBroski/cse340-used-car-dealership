@@ -1,7 +1,61 @@
-<%- include('partials/head') %>
-<%- include('partials/header') %>
-<main>
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+<main class="request-detail-container">
     <h1><%= title %></h1>
     
+    <div class="request-info">
+        <div class="info-section">
+            <h2>Request Details</h2>
+            <p><strong>Status:</strong> <span class="status-badge status-<%= request.status.toLowerCase() %>"><%= request.status %></span></p>
+            <p><strong>Submitted:</strong> <%= new Date(request.submitted_at).toLocaleString() %></p>
+            <% if (request.scheduled_for) { %>
+                <p><strong>Scheduled For:</strong> <%= new Date(request.scheduled_for).toLocaleString() %></p>
+            <% } %>
+        </div>
+
+        <div class="info-section">
+            <h2>Customer Information</h2>
+            <p><strong>Name:</strong> <%= request.name %></p>
+            <p><strong>Phone:</strong> <%= request.phone %></p>
+        </div>
+
+        <div class="info-section">
+            <h2>Vehicle Information</h2>
+            <p><strong>Make:</strong> <%= request.vehicle_make %></p>
+            <p><strong>Model:</strong> <%= request.vehicle_model %></p>
+        </div>
+
+        <div class="info-section">
+            <h2>Service Request</h2>
+            <p><strong>Service Type:</strong> <%= request.subject %></p>
+            <div class="message-box">
+                <strong>Details:</strong>
+                <p><%= request.message || 'No additional details provided.' %></p>
+            </div>
+        </div>
+
+        <% if (session && ['employee', 'admin'].includes(session.userRole)) { %>
+            <div class="info-section employee-section">
+                <h2>Update Status</h2>
+                <form action="/requests/<%= request.id %>/status" method="POST" class="status-update-form">
+                    <div class="form-group">
+                        <label for="status">Status:</label>
+                        <select id="status" name="status" required>
+                            <option value="Submitted" <%= request.status === 'Submitted' ? 'selected' : '' %>>Submitted</option>
+                            <option value="In Progress" <%= request.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                            <option value="Completed" <%= request.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Employee Notes:</label>
+                        <textarea id="notes" name="notes" rows="3" placeholder="Add internal notes about this request"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </form>
+            </div>
+        <% } %>
+    </div>
+
+    <a href="/requests" class="btn btn-secondary">Back to All Requests</a>
 </main>
-<%- include('partials/footer') %>
+<%- include('../../partials/footer') %>
