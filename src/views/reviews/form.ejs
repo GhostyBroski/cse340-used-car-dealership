@@ -1,0 +1,17 @@
+<h2>Submit a Review</h2>
+<form action="/vehicles/<%= vehicleId %>/reviews" method="POST">
+  <label for="rating">Rating:</label>
+  <select name="rating" id="rating" required>
+    <option value="">--Select--</option>
+    <option value="5">5 - Excellent</option>
+    <option value="4">4 - Good</option>
+    <option value="3">3 - Average</option>
+    <option value="2">2 - Fair</option>
+    <option value="1">1 - Poor</option>
+  </select>
+  <br>
+  <label for="comment">Comment:</label>
+  <textarea name="comment" id="comment" rows="3" required></textarea>
+  <br>
+  <button type="submit">Submit Review</button>
+</form>

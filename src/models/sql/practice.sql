@@ -4,6 +4,8 @@
 -- Contact form table
 CREATE TABLE IF NOT EXISTS contact_form (
     id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(255),
     subject VARCHAR(255) NOT NULL,
     message TEXT NOT NULL,
     submitted TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -16,7 +18,8 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    role_id INTEGER REFERENCES roles(id)
 );
 
 -- Roles table for role-based access control
@@ -68,3 +71,60 @@ BEGIN
         WHERE role_id IS NULL;
     END IF;
 END $$;
+
+-- Categories table (for vehicle types: Truck, Van, Car, SUV, etc.)
+CREATE TABLE IF NOT EXISTS categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT
+);
+
+-- Vehicles table (adapted from catalog)
+CREATE TABLE IF NOT EXISTS vehicles (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    make VARCHAR(50) NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    year INTEGER,
+    vin VARCHAR(50) UNIQUE,
+    category_id INTEGER REFERENCES categories(id),
+    price NUMERIC(12,2),
+    mileage INTEGER,
+    color VARCHAR(50),
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Service Requests table
+CREATE TABLE IF NOT EXISTS service_requests (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    vehicle_make VARCHAR(50) NOT NULL,
+    vehicle_model VARCHAR(50) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    message TEXT,
+    status VARCHAR(50) NOT NULL DEFAULT 'Submitted',
+    submitted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    scheduled_for TIMESTAMP,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- Reviews table (per vehicle, per user)
+CREATE TABLE IF NOT EXISTS reviews (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    vehicle_id INTEGER REFERENCES vehicles(id) ON DELETE CASCADE,
+    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, vehicle_id)
+);
+
+-- Vehicle Images table (one-to-many with vehicles)
+CREATE TABLE IF NOT EXISTS vehicle_images (
+    id SERIAL PRIMARY KEY,
+    vehicle_id INTEGER REFERENCES vehicles(id) ON DELETE CASCADE,
+    image_url TEXT NOT NULL
+);

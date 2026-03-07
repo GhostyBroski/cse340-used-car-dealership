@@ -1,0 +1,15 @@
+<h2>Reviews</h2>
+<ul>
+  <% reviews.forEach(review => { %>
+    <li>
+      <strong><%= review.user_name %></strong> - <%= review.rating %> stars<br>
+      <%= review.comment %>
+      <% if (session && session.userId === review.user_id) { %>
+        <form action="/reviews/<%= review.id %>/delete?vehicleId=<%= vehicleId %>" method="POST" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      <% } %>
+    </li>
+  <% }) %>
+</ul>
+<a href="/vehicles/<%= vehicleId %>">Back to Vehicle</a>

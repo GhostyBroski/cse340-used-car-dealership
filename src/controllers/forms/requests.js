@@ -110,7 +110,8 @@ router.post(
         body('subject')
             .trim()
             .notEmpty().withMessage('Service type is required')
-            .isLength({ min: 2, max: 255 }).withMessage('Service type must be between 2 and 255 characters'),
+            .isLength({ min: 2, max: 255 }).withMessage('Service type must be between 2 and 255 characters')
+            .matches(/^[a-zA-Z0-9\s\-.,!?]+$/).withMessage('Service type contains invalid characters'),
         body('scheduledDate')
             .notEmpty().withMessage('Preferred date is required')
             .isISO8601().withMessage('Preferred date must be a valid date'),
