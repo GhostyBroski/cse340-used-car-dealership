@@ -2,6 +2,41 @@
 <%- include('partials/header') %>
 <main>
     <h1><%= title %></h1>
-    
+</main>
+<form action="/requests" method="POST" class="service-request-form">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" name="phone" required pattern="[0-9\-\+\s\(\)]{7,15}">
+
+    <label for="vehicleMake">Vehicle Make:</label>
+    <input type="text" id="vehicleMake" name="vehicleMake" required>
+
+    <label for="vehicleModel">Vehicle Model:</label>
+    <input type="text" id="vehicleModel" name="vehicleModel" required>
+
+    <label for="subject">Service Type:</label>
+    <select id="subject" name="subject" required>
+        <option value="">-- Select Service --</option>
+        <option value="oil change">Oil Change</option>
+        <option value="inspection">Inspection</option>
+        <option value="tire rotation">Tire Rotation</option>
+        <option value="brake service">Brake Service</option>
+        <option value="battery replacement">Battery Replacement</option>
+        <option value="other">Other</option>
+    </select>
+
+    <label for="scheduledDate">Preferred Date:</label>
+    <input type="date" id="scheduledDate" name="scheduledDate" required>
+
+    <label for="scheduledTime">Preferred Time:</label>
+    <input type="time" id="scheduledTime" name="scheduledTime" required>
+
+    <label for="message">Additional Details:</label>
+    <textarea id="message" name="message" rows="4"></textarea>
+
+    <button type="submit">Submit Request</button>
+</form>
 </main>
 <%- include('partials/footer') %>

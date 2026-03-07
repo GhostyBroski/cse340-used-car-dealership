@@ -1,9 +1,12 @@
 import { Router } from 'express';
-import { addDemoHeaders } from '../middleware/demo/headers.js';
 import { catalogPage, courseDetailPage } from './catalog/catalog.js';
-import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
+import { homePage, aboutPage, testErrorPage } from './index.js';
 import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
 import contactRoutes from './forms/contact.js';
+import requestRoutes from './forms/requests.js';
+// import { ... } from './forms/requests.js';
+import reviewRoutes from './forms/reviews.js';
+// import { ... } from './forms/reviews.js';
 import registrationRoutes from './forms/registration.js';
 import loginRoutes from './forms/login.js';
 import { processLogout, showDashboard } from './forms/login.js';
@@ -39,6 +42,18 @@ router.use('/login', (req, res, next) => {
     next();
 });
 
+// Add service request styles to all request routes
+router.use('/requests', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/requests.css">');
+    next();
+});
+
+// Add vehicle review styles to all review routes
+router.use('/reviews', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/reviews.css">');
+    next();
+});
+
 // Home and basic pages
 router.get('/', homePage);
 router.get('/about', aboutPage);
@@ -46,9 +61,6 @@ router.get('/about', aboutPage);
 // Course catalog routes
 router.get('/catalog', catalogPage);
 router.get('/catalog/:slugId', courseDetailPage);
-
-// Demo page with special middleware
-router.get('/demo', addDemoHeaders, demoPage);
 
 // Route to trigger a test error
 router.get('/test-error', testErrorPage);
@@ -58,6 +70,10 @@ router.get('/faculty', facultyListPage);
 router.get('/faculty/:facultySlug', facultyDetailPage);
 
 router.use('/contact', contactRoutes);
+
+router.use('/requests', requestRoutes);
+
+router.use('/reviews', reviewRoutes);
 
 router.use('/register', registrationRoutes);
 
