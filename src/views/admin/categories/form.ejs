@@ -1,0 +1,57 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+<main class="admin-container">
+    <div class="admin-header">
+        <h1><%= title %></h1>
+    </div>
+
+    <div class="admin-form-wrapper">
+        <form method="POST" action="<%= isEdit ? `/admin/categories/${category.id}` : '/admin/categories' %>" class="admin-form">
+            <div class="form-group">
+                <label for="name">Category Name *</label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    value="<%= category ? category.name : '' %>"
+                    minlength="2"
+                    maxlength="100"
+                    placeholder="e.g., Sedan, SUV, Truck"
+                    required>
+                <small>Enter the vehicle category name (2-100 characters)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea 
+                    id="description" 
+                    name="description" 
+                    maxlength="500"
+                    rows="4"
+                    placeholder="Enter a description for this category..."><%= category ? category.description : '' %></textarea>
+                <small>Optional description (max 500 characters)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="displayOrder">Display Order</label>
+                <input 
+                    type="number" 
+                    id="displayOrder" 
+                    name="displayOrder" 
+                    value="<%= category ? category.display_order : '999' %>"
+                    min="1"
+                    max="999"
+                    placeholder="999">
+                <small>Lower numbers appear first (1-999)</small>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <%= isEdit ? 'Update Category' : 'Create Category' %>
+                </button>
+                <a href="/admin/categories" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+<%- include('../../partials/footer') %>

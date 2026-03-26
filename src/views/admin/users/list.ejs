@@ -1,0 +1,116 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+<main class="admin-container">
+    <div class="admin-header">
+        <h1>Manage Users & Roles</h1>
+    </div>
+
+    <div class="admin-info">
+        <p><strong>Total Users:</strong> <%= users.length %></p>
+        <p>Click on a user's role dropdown to change their role. You cannot change your own role.</p>
+    </div>
+
+    <% if (users && users.length > 0) { %>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Current Role</th>
+                    <th>Joined</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><strong><%= user.name %></strong></td>
+                        <td><%= user.email %></td>
+                        <td>
+                            <% if (user.id == session.user.id) { %>
+                                <span class="role-badge role-<%= user.roleName %>">
+                                    <%= user.roleName.charAt(0).toUpperCase() + user.roleName.slice(1) %>
+                                </span>
+                                <small>(Your account)</small>
+                            <% } else { %>
+                                <form method="POST" action="/admin/users/<%= user.id %>/role" class="role-form" style="display: inline;">
+                                    <select name="roleId" onchange="this.form.submit()">
+                                        <% roles.forEach(role => { %>
+                                            <option value="<%= role.id %>" <%= user.roleId === role.id ? 'selected' : '' %>>
+                                                <%= role.name.charAt(0).toUpperCase() + role.name.slice(1) %>
+                                            </option>
+                                        <% }); %>
+                                    </select>
+                                </form>
+                            <% } %>
+                        </td>
+                        <td><%= new Date(user.createdAt).toLocaleDateString() %></td>
+                        <td class="text-center">
+                            <span class="user-id">ID: <%= user.id %></span>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <div class="empty-state">
+            <p>No users found in the system.</p>
+        </div>
+    <% } %>
+</main>
+
+<style>
+.admin-info {
+    background: #e3f2fd;
+    border-left: 4px solid #2c5aa0;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 6px;
+}
+
+.admin-info p {
+    margin: 0.5rem 0;
+    color: #1a3a6b;
+}
+
+.role-form {
+    display: inline;
+}
+
+.role-form select {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.role-badge.role-user {
+    background: #e3f2fd;
+    color: #2c5aa0;
+}
+
+.role-badge.role-employee {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.role-badge.role-admin {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
+.user-id {
+    font-size: 0.9rem;
+    color: #999;
+}
+</style>
+
+<%- include('../../partials/footer') %>

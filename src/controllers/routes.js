@@ -6,6 +6,7 @@ import requestRoutes from './forms/requests.js';
 import reviewRoutes from './forms/reviews.js';
 import registrationRoutes from './forms/registration.js';
 import loginRoutes from './forms/login.js';
+import adminRoutes from './admin/index.js';
 import { processLogout, showDashboard } from './forms/login.js';
 import { requireLogin, requireRole } from '../middleware/auth.js';
 
@@ -102,6 +103,12 @@ router.use('/requests', requireLogin, requestRoutes);
 // ============================================================================
 
 router.use('/reviews', requireLogin, reviewRoutes);
+
+// ============================================================================
+// PROTECTED ROUTES - Admin Area (admin only)
+// ============================================================================
+
+router.use('/admin', requireLogin, adminRoutes);
 
 // ============================================================================
 // ERROR TESTING

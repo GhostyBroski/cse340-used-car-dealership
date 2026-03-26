@@ -1,47 +1,107 @@
 <%- include('partials/head') %>
 <%- include('partials/header') %>
-<main>
+<main class="dashboard-container">
     <div class="dashboard">
-        <h1>Welcome to Your Dashboard</h1>
-        <p>
-            This is a protected page that requires authentication. Only logged-in users can access this content.
-        </p>
-
-        <div class="user-info">
-            <h2>Your Account Information</h2>
-            <!-- TODO: Display user.name in a div with class="user-detail" -->
-            <!-- TODO: Use span with class="label" for "Name:" and span with class="value" for the actual name -->
-            <!-- TODO: Display user.email in the same format -->
-            <!-- TODO: Display user.created_at formatted with toLocaleDateString() -->
-            <div class="user-detail">
-                <span class="label">Name:</span>
-                <span class="value"><%= user.name %></span>
-            </div>
-            <div class="user-detail">
-                <span class="label">Email:</span>
-                <span class="value"><%= user.email %></span>
-            </div>
-            <div class="user-detail">
-                <span class="label">Joined:</span>
-                <span class="value"><%= new Date(user.created_at).toLocaleDateString() %></span>
-            </div>
-            <div class="user-detail">
-                <span class="label">Role:</span>
-                <span class="value"><%= user.roleName %></span>
-            </div>
+        <div class="dashboard-header">
+            <h1>Welcome, <%= user.name %>!</h1>
+            <p class="dashboard-subtitle">Your role: <strong><%= user.roleName.charAt(0).toUpperCase() + user.roleName.slice(1) %></strong></p>
         </div>
 
-        <div class="session-debug">
-            <h3>Session Information (For Learning Purposes)</h3>
-            <p><em>This section shows your current session data for educational purposes.</em></p>
-            <pre><%= JSON.stringify(sessionData, null, 2) %></pre>
-            <p>
-                <strong>If you see a password property in the above object you have a security vulnerability, fix it!</strong>
-            </p>
-        </div>
+        <!-- User Account Information -->
+        <section class="dashboard-section">
+            <h2>Account Information</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <span class="label">Name:</span>
+                    <span class="value"><%= user.name %></span>
+                </div>
+                <div class="info-card">
+                    <span class="label">Email:</span>
+                    <span class="value"><%= user.email %></span>
+                </div>
+                <div class="info-card">
+                    <span class="label">Joined:</span>
+                    <span class="value"><%= new Date(user.created_at).toLocaleDateString() %></span>
+                </div>
+                <div class="info-card">
+                    <span class="label">Role:</span>
+                    <span class="value"><%= user.roleName.charAt(0).toUpperCase() + user.roleName.slice(1) %></span>
+                </div>
+            </div>
+        </section>
 
+        <!-- User Features (All authenticated users) -->
+        <section class="dashboard-section">
+            <h2>My Activities</h2>
+            <div class="dashboard-grid">
+                <a href="<%= links.myRequests %>" class="dashboard-card">
+                    <h3>📋 My Service Requests</h3>
+                    <p>View and track all your service requests, check status, and scheduled appointments.</p>
+                </a>
+                <a href="<%= links.catalog %>" class="dashboard-card">
+                    <h3>⭐ Leave a Review</h3>
+                    <p>Share your experience and help other customers by leaving reviews on vehicles.</p>
+                </a>
+                <a href="<%= links.requests %>" class="dashboard-card">
+                    <h3>🔧 Submit Service Request</h3>
+                    <p>Request maintenance, inspection, or other services for a vehicle.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Employee Features -->
+        <% if (hasMinimumRole(userRole, 'employee')) { %>
+            <section class="dashboard-section">
+                <h2>Employee Management Tools</h2>
+                <div class="dashboard-grid">
+                    <a href="<%= links.requestList %>" class="dashboard-card employee-card">
+                        <h3>📊 All Service Requests</h3>
+                        <p>View, manage, and update the status of service requests from customers.</p>
+                    </a>
+                    <a href="/reviews/moderate" class="dashboard-card employee-card">
+                        <h3>🗣️ Moderate Reviews</h3>
+                        <p>Review and manage customer feedback and testimonials on vehicles.</p>
+                    </a>
+                    <a href="/contact/responses" class="dashboard-card employee-card">
+                        <h3>📧 Contact Submissions</h3>
+                        <p>View and respond to customer inquiries and feedback from the contact form.</p>
+                    </a>
+                    <a href="<%= links.adminVehicles %>" class="dashboard-card employee-card">
+                        <h3>🚗 Manage Vehicles</h3>
+                        <p>Edit vehicle details, prices, descriptions, and availability status.</p>
+                    </a>
+                </div>
+            </section>
+        <% } %>
+
+        <!-- Admin Features -->
+        <% if (hasMinimumRole(userRole, 'admin')) { %>
+            <section class="dashboard-section">
+                <h2>Administrator Controls</h2>
+                <div class="dashboard-grid">
+                    <a href="<%= links.adminCategories %>" class="dashboard-card admin-card">
+                        <h3>📁 Manage Categories</h3>
+                        <p>Add, edit, and delete vehicle categories (Sedan, SUV, Truck, etc.).</p>
+                    </a>
+                    <a href="<%= links.adminVehicles %>" class="dashboard-card admin-card">
+                        <h3>🏎️ Manage Vehicle Inventory</h3>
+                        <p>Add new vehicles, edit existing vehicle details, and manage inventory.</p>
+                    </a>
+                    <a href="<%= links.adminUsers %>" class="dashboard-card admin-card">
+                        <h3>👥 Manage Users & Roles</h3>
+                        <p>View all users, edit their roles (User, Employee, Admin), and manage permissions.</p>
+                    </a>
+                    <a href="/admin/activity" class="dashboard-card admin-card">
+                        <h3>📈 System Activity</h3>
+                        <p>View system logs, user activity, and other administrative information.</p>
+                    </a>
+                </div>
+            </section>
+        <% } %>
+
+        <!-- Logout Button -->
         <div class="dashboard-actions">
-            <a href="/logout" class="logout-button">Logout</a>
+            <a href="<%= links.logout %>" class="btn btn-logout">Logout</a>
         </div>
     </div>
 </main>

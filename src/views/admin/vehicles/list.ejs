@@ -1,0 +1,181 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+<main class="admin-container">
+    <div class="admin-header">
+        <h1>Manage Vehicles</h1>
+        <% if (hasMinimumRole(userRole, 'admin')) { %>
+            <a href="/catalog" class="btn btn-primary">+ Add New Vehicle</a>
+        <% } %>
+    </div>
+
+    <div class="admin-info">
+        <p><strong>Total Vehicles:</strong> <%= vehicles.length %></p>
+        <p>Edit vehicle details including price, description, and availability.</p>
+    </div>
+
+    <% if (vehicles && vehicles.length > 0) { %>
+        <div class="vehicles-grid">
+            <% vehicles.forEach(vehicle => { %>
+                <div class="vehicle-card">
+                    <% if (vehicle.image_url) { %>
+                        <img src="<%= vehicle.image_url %>" alt="<%= vehicle.displayName %>" class="vehicle-image">
+                    <% } else { %>
+                        <div class="vehicle-image-placeholder">
+                            <span>No Image</span>
+                        </div>
+                    <% } %>
+                    
+                    <div class="vehicle-info">
+                        <h3><%= vehicle.displayName %></h3>
+                        <p class="vehicle-vin">VIN: <%= vehicle.vin %></p>
+                        <div class="vehicle-details">
+                            <span class="detail">
+                                <strong>Price:</strong> $<%= vehicle.price.toLocaleString() %>
+                            </span>
+                            <span class="detail">
+                                <strong>Mileage:</strong> <%= vehicle.mileage.toLocaleString() %> miles
+                            </span>
+                            <span class="detail">
+                                <strong>Color:</strong> <%= vehicle.color %>
+                            </span>
+                        </div>
+                        <div class="vehicle-status">
+                            <% if (vehicle.availability) { %>
+                                <span class="badge badge-available">Available</span>
+                            <% } else { %>
+                                <span class="badge badge-unavailable">Unavailable</span>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                    <div class="vehicle-actions">
+                        <a href="/admin/vehicles/<%= vehicle.id %>/edit" class="btn btn-sm btn-edit">Edit</a>
+                        <a href="/catalog/vehicles/<%= vehicle.id %>" class="btn btn-sm btn-view">View</a>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="empty-state">
+            <p>No vehicles found in the system.</p>
+        </div>
+    <% } %>
+</main>
+
+<style>
+.vehicles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.vehicle-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.vehicle-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #2c5aa0;
+}
+
+.vehicle-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.vehicle-image-placeholder {
+    width: 100%;
+    height: 200px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 1rem;
+}
+
+.vehicle-info {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.vehicle-info h3 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.vehicle-vin {
+    margin: 0 0 1rem 0;
+    color: #999;
+    font-size: 0.85rem;
+}
+
+.vehicle-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.vehicle-details .detail {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.vehicle-status {
+    margin-bottom: 1rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge-available {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.badge-unavailable {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.vehicle-actions {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.vehicle-actions .btn {
+    flex: 1;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.btn-view {
+    background: #2196F3;
+    color: white;
+}
+
+.btn-view:hover {
+    background: #0b7dda;
+}
+</style>
+
+<%- include('../../partials/footer') %>

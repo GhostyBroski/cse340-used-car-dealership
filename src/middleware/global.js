@@ -15,6 +15,20 @@ const getCurrentGreeting = () => {
     return 'Good Evening!';
 };
 
+/**
+ * Role-based access check function
+ */
+const hasMinimumRole = (userRole, minRole) => {
+    const ROLE_HIERARCHY = {
+        admin: 3,
+        employee: 2,
+        user: 1
+    };
+    const userLevel = ROLE_HIERARCHY[userRole] || 0;
+    const minLevel = ROLE_HIERARCHY[minRole] || 0;
+    return userLevel >= minLevel;
+};
+
 const setHeadAssetsFunctionality = (res) => {
     res.locals.styles = [];
     res.locals.scripts = [];
@@ -67,19 +81,41 @@ const addLocalVariables = (req, res, next) => {
         contactResponses: "/contact/responses",
         requests: "/requests",
         requestList: "/requests/list",
+        myRequests: "/requests/my-requests",
         reviews: "/reviews",
         reviewList: "/reviews/list",
         registration: "/register",
         registrationList: "/register/list",
         login: "/login",
         logout: "/logout",
-        dashboard: "/dashboard"
+        dashboard: "/dashboard",
+        // Admin links
+        adminCategories: "/admin/categories",
+        adminVehicles: "/admin/vehicles",
+        adminUsers: "/admin/users"
     };
 
     res.locals.isLoggedIn = false;
+    res.locals.userRole = null;
+    res.locals.userName = null;
+    res.locals.userId = null;
+    
     if (req.session && req.session.user) {
         res.locals.isLoggedIn = true;
+        res.locals.userRole = req.session.user.roleName;
+        res.locals.userName = req.session.user.name;
+        res.locals.userId = req.session.user.id;
     }
+
+    // Add permission checking function to templates
+    res.locals.hasMinimumRole = hasMinimumRole;
+    
+    // Helper function to check if user can perform admin actions
+    res.locals.canManageVehicles = (userRole) => hasMinimumRole(userRole, 'employee');
+    res.locals.canManageCategories = (userRole) => hasMinimumRole(userRole, 'admin');
+    res.locals.canManageUsers = (userRole) => hasMinimumRole(userRole, 'admin');
+    res.locals.canModerateReviews = (userRole) => hasMinimumRole(userRole, 'employee');
+    res.locals.canManageRequests = (userRole) => hasMinimumRole(userRole, 'employee');
 
     // Randomly assign a theme class to the body
     const themes = ['blue-theme', 'green-theme', 'red-theme'];
@@ -92,4 +128,4 @@ const addLocalVariables = (req, res, next) => {
     next();
 };
 
-export { addLocalVariables };
+export { addLocalVariables, hasMinimumRole };

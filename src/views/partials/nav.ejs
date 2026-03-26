@@ -1,21 +1,37 @@
         <nav>
             <ul>
-                <li><a href=<%= links.homepage %>>Home</a></li>
-                <li><a href=<%= links.about %>>About</a></li>
-                <li><a href=<%= links.catalog %>>Vehicle Catalog</a></li>
-                <li><a href=<%= links.contact %>>Contact</a></li>
+                <!-- Public Navigation -->
+                <li><a href="<%= links.homepage %>">Home</a></li>
+                <li><a href="<%= links.about %>">About</a></li>
+                <li><a href="<%= links.catalog %>">Vehicle Catalog</a></li>
+                <li><a href="<%= links.contact %>">Contact</a></li>
                 
+                <!-- Authenticated User Navigation -->
                 <% if (isLoggedIn) { %>
-                    <li><a href=<%= links.dashboard %>>Dashboard</a></li>
-                    <li><a href=<%= links.registrationList %>>Registration List</a></li>
-                    <li><a href=<%= links.contactResponses %>>Contact Responses</a></li>
-                    <li><a href=<%= links.logout %>>Logout</a></li>
+                    <!-- All logged-in users can access dashboard and their requests -->
+                    <li><a href="<%= links.dashboard %>">Dashboard</a></li>
+                    <li><a href="<%= links.myRequests %>">My Requests</a></li>
+                    
+                    <!-- Employee and Admin features -->
+                    <% if (canManageRequests(userRole)) { %>
+                        <li><a href="<%= links.requestList %>">All Requests</a></li>
+                    <% } %>
+                    
+                    <!-- Admin features -->
+                    <% if (canManageCategories(userRole)) { %>
+                        <li><a href="<%= links.adminCategories %>">Categories</a></li>
+                        <li><a href="<%= links.adminVehicles %>">Vehicles</a></li>
+                        <li><a href="<%= links.adminUsers %>">Manage Users</a></li>
+                    <% } %>
+                    
+                    <!-- Logout link -->
+                    <li><a href="<%= links.logout %>">Logout</a></li>
                 <% } %>
-
                 
+                <!-- Unauthenticated user navigation -->
                 <% if (!isLoggedIn) { %>
-                    <li><a href=<%= links.login %>>Login</a></li>
-                    <li><a href=<%= links.registration %>>Register</a></li>
+                    <li><a href="<%= links.login %>">Login</a></li>
+                    <li><a href="<%= links.registration %>">Register</a></li>
                 <% } %>
             </ul>
         </nav>

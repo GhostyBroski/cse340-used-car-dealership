@@ -1,0 +1,57 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+<main class="admin-container">
+    <div class="admin-header">
+        <h1>Manage Vehicle Categories</h1>
+        <a href="/admin/categories/new" class="btn btn-primary">+ Add New Category</a>
+    </div>
+
+    <% if (categories && categories.length > 0) { %>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Display Order</th>
+                    <th>Vehicles</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% categories.forEach(category => { %>
+                    <tr>
+                        <td><strong><%= category.name %></strong></td>
+                        <td><%= category.description || '-' %></td>
+                        <td class="text-center"><%= category.display_order %></td>
+                        <td class="text-center">
+                            <span class="badge"><%= category.vehicleCount %></span>
+                        </td>
+                        <td class="text-right">
+                            <a href="/admin/categories/<%= category.id %>/edit" class="btn-sm btn-edit">Edit</a>
+                            <button class="btn-sm btn-delete" onclick="confirmDelete('<%= category.id %>', '<%= category.name %>')">Delete</button>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <div class="empty-state">
+            <p>No categories found.</p>
+            <a href="/admin/categories/new" class="btn btn-primary">Create First Category</a>
+        </div>
+    <% } %>
+</main>
+
+<script>
+function confirmDelete(categoryId, categoryName) {
+    if (confirm(`Are you sure you want to delete "${categoryName}"?`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/admin/categories/${categoryId}/delete`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+
+<%- include('../../partials/footer') %>
