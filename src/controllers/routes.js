@@ -54,7 +54,12 @@ router.use('/reviews', (req, res, next) => {
 // PUBLIC ROUTES - Home and Info Pages
 // ============================================================================
 
-router.get('/', homePage);
+// Add home-specific styles to home page
+router.get('/', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/catalog.css">');
+    res.addStyle('<link rel="stylesheet" href="/css/home.css">');
+    next();
+}, homePage);
 router.get('/about', aboutPage);
 
 // ============================================================================

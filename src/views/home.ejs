@@ -15,60 +15,69 @@
     <!-- Featured Vehicles Section -->
     <section class="featured-vehicles">
         <div class="container">
-            <h2>Featured Vehicles</h2>
-            <p class="subtitle">Check out our handpicked selection of quality vehicles</p>
-            
-            <% if (featuredVehicles && featuredVehicles.length > 0) { %>
-                <div class="vehicles-grid">
-                    <% featuredVehicles.forEach(vehicle => { %>
-                        <div class="vehicle-card featured">
-                            <!-- Vehicle Image -->
-                            <div class="vehicle-image">
-                                <% if (vehicle.mainImage) { %>
-                                    <img src="<%= vehicle.mainImage %>" alt="<%= vehicle.displayName %>" />
-                                <% } else { %>
-                                    <img src="https://via.placeholder.com/300x200?text=<%= vehicle.make %>+<%= vehicle.model %>" alt="<%= vehicle.displayName %>" />
-                                <% } %>
-                                <% if (vehicle.isFeatured) { %>
-                                    <span class="badge featured-badge">Featured</span>
-                                <% } %>
-                            </div>
-                            
-                            <!-- Vehicle Info -->
-                            <div class="vehicle-info">
-                                <h3><a href="/catalog/vehicles/<%= vehicle.id %>"><%= vehicle.displayName %></a></h3>
-                                
-                                <div class="vehicle-specs">
-                                    <span class="spec"><%= vehicle.mileage.toLocaleString() %> miles</span>
-                                    <% if (vehicle.color) { %>
-                                        <span class="spec"><%= vehicle.color %></span>
-                                    <% } %>
-                                    <% if (vehicle.transmission) { %>
-                                        <span class="spec"><%= vehicle.transmission %></span>
-                                    <% } %>
-                                </div>
-                                
-                                <div class="vehicle-footer">
-                                    <div class="price">
-                                        <span class="price-label">Price</span>
-                                        <span class="price-value">$<%= vehicle.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
-                                    </div>
-                                    <% if (vehicle.avgRating && vehicle.avgRating !== 'N/A') { %>
-                                        <div class="rating">
-                                            <span class="stars">★</span>
-                                            <span class="rating-value"><%= vehicle.avgRating %></span>
-                                        </div>
-                                    <% } %>
-                                </div>
-                                
-                                <a href="/catalog/vehicles/<%= vehicle.id %>" class="btn btn-secondary">View Details</a>
-                            </div>
-                        </div>
-                    <% }); %>
+            <div class="featured-wrapper">
+                <!-- Welcome Section (Left) -->
+                <div class="featured-welcome">
+                    <h2>Begin Browsing Here:</h2>
+                    <p>Discover our handpicked selection of quality vehicles. Whether you're looking for a reliable sedan, a spacious SUV, or a powerful truck, we have options to fit your needs.</p>
+                    <a href="/catalog" class="btn btn-primary">View Full Catalog</a>
                 </div>
-            <% } else { %>
-                <p class="no-results">No featured vehicles available at this time.</p>
-            <% } %>
+                
+                <!-- Featured Vehicles Grid (Right) -->
+                <div class="featured-content">
+                    <% if (featuredVehicles && featuredVehicles.length > 0) { %>
+                        <div class="vehicles-grid featured-grid">
+                            <% featuredVehicles.forEach(vehicle => { %>
+                                <div class="vehicle-card featured">
+                                    <!-- Vehicle Image -->
+                                    <div class="vehicle-image">
+                                        <% if (vehicle.mainImage) { %>
+                                            <img src="<%= vehicle.mainImage %>" alt="<%= vehicle.displayName %>" />
+                                        <% } else { %>
+                                            <img src="https://via.placeholder.com/300x200?text=<%= vehicle.make %>+<%= vehicle.model %>" alt="<%= vehicle.displayName %>" />
+                                        <% } %>
+                                        <% if (vehicle.isFeatured) { %>
+                                            <span class="badge featured-badge">Featured</span>
+                                        <% } %>
+                                    </div>
+                                    
+                                    <!-- Vehicle Info -->
+                                    <div class="vehicle-info">
+                                        <h3><a href="/catalog/vehicles/<%= vehicle.id %>"><%= vehicle.displayName %></a></h3>
+                                        
+                                        <div class="vehicle-specs">
+                                            <span class="spec"><%= vehicle.mileage.toLocaleString() %> miles</span>
+                                            <% if (vehicle.color) { %>
+                                                <span class="spec"><%= vehicle.color %></span>
+                                            <% } %>
+                                            <% if (vehicle.transmission) { %>
+                                                <span class="spec"><%= vehicle.transmission %></span>
+                                            <% } %>
+                                        </div>
+                                        
+                                        <div class="vehicle-footer">
+                                            <div class="price">
+                                                <span class="price-label">Price</span>
+                                                <span class="price-value">$<%= vehicle.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
+                                            </div>
+                                            <% if (vehicle.avgRating && vehicle.avgRating !== 'N/A') { %>
+                                                <div class="rating">
+                                                    <span class="stars">★</span>
+                                                    <span class="rating-value"><%= vehicle.avgRating %></span>
+                                                </div>
+                                            <% } %>
+                                        </div>
+                                        
+                                        <a href="/catalog/vehicles/<%= vehicle.id %>" class="btn btn-secondary">View Details</a>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    <% } else { %>
+                        <p class="no-results">No featured vehicles available at this time.</p>
+                    <% } %>
+                </div>
+            </div>
         </div>
     </section>
     
