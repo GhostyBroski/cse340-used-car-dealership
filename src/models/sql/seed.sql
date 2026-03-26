@@ -215,14 +215,7 @@ VALUES
 -- ============================================================================
 -- SEED DATA - USERS
 -- ============================================================================
-
--- Test users (passwords are hashed with bcrypt, salt rounds 10)
--- All passwords: P@$$w0rd!
-INSERT INTO users (name, email, password, role_id) VALUES
-    ('John Customer', 'john@example.com', '$2b$10$Qwj6HJiENFdh06UWoqyic.gAEgfGu4lNGuZPgBQErEPhnhfYz5UsC', (SELECT id FROM roles WHERE role_name = 'user')),
-    ('Sarah Buyer', 'sarah@example.com', '$2b$10$Qwj6HJiENFdh06UWoqyic.gAEgfGu4lNGuZPgBQErEPhnhfYz5UsC', (SELECT id FROM roles WHERE role_name = 'user')),
-    ('Mike Employee', 'mike@dealership.com', '$2b$10$Qwj6HJiENFdh06UWoqyic.gAEgfGu4lNGuZPgBQErEPhnhfYz5UsC', (SELECT id FROM roles WHERE role_name = 'employee')),
-    ('Lisa Admin', 'admin@dealership.com', '$2b$10$Qwj6HJiENFdh06UWoqyic.gAEgfGu4lNGuZPgBQErEPhnhfYz5UsC', (SELECT id FROM roles WHERE role_name = 'admin'));
+-- Users are registered manually through the application registration form
 
 -- ============================================================================
 -- SEED DATA - CATEGORIES
@@ -396,19 +389,7 @@ INSERT INTO vehicle_images (vehicle_id, image_url, display_order, alt_text) VALU
 -- SEED DATA - SAMPLE REVIEWS
 -- Customer reviews for vehicles
 -- ============================================================================
-
-INSERT INTO reviews (user_id, vehicle_id, rating, title, comment) VALUES
-    ((SELECT id FROM users WHERE email = 'john@example.com'), 
-     (SELECT id FROM vehicles WHERE vin = '4T1BF1FK0MU00003'),
-     5, 'Excellent car!', 'Great fuel economy and very reliable. Highly recommend this Camry.'),
-    
-    ((SELECT id FROM users WHERE email = 'sarah@example.com'),
-     (SELECT id FROM vehicles WHERE vin = '2HRCF8H5XLH00001'),
-     5, 'Perfect family vehicle', 'The CR-V is spacious, comfortable, and handles great in all weather conditions.'),
-    
-    ((SELECT id FROM users WHERE email = 'john@example.com'),
-     (SELECT id FROM vehicles WHERE vin = '1FTFW1E50LFA00001'),
-     4, 'Great truck', 'Powerful and reliable F-150. Good condition for the year.');
+-- Reviews are created by registered users when they leave feedback on vehicles
 
 -- ============================================================================
 -- SEED DATA - VEHICLE FEATURES (optional extended attributes)
