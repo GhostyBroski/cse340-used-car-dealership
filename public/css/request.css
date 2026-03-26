@@ -1,0 +1,350 @@
+/* ============================================================================
+   SERVICE REQUEST FORM STYLES
+   ============================================================================ */
+
+/* ============================================================================
+   REQUEST FORM CONTAINER - Master layout
+   ============================================================================ */
+.request-form-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.request-form-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+/* ============================================================================
+   SERVICE REQUEST FORM - Form styling
+   ============================================================================ */
+.service-request-form {
+    background: white;
+    padding: 2.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 1.05rem;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group select,
+.form-group textarea {
+    padding: 0.875rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="date"]:focus,
+.form-group input[type="time"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2c5aa0;
+    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+}
+
+.form-group select {
+    cursor: pointer;
+    background-color: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+.form-group select option {
+    padding: 0.5rem;
+    color: #333;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 150px;
+    line-height: 1.6;
+}
+
+.form-info {
+    padding: 1rem;
+    background: #e3f2fd;
+    border-left: 4px solid #2c5aa0;
+    border-radius: 6px;
+    color: #1a3a6b;
+    margin-bottom: 2rem;
+}
+
+/* Form actions */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.service-request-form .btn,
+.service-request-form button {
+    padding: 0.875rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.service-request-form .btn.btn-primary,
+.service-request-form button[type="submit"] {
+    background: #2c5aa0;
+    color: white;
+}
+
+.service-request-form .btn.btn-primary:hover,
+.service-request-form button[type="submit"]:hover {
+    background: #1a3a6b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+}
+
+.service-request-form .btn.btn-secondary {
+    background: #e3f2fd;
+    color: #2c5aa0;
+    border: 1px solid #2c5aa0;
+}
+
+.service-request-form .btn.btn-secondary:hover {
+    background: #2c5aa0;
+    color: white;
+}
+
+/* ============================================================================
+   REQUEST DETAIL PAGE - Request details display
+   ============================================================================ */
+.request-detail-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.request-detail-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.request-info {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-section {
+    padding: 2rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.info-section:last-child {
+    border-bottom: none;
+}
+
+.info-section h2 {
+    font-size: 1.3rem;
+    color: #333;
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #2c5aa0;
+}
+
+.info-section p {
+    margin: 0.75rem 0;
+    color: #555;
+    line-height: 1.6;
+}
+
+.info-section strong {
+    color: #333;
+    font-weight: 600;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.status-badge.status-submitted {
+    background: #e3f2fd;
+    color: #2c5aa0;
+}
+
+.status-badge.status-in-progress {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.status-badge.status-completed {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.status-cancelled {
+    background: #ffebee;
+    color: #c62828;
+}
+
+/* ============================================================================
+   REQUESTS LIST PAGE - Table styling
+   ============================================================================ */
+.requests-list-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.requests-list-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.btn.btn-primary {
+    padding: 0.75rem 2rem;
+    background: #2c5aa0;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+.btn.btn-primary:hover {
+    background: #1a3a6b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+}
+
+.requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.requests-table thead {
+    background: #f5f5f5;
+    border-bottom: 2px solid #2c5aa0;
+}
+
+.requests-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+}
+
+.requests-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    color: #555;
+}
+
+.requests-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.requests-table tbody tr:hover {
+    background: #f9f9f9;
+}
+
+.requests-table a {
+    color: #2c5aa0;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.requests-table a:hover {
+    color: #1a3a6b;
+    text-decoration: underline;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+@media (max-width: 768px) {
+    .request-form-container,
+    .request-detail-container,
+    .requests-list-container {
+        padding: 1rem;
+    }
+
+    .service-request-form {
+        padding: 1.5rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="tel"],
+    .form-group input[type="email"],
+    .form-group input[type="date"],
+    .form-group input[type="time"],
+    .form-group select,
+    .form-group textarea {
+        font-size: 16px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+    .requests-table {
+        font-size: 0.9rem;
+    }
+
+    .requests-table th,
+    .requests-table td {
+        padding: 0.75rem;
+    }
+
+    .info-section {
+        padding: 1.5rem;
+    }
+}

@@ -1,42 +1,77 @@
-<%- include('partials/head') %>
-<%- include('partials/header') %>
-<main>
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+<main class="request-form-container">
     <h1><%= title %></h1>
+    
+    <form action="/requests" method="POST" class="service-request-form">
+        <!-- Vehicle ID (hidden if pre-populated) -->
+        <% if (vehicleId) { %>
+            <input type="hidden" name="vehicleId" value="<%= vehicleId %>" />
+        <% } %>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required placeholder="Your full name" />
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required placeholder="(123) 456-7890" pattern="[0-9\-\+\s\(\)]{7,15}" />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email (Optional):</label>
+            <input type="email" id="email" name="email" placeholder="your.email@example.com" />
+        </div>
+
+        <% if (!vehicleId) { %>
+            <div class="form-group">
+                <label for="vehicleMake">Vehicle Make:</label>
+                <input type="text" id="vehicleMake" name="vehicleMake" placeholder="e.g., Honda" />
+            </div>
+
+            <div class="form-group">
+                <label for="vehicleModel">Vehicle Model:</label>
+                <input type="text" id="vehicleModel" name="vehicleModel" placeholder="e.g., Civic" />
+            </div>
+        <% } else { %>
+            <p class="form-info">
+                <strong>For Vehicle ID:</strong> <%= vehicleId %>
+            </p>
+        <% } %>
+
+        <div class="form-group">
+            <label for="subject">Service Type:</label>
+            <select id="subject" name="subject" required>
+                <option value="">-- Select Service --</option>
+                <option value="oil change">Oil Change</option>
+                <option value="inspection">Inspection</option>
+                <option value="tire rotation">Tire Rotation</option>
+                <option value="brake service">Brake Service</option>
+                <option value="battery replacement">Battery Replacement</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="scheduledDate">Preferred Date:</label>
+            <input type="date" id="scheduledDate" name="scheduledDate" required />
+        </div>
+
+        <div class="form-group">
+            <label for="scheduledTime">Preferred Time:</label>
+            <input type="time" id="scheduledTime" name="scheduledTime" required />
+        </div>
+
+        <div class="form-group">
+            <label for="message">Additional Details:</label>
+            <textarea id="message" name="message" rows="5" placeholder="Describe any specific issues or concerns..."></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit Request</button>
+            <a href="<%= vehicleId ? `/catalog/vehicles/${vehicleId}` : '/catalog' %>" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
 </main>
-<form action="/requests" method="POST" class="service-request-form">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
-
-    <label for="phone">Phone Number:</label>
-    <input type="tel" id="phone" name="phone" required pattern="[0-9\-\+\s\(\)]{7,15}">
-
-    <label for="vehicleMake">Vehicle Make:</label>
-    <input type="text" id="vehicleMake" name="vehicleMake" required>
-
-    <label for="vehicleModel">Vehicle Model:</label>
-    <input type="text" id="vehicleModel" name="vehicleModel" required>
-
-    <label for="subject">Service Type:</label>
-    <select id="subject" name="subject" required>
-        <option value="">-- Select Service --</option>
-        <option value="oil change">Oil Change</option>
-        <option value="inspection">Inspection</option>
-        <option value="tire rotation">Tire Rotation</option>
-        <option value="brake service">Brake Service</option>
-        <option value="battery replacement">Battery Replacement</option>
-        <option value="other">Other</option>
-    </select>
-
-    <label for="scheduledDate">Preferred Date:</label>
-    <input type="date" id="scheduledDate" name="scheduledDate" required>
-
-    <label for="scheduledTime">Preferred Time:</label>
-    <input type="time" id="scheduledTime" name="scheduledTime" required>
-
-    <label for="message">Additional Details:</label>
-    <textarea id="message" name="message" rows="4"></textarea>
-
-    <button type="submit">Submit Request</button>
-</form>
-</main>
-<%- include('partials/footer') %>
+<%- include('../../partials/footer') %>

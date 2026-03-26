@@ -44,12 +44,15 @@ const showRequestForm = async (req, res, next) => {
  */
 const handleServiceRequestSubmission = async (req, res, next) => {
     const errors = validationResult(req);
+    const { vehicleId } = req.body;
 
     if (!errors.isEmpty()) {
         errors.array().forEach(error => {
             req.flash('error', error.msg);
         });
-        return res.redirect('/requests');
+        // Redirect back to the form with vehicleId preserved if it exists
+        const redirectUrl = vehicleId ? `/requests?vehicleId=${vehicleId}` : '/requests';
+        return res.redirect(redirectUrl);
     }
 
     try {
@@ -57,7 +60,6 @@ const handleServiceRequestSubmission = async (req, res, next) => {
             name,
             phone,
             email,
-            vehicleId,
             subject,
             requestType,
             scheduledDate,
@@ -87,7 +89,9 @@ const handleServiceRequestSubmission = async (req, res, next) => {
     } catch (error) {
         console.error('Error saving service request:', error);
         req.flash('error', 'Unable to submit your request. Please try again later.');
-        res.redirect('/requests');
+        // Redirect back to the form with vehicleId preserved if it exists
+        const redirectUrl = vehicleId ? `/requests?vehicleId=${vehicleId}` : '/requests';
+        res.redirect(redirectUrl);
     }
 };
 
