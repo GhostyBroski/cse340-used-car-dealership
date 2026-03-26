@@ -27,7 +27,7 @@
                         <td><strong><%= user.name %></strong></td>
                         <td><%= user.email %></td>
                         <td>
-                            <% if (user.id == session.user.id) { %>
+                            <% if (user.id == userId) { %>
                                 <span class="role-badge role-<%= user.roleName %>">
                                     <%= user.roleName.charAt(0).toUpperCase() + user.roleName.slice(1) %>
                                 </span>

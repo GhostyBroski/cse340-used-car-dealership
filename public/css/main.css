@@ -444,6 +444,41 @@ body h1 {
     background: #c82333;
 }
 
+/* Button Styles for Add Actions */
+.btn-add {
+    background: #2c5aa0;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.btn-add:hover {
+    background: #1e3f66;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+}
+
+/* Button Styles for View Action on Requests */
+.btn-view-request {
+    background: #17a2b8;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-view-request:hover {
+    background: #138496;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(23, 162, 184, 0.3);
+}
+
 /* Admin Form */
 .admin-form-wrapper {
     max-width: 600px;

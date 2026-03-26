@@ -338,6 +338,40 @@ const handleUpdateUserRole = async (req, res, next) => {
 };
 
 // ============================================================================
+// SYSTEM ACTIVITY - Admin only
+// ============================================================================
+
+/**
+ * Display system activity and statistics
+ * GET /admin/activity
+ */
+const showActivity = async (req, res, next) => {
+    try {
+        const users = await getAllUsers();
+        const categories = await getAllCategories();
+        const vehicles = await getAllVehicles();
+
+        // Calculate statistics
+        const stats = {
+            totalUsers: users.length,
+            employeeCount: users.filter(u => u.roleName === 'employee').length,
+            totalVehicles: vehicles.length,
+            totalCategories: categories.length,
+            totalRequests: 0, // Would query from service_requests table
+            totalReviews: 0   // Would query from reviews table
+        };
+
+        res.render('admin/activity', {
+            title: 'System Activity',
+            stats: stats
+        });
+    } catch (error) {
+        console.error('Error loading activity page:', error);
+        next(error);
+    }
+};
+
+// ============================================================================
 // ROUTES - Registration and middleware
 // ============================================================================
 
@@ -415,5 +449,8 @@ router.post(
     ],
     handleUpdateUserRole
 );
+
+// SYSTEM ACTIVITY ROUTES - Admin only
+router.get('/activity', showActivity);
 
 export default router;

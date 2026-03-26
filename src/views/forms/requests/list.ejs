@@ -27,7 +27,7 @@
                         <td><%= request.subject %></td>
                         <td><span class="status-badge status-<%= request.status.toLowerCase() %>"><%= request.status %></span></td>
                         <td><%= new Date(request.submittedAt).toLocaleDateString() %></td>
-                        <td><a href="/requests/<%= request.id %>" class="btn btn-sm btn-view">View</a></td>
+                        <td><a href="/requests/<%= request.id %>" class="btn btn-sm btn-view-request">View</a></td>
                     </tr>
                 <% }); %>
             </tbody>
