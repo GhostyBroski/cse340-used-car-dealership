@@ -14,7 +14,10 @@
             <% }); %>
         </div>
     <% } else { %>
-        <p class="no-responses">No contact form submissions yet.</p>
+        <div class="no-responses">
+            <p>No submissions yet.</p>
+            <a href="/contact" class="btn btn-primary">Submit one now!</a>
+        </div>
     <% } %>
 </main>
 <%- include('../../partials/footer') %>

@@ -1,5 +1,5 @@
-<%- include('../../partials/head') %>
-<%- include('../../partials/header') %>
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
 <main class="admin-container">
     <div class="admin-header">
         <h1>System Activity</h1>
@@ -60,7 +60,7 @@
 <style>
 .activity-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin: 2rem 0;
 }
@@ -138,6 +138,22 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
 }
+
+@media (max-width: 1024px) {
+    .activity-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .activity-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .action-links {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 
-<%- include('../../partials/footer') %>
+<%- include('../partials/footer') %>

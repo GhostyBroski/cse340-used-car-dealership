@@ -120,6 +120,24 @@ const getReviewsByUser = async (userId) => {
     return result.rows;
 };
 
+/**
+ * Get all reviews across all vehicles with user and vehicle info
+ */
+const getAllReviews = async () => {
+    const query = `
+        SELECT r.id, r.user_id, r.vehicle_id, r.rating, r.title, r.comment, r.created_at,
+               u.name AS user_name,
+               v.year, v.make, v.model, 
+               CONCAT(v.year, ' ', v.make, ' ', v.model) AS vehicleDisplayName
+        FROM reviews r
+        JOIN users u ON r.user_id = u.id
+        JOIN vehicles v ON r.vehicle_id = v.id
+        ORDER BY r.created_at DESC
+    `;
+    const result = await db.query(query);
+    return result.rows;
+};
+
 export { 
     createReview, 
     getTopReviewsForVehicle, 
@@ -128,5 +146,6 @@ export {
     updateReview, 
     deleteReview,
     deleteReviewAsAdmin,
-    getReviewsByUser
+    getReviewsByUser,
+    getAllReviews
 };

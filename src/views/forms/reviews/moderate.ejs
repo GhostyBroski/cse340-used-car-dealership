@@ -1,0 +1,229 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+<main class="reviews-container">
+    <h1>Moderate Reviews</h1>
+    <p class="subtitle">Review and manage all customer reviews across the dealership.</p>
+
+    <% if (reviews && reviews.length > 0) { %>
+        <div class="reviews-list">
+            <% reviews.forEach(review => { %>
+                <div class="review-item">
+                    <div class="review-header">
+                        <div>
+                            <strong><%= review.user_name %></strong>
+                            <span class="review-vehicle">
+                                <%= review.vehicleDisplayName %>
+                            </span>
+                        </div>
+                        <span class="review-rating">
+                            <%= '⭐'.repeat(review.rating) %>
+                        </span>
+                    </div>
+                    <div class="review-title">
+                        <%= review.title %>
+                    </div>
+                    <div class="review-date">
+                        <%= new Date(review.created_at).toLocaleDateString() %>
+                    </div>
+                    <p class="review-comment"><%= review.comment %></p>
+                    
+                    <div class="review-actions">
+                        <a href="/vehicles/<%= review.vehicle_id %>/reviews" class="btn btn-sm btn-view">View All</a>
+                        <form action="/reviews/<%= review.id %>/delete-admin" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this review?');">
+                            <button type="submit" class="btn btn-sm btn-delete">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="no-reviews-moderate">
+            <p>No reviews to moderate.</p>
+        </div>
+    <% } %>
+
+    <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+</main>
+<%- include('../../partials/footer') %>
+
+<style>
+.reviews-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.reviews-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.review-item {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.review-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.review-header strong {
+    display: block;
+    color: #333;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.review-vehicle {
+    display: block;
+    color: #2c5aa0;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.review-rating {
+    white-space: nowrap;
+    color: #f39c12;
+    font-size: 1.2rem;
+}
+
+.review-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.review-date {
+    color: #999;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.review-comment {
+    color: #555;
+    line-height: 1.6;
+    margin: 1rem 0;
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 4px;
+    border-left: 3px solid #2c5aa0;
+}
+
+.review-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.btn-view {
+    background: #2c5aa0;
+    color: white;
+}
+
+.btn-view:hover {
+    background: #1a3a6b;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c82333;
+}
+
+.btn-secondary {
+    padding: 0.75rem 2rem;
+    background: #e3f2fd;
+    color: #2c5aa0;
+    border: 1px solid #2c5aa0;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 2rem;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #2c5aa0;
+    color: white;
+}
+
+.no-reviews-moderate {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px dashed #ddd;
+    color: #666;
+}
+
+.no-reviews-moderate p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .reviews-container {
+        padding: 1rem;
+    }
+
+    .review-item {
+        padding: 1rem;
+    }
+
+    .review-header {
+        flex-direction: column;
+    }
+
+    .review-actions {
+        flex-direction: column;
+    }
+
+    .btn-sm {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>

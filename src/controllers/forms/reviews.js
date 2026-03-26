@@ -7,7 +7,8 @@ import {
     updateReview, 
     deleteReview,
     deleteReviewAsAdmin,
-    getReviewsByUser
+    getReviewsByUser,
+    getAllReviews
 } from '../../models/forms/reviews.js';
 import { getVehicleById } from '../../models/catalog/vehicles.js';
 import { requireRole } from '../../middleware/auth.js';
@@ -206,9 +207,30 @@ const showMyReviews = async (req, res, next) => {
     }
 };
 
+/**
+ * Display all reviews for moderation (employee+ only)
+ * GET /reviews/moderate
+ */
+const showModerateReviews = async (req, res, next) => {
+    try {
+        const reviews = await getAllReviews();
+
+        res.render('forms/reviews/moderate', {
+            title: 'Moderate Reviews',
+            reviews
+        });
+    } catch (error) {
+        console.error('Error loading reviews for moderation:', error);
+        next(error);
+    }
+};
+
 // ============================================================================
 // ROUTE HANDLERS
 // ============================================================================
+
+// Moderate all reviews (employee+ only) - must come before /:vehicleId/new
+router.get('/moderate', requireRole('employee'), showModerateReviews);
 
 // Display new review form
 router.get('/:vehicleId/new', showNewReviewForm);
@@ -260,6 +282,9 @@ router.post(
 
 // Delete review (POST for security - prevents accidental deletion via GET)
 router.post('/:reviewId/delete', handleReviewDeletion);
+
+// Delete review as admin (employee+ only)
+router.post('/:reviewId/delete-admin', requireRole('employee'), handleReviewDeletion);
 
 // View user's reviews
 router.get('/my-reviews', showMyReviews);

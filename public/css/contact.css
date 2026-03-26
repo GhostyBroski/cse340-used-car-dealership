@@ -100,7 +100,36 @@
     .no-responses {
         text-align: center;
         color: #666;
-        font-style: italic;
-        padding: 2rem;
+        padding: 3rem 2rem;
+        background: #f9f9f9;
+        border-radius: 8px;
+        border: 1px dashed #ddd;
     }
+
+    .no-responses p {
+        margin: 0 0 1.5rem 0;
+        font-size: 1.1rem;
+    }
+
+    .no-responses .btn {
+        padding: 0.875rem 2rem;
+        background: #2c5aa0;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .no-responses .btn:hover {
+        background: #1a3a6b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+    }
+}
+
+/* Container for full-height background */
+main {
+    min-height: calc(100vh - 200px);
 }
