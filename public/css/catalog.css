@@ -242,21 +242,19 @@
                     color: #2c5aa0;
                 }
 
-                &.condition {
-                    &.used {
-                        background: #fff3e0;
-                        color: #e65100;
-                    }
+                &.condition.used {
+                    background: #fff3e0;
+                    color: #e65100;
+                }
 
-                    &.like {
-                        background: #f3e5f5;
-                        color: #6a1b9a;
-                    }
+                &.condition.like {
+                    background: #f3e5f5;
+                    color: #6a1b9a;
+                }
 
-                    &.fair {
-                        background: #fce4ec;
-                        color: #c2185b;
-                    }
+                &.condition.fair {
+                    background: #fce4ec;
+                    color: #c2185b;
                 }
             }
         }
@@ -410,43 +408,7 @@
     }
 }
 
-/* ============================================================================
-   HOME PAGE - FEATURED VEHICLES SECTION
-   ============================================================================ */
-.featured-vehicles {
-    padding: 3rem 0;
-    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
 
-    .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 2rem;
-    }
-
-    h2 {
-        font-size: 2.2rem;
-        color: #333;
-        margin: 0 0 0.5rem 0;
-    }
-
-    .subtitle {
-        color: #666;
-        font-size: 1.1rem;
-        margin: 0 0 2rem 0;
-    }
-
-    /* Featured vehicles use the same grid but can be customized */
-    .vehicles-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-
-        @media (max-width: 768px) {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-    }
-}
 
 /* ============================================================================
    VEHICLE DETAIL PAGE - Full-width layout
