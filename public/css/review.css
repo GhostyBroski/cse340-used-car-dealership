@@ -1,0 +1,392 @@
+/* ============================================================================
+   VEHICLE REVIEWS STYLES
+   ============================================================================ */
+
+/* ============================================================================
+   REVIEWS SECTION - Detail page reviews display
+   ============================================================================ */
+.reviews-section {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 2px solid #eee;
+}
+
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    gap: 2rem;
+}
+
+.reviews-header h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin: 0;
+}
+
+.btn-leave-review {
+    padding: 0.75rem 2rem;
+    background: #2c5aa0;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    display: inline-block;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-leave-review:hover {
+    background: #1a3a6b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+}
+
+/* ============================================================================
+   REVIEWS LIST - Container for individual review cards
+   ============================================================================ */
+.reviews-list {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.review-card {
+    padding: 2rem;
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.review-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: #2c5aa0;
+}
+
+/* Review header with reviewer info and rating */
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Reviewer information */
+.reviewer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.reviewer-info strong {
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.review-date {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* Review rating stars */
+.review-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.review-rating .stars {
+    color: #ffc107;
+    font-size: 1.3rem;
+    letter-spacing: 0.1rem;
+}
+
+.rating-value {
+    color: #2c5aa0;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Review title and comment */
+.review-title {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 1rem 0 0.75rem 0;
+    font-weight: 600;
+}
+
+.review-comment {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+}
+
+/* Review action buttons */
+.review-actions {
+    display: flex;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.btn-edit {
+    background: #e3f2fd;
+    color: #2c5aa0;
+    border: 1px solid #2c5aa0;
+}
+
+.btn-edit:hover {
+    background: #2c5aa0;
+    color: white;
+}
+
+.btn-delete {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #c62828;
+}
+
+.btn-delete:hover {
+    background: #c62828;
+    color: white;
+}
+
+/* ============================================================================
+   NO REVIEWS STATE
+   ============================================================================ */
+.no-reviews {
+    padding: 3rem 2rem;
+    text-align: center;
+    background: #f9f9f9;
+    border-radius: 12px;
+    border: 1px dashed #ddd;
+}
+
+.no-reviews p {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.no-reviews a {
+    color: #2c5aa0;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.no-reviews a:hover {
+    color: #1a3a6b;
+    text-decoration: underline;
+}
+
+/* ============================================================================
+   USER REVIEW NOTICE
+   ============================================================================ */
+.user-review-notice {
+    padding: 1.5rem;
+    background: #e3f2fd;
+    border-left: 4px solid #2c5aa0;
+    border-radius: 6px;
+    margin-top: 2rem;
+}
+
+.user-review-notice p {
+    color: #1a3a6b;
+    font-weight: 500;
+    margin: 0;
+}
+
+.user-review-notice a {
+    color: #2c5aa0;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.user-review-notice a:hover {
+    color: #1a3a6b;
+    text-decoration: underline;
+}
+
+/* ============================================================================
+   REVIEW FORM - Leave/Edit review page
+   ============================================================================ */
+.review-form-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.review-form-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.review-form {
+    background: white;
+    padding: 2.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 1.05rem;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.form-group select,
+.form-group input[type="text"],
+.form-group textarea {
+    padding: 0.875rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.form-group select:focus,
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2c5aa0;
+    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+}
+
+.form-group select {
+    cursor: pointer;
+    background-color: white;
+}
+
+.form-group select option {
+    padding: 0.5rem;
+    color: #333;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 150px;
+    line-height: 1.6;
+}
+
+/* Form actions */
+.review-form .btn,
+.review-form button {
+    padding: 0.875rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.review-form .btn.btn-primary,
+.review-form button[type="submit"] {
+    background: #2c5aa0;
+    color: white;
+    margin-right: 1rem;
+    margin-bottom: 0;
+}
+
+.review-form .btn.btn-primary:hover,
+.review-form button[type="submit"]:hover {
+    background: #1a3a6b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+}
+
+.review-form .btn.btn-secondary {
+    background: #e3f2fd;
+    color: #2c5aa0;
+    border: 1px solid #2c5aa0;
+}
+
+.review-form .btn.btn-secondary:hover {
+    background: #2c5aa0;
+    color: white;
+}
+
+.review-form > div:last-child {
+    margin-bottom: 0;
+}
+
+/* Form actions wrapper */
+.review-form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .reviews-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-leave-review {
+        width: 100%;
+        text-align: center;
+    }
+
+    .review-card {
+        padding: 1.5rem;
+    }
+
+    .review-form-container {
+        padding: 1rem;
+    }
+
+    .review-form {
+        padding: 1.5rem;
+    }
+
+    .review-form .btn,
+    .review-form button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 0.75rem;
+    }
+
+    .review-form-actions {
+        flex-direction: column;
+    }
+}

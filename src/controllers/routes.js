@@ -18,6 +18,7 @@ const router = Router();
 
 router.use('/catalog', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/catalog.css">');
+    res.addStyle('<link rel="stylesheet" href="/css/review.css">');
     next();
 });
 

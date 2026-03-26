@@ -89,10 +89,6 @@
     }
 }
 
-.featured-vehicles .featured-content {
-    /* Container for featured vehicle cards */
-}
-
 @media (max-width: 1024px) {
     .featured-vehicles .featured-content {
         grid-column: 1 / -1;

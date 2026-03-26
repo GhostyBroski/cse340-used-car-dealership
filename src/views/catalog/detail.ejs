@@ -194,14 +194,12 @@
         
         <!-- Reviews Section -->
         <section class="reviews-section">
-            <h2>Customer Reviews</h2>
-            
-            <!-- Add Review Button (for logged-in users) -->
-            <% if (isLoggedIn && !userReview) { %>
-                <div class="add-review">
-                    <a href="/reviews/<%= vehicle.id %>/new" class="btn btn-secondary">Leave a Review</a>
-                </div>
-            <% } %>
+            <div class="reviews-header">
+                <h2>Customer Reviews</h2>
+                <% if (isLoggedIn && !userReview) { %>
+                    <a href="/reviews/<%= vehicle.id %>/new" class="btn btn-leave-review">Leave a Review</a>
+                <% } %>
+            </div>
             
             <!-- Existing Reviews -->
             <% if (reviews && reviews.length > 0) { %>

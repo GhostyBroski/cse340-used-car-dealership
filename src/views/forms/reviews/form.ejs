@@ -3,26 +3,33 @@
 <main class="review-form-container">
     <h1><%= title %></h1>
     
-    <form action="<%= review ? `/vehicles/${vehicleId}/reviews/${review.id}` : `/vehicles/${vehicleId}/reviews` %>" method="POST" class="review-form">
+    <form action="<%= review ? `/reviews/${vehicleId}/${review.id}/edit` : `/reviews/${vehicleId}` %>" method="POST" class="review-form">
         <div class="form-group">
             <label for="rating">Rating:</label>
             <select id="rating" name="rating" required>
                 <option value="">-- Select a rating --</option>
-                <option value="5" <%= review && review.rating === 5 ? 'selected' : '' %>>5 Stars - Excellent</option>
-                <option value="4" <%= review && review.rating === 4 ? 'selected' : '' %>>4 Stars - Good</option>
-                <option value="3" <%= review && review.rating === 3 ? 'selected' : '' %>>3 Stars - Average</option>
-                <option value="2" <%= review && review.rating === 2 ? 'selected' : '' %>>2 Stars - Fair</option>
-                <option value="1" <%= review && review.rating === 1 ? 'selected' : '' %>>1 Star - Poor</option>
+                <option value="5" <%= review && review.rating === 5 ? 'selected' : '' %>>⭐⭐⭐⭐⭐ 5 Stars - Excellent</option>
+                <option value="4" <%= review && review.rating === 4 ? 'selected' : '' %>>⭐⭐⭐⭐ 4 Stars - Good</option>
+                <option value="3" <%= review && review.rating === 3 ? 'selected' : '' %>>⭐⭐⭐ 3 Stars - Average</option>
+                <option value="2" <%= review && review.rating === 2 ? 'selected' : '' %>>⭐⭐ 2 Stars - Fair</option>
+                <option value="1" <%= review && review.rating === 1 ? 'selected' : '' %>>⭐ 1 Star - Poor</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="comment">Your Review:</label>
-            <textarea id="comment" name="comment" rows="5" required><%= review ? review.comment : '' %></textarea>
+            <label for="title">Review Title:</label>
+            <input type="text" id="title" name="title" placeholder="Summarize your review in a few words" value="<%= review ? review.title : '' %>" required />
         </div>
 
-        <button type="submit" class="btn btn-primary"><%= review ? 'Update Review' : 'Post Review' %></button>
-        <a href="/vehicles/<%= vehicleId %>/reviews" class="btn btn-secondary">Cancel</a>
+        <div class="form-group">
+            <label for="comment">Your Review:</label>
+            <textarea id="comment" name="comment" placeholder="Share your experience with this vehicle (10-2000 characters)" required><%= review ? review.comment : '' %></textarea>
+        </div>
+
+        <div class="review-form-actions">
+            <button type="submit" class="btn btn-primary"><%= review ? 'Update Review' : 'Post Review' %></button>
+            <a href="/catalog/vehicles/<%= vehicleId %>" class="btn btn-secondary">Cancel</a>
+        </div>
     </form>
 </main>
 <%- include('../../partials/footer') %>
