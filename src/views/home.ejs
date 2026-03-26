@@ -1,8 +1,84 @@
 <%- include('partials/head') %>
 <%- include('partials/header') %>
 <main>
-    <h1><%= title %></h1>
-    <p>Welcome to my Express application! This site demonstrates the power of templating engines and is also my Home page!</p>
-    <img src="https://picsum.photos/600/400" alt="Random image">
+    <h1>Welcome to <%= title %></h1>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Find Your Perfect Vehicle</h2>
+            <p>Browse our wide selection of quality used vehicles</p>
+            <a href="/catalog" class="btn btn-primary">Browse Catalog</a>
+        </div>
+    </section>
+    
+    <!-- Featured Vehicles Section -->
+    <section class="featured-vehicles">
+        <div class="container">
+            <h2>Featured Vehicles</h2>
+            <p class="subtitle">Check out our handpicked selection of quality vehicles</p>
+            
+            <% if (featuredVehicles && featuredVehicles.length > 0) { %>
+                <div class="vehicles-grid">
+                    <% featuredVehicles.forEach(vehicle => { %>
+                        <div class="vehicle-card featured">
+                            <!-- Vehicle Image -->
+                            <div class="vehicle-image">
+                                <% if (vehicle.mainImage) { %>
+                                    <img src="<%= vehicle.mainImage %>" alt="<%= vehicle.displayName %>" />
+                                <% } else { %>
+                                    <img src="https://via.placeholder.com/300x200?text=<%= vehicle.make %>+<%= vehicle.model %>" alt="<%= vehicle.displayName %>" />
+                                <% } %>
+                                <% if (vehicle.isFeatured) { %>
+                                    <span class="badge featured-badge">Featured</span>
+                                <% } %>
+                            </div>
+                            
+                            <!-- Vehicle Info -->
+                            <div class="vehicle-info">
+                                <h3><a href="/catalog/vehicles/<%= vehicle.id %>"><%= vehicle.displayName %></a></h3>
+                                
+                                <div class="vehicle-specs">
+                                    <span class="spec"><%= vehicle.mileage.toLocaleString() %> miles</span>
+                                    <% if (vehicle.color) { %>
+                                        <span class="spec"><%= vehicle.color %></span>
+                                    <% } %>
+                                    <% if (vehicle.transmission) { %>
+                                        <span class="spec"><%= vehicle.transmission %></span>
+                                    <% } %>
+                                </div>
+                                
+                                <div class="vehicle-footer">
+                                    <div class="price">
+                                        <span class="price-label">Price</span>
+                                        <span class="price-value">$<%= vehicle.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
+                                    </div>
+                                    <% if (vehicle.avgRating && vehicle.avgRating !== 'N/A') { %>
+                                        <div class="rating">
+                                            <span class="stars">★</span>
+                                            <span class="rating-value"><%= vehicle.avgRating %></span>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                
+                                <a href="/catalog/vehicles/<%= vehicle.id %>" class="btn btn-secondary">View Details</a>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <p class="no-results">No featured vehicles available at this time.</p>
+            <% } %>
+        </div>
+    </section>
+    
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Browse All Vehicles</h2>
+            <p>Explore our complete inventory organized by category</p>
+            <a href="/catalog" class="btn btn-primary">View Full Catalog</a>
+        </div>
+    </section>
 </main>
 <%- include('partials/footer') %>

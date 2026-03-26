@@ -1,36 +1,254 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 <main>
-    <div class="course-header">
-        <h1><%= course.courseName %></h1>
-        <p class="course-meta"><%= course.courseCode %> • <%= course.creditHours %> credits</p>
-        <p class="course-description"><%= course.description %></p>
-    </div>
-
-    <div class="sections">
-        <div class="sections-header"> 
-            <h2>Available Sections</h2>
-            <div class="sort-options">
-                <span>Sort by: </span>
-                <a href="/catalog/<%= course.slug %>" class="<%= currentSort === 'time' ? 'active' : '' %>">Time</a>
-                <a href="/catalog/<%= course.slug %>?sort=professor" class="<%= currentSort === 'professor' ? 'active' : '' %>">Professor</a>
-                <a href="/catalog/<%= course.slug %>?sort=room" class="<%= currentSort === 'room' ? 'active' : '' %>">Room</a>
+    <div class="vehicle-detail-container">
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb">
+            <a href="/">Home</a>
+            <span>/</span>
+            <a href="/catalog">Catalog</a>
+            <span>/</span>
+            <span><%= vehicle.displayName %></span>
+        </nav>
+        
+        <!-- Main Vehicle Details -->
+        <section class="vehicle-details">
+            <!-- Image Gallery -->
+            <div class="vehicle-gallery">
+                <% if (vehicle.images && vehicle.images.length > 0) { %>
+                    <div class="main-image">
+                        <img id="mainImage" src="<%= vehicle.images[0].image_url %>" alt="<%= vehicle.images[0].alt_text || vehicle.displayName %>" />
+                    </div>
+                    <% if (vehicle.images.length > 1) { %>
+                        <div class="thumbnail-gallery">
+                            <% vehicle.images.forEach((img, index) => { %>
+                                <img src="<%= img.image_url %>" 
+                                     alt="<%= img.alt_text || `${vehicle.displayName} view ${index + 1}` %>"
+                                     class="thumbnail <%= index === 0 ? 'active' : '' %>"
+                                     onclick="document.getElementById('mainImage').src = this.src; document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active')); this.classList.add('active');" />
+                            <% }); %>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <div class="main-image">
+                        <img src="https://via.placeholder.com/500x400?text=<%= vehicle.make %>+<%= vehicle.model %>" alt="<%= vehicle.displayName %>" />
+                    </div>
+                <% } %>
             </div>
-        </div>
-
-        <div class="section-list">
-            <% sections.forEach(section => { %>
-                <div class="section-card">
-                    <div class="section-time"><%= section.time %></div>
-                    <div class="section-room">Room: <%= section.room %></div>
-                    <div class="section-professor">Instructor: <%= section.professor %></div>
+            
+            <!-- Vehicle Information -->
+            <div class="vehicle-info-panel">
+                <!-- Header -->
+                <div class="vehicle-header">
+                    <h1><%= vehicle.displayName %></h1>
+                    <p class="vehicle-vin">VIN: <%= vehicle.vin %></p>
+                    <div class="vehicle-badges">
+                        <% if (vehicle.isFeatured) { %>
+                            <span class="badge featured">Featured</span>
+                        <% } %>
+                        <span class="badge condition <%= vehicle.condition.toLowerCase() %>"><%= vehicle.condition %></span>
+                        <span class="badge category"><%= vehicle.categoryName %></span>
+                    </div>
                 </div>
-            <% }); %>
-        </div>
-    </div>
-
-    <div class="navigation">
-        <p><a href="/catalog">&larr; Back to Course Catalog</a></p>
+                
+                <!-- Price and Rating -->
+                <div class="price-rating">
+                    <div class="price">
+                        <span class="label">Price</span>
+                        <span class="value">$<%= vehicle.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
+                    </div>
+                    <% if (vehicle.avgRating && vehicle.avgRating !== 'N/A') { %>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-text"><%= vehicle.avgRating %> of 5</span>
+                            <span class="review-count">(<%= vehicle.reviewCount %> reviews)</span>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <!-- Key Specs -->
+                <div class="key-specs">
+                    <h3>Key Specifications</h3>
+                    <div class="specs-grid">
+                        <div class="spec">
+                            <span class="label">Year</span>
+                            <span class="value"><%= vehicle.year %></span>
+                        </div>
+                        <div class="spec">
+                            <span class="label">Mileage</span>
+                            <span class="value"><%= vehicle.mileage.toLocaleString() %> mi</span>
+                        </div>
+                        <div class="spec">
+                            <span class="label">Condition</span>
+                            <span class="value"><%= vehicle.condition %></span>
+                        </div>
+                        <div class="spec">
+                            <span class="label">Color</span>
+                            <span class="value"><%= vehicle.color || 'N/A' %></span>
+                        </div>
+                        <% if (vehicle.engineType) { %>
+                            <div class="spec">
+                                <span class="label">Engine</span>
+                                <span class="value"><%= vehicle.engineType %></span>
+                            </div>
+                        <% } %>
+                        <% if (vehicle.horsepower) { %>
+                            <div class="spec">
+                                <span class="label">Horsepower</span>
+                                <span class="value"><%= vehicle.horsepower %> HP</span>
+                            </div>
+                        <% } %>
+                        <% if (vehicle.transmission) { %>
+                            <div class="spec">
+                                <span class="label">Transmission</span>
+                                <span class="value"><%= vehicle.transmission %></span>
+                            </div>
+                        <% } %>
+                        <% if (vehicle.drivetrain) { %>
+                            <div class="spec">
+                                <span class="label">Drivetrain</span>
+                                <span class="value"><%= vehicle.drivetrain %></span>
+                            </div>
+                        <% } %>
+                        <% if (vehicle.fuelType) { %>
+                            <div class="spec">
+                                <span class="label">Fuel Type</span>
+                                <span class="value"><%= vehicle.fuelType %></span>
+                            </div>
+                        <% } %>
+                        <% if (vehicle.mpgCity) { %>
+                            <div class="spec">
+                                <span class="label">MPG City</span>
+                                <span class="value"><%= vehicle.mpgCity %></span>
+                            </div>
+                        <% } %>
+                        <% if (vehicle.mpgHighway) { %>
+                            <div class="spec">
+                                <span class="label">MPG Highway</span>
+                                <span class="value"><%= vehicle.mpgHighway %></span>
+                            </div>
+                        <% } %>
+                        <% if (vehicle.seats) { %>
+                            <div class="spec">
+                                <span class="label">Seats</span>
+                                <span class="value"><%= vehicle.seats %></span>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                
+                <!-- Interior Details -->
+                <% if (vehicle.interiorColor || vehicle.interiorMaterial) { %>
+                    <div class="interior-info">
+                        <h3>Interior</h3>
+                        <ul>
+                            <% if (vehicle.interiorColor) { %>
+                                <li><strong>Color:</strong> <%= vehicle.interiorColor %></li>
+                            <% } %>
+                            <% if (vehicle.interiorMaterial) { %>
+                                <li><strong>Material:</strong> <%= vehicle.interiorMaterial %></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                <% } %>
+                
+                <!-- Features/Amenities -->
+                <% if (vehicle.features && vehicle.features.length > 0) { %>
+                    <div class="features">
+                        <h3>Features & Amenities</h3>
+                        <ul class="features-list">
+                            <% vehicle.features.forEach(feature => { %>
+                                <li>
+                                    <span class="checkmark">✓</span>
+                                    <strong><%= feature.feature_name %></strong>
+                                    <% if (feature.feature_value) { %>
+                                        <span class="feature-detail">(<%= feature.feature_value %>)</span>
+                                    <% } %>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                <% } %>
+                
+                <!-- Vehicle Description -->
+                <% if (vehicle.description) { %>
+                    <div class="description">
+                        <h3>Description</h3>
+                        <p><%= vehicle.description %></p>
+                    </div>
+                <% } %>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <% if (isLoggedIn) { %>
+                        <a href="/requests?vehicleId=<%= vehicle.id %>" class="btn btn-primary">Request Service</a>
+                    <% } else { %>
+                        <a href="/login?redirect=/catalog/vehicles/<%= vehicle.id %>" class="btn btn-primary">Login to Request Service</a>
+                    <% } %>
+                    <a href="/catalog" class="btn btn-secondary">Back to Catalog</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Reviews Section -->
+        <section class="reviews-section">
+            <h2>Customer Reviews</h2>
+            
+            <!-- Add Review Button (for logged-in users) -->
+            <% if (isLoggedIn && !userReview) { %>
+                <div class="add-review">
+                    <a href="/reviews/<%= vehicle.id %>/new" class="btn btn-secondary">Leave a Review</a>
+                </div>
+            <% } %>
+            
+            <!-- Existing Reviews -->
+            <% if (reviews && reviews.length > 0) { %>
+                <div class="reviews-list">
+                    <% reviews.forEach(review => { %>
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <strong><%= review.user_name %></strong>
+                                    <span class="review-date"><%= new Date(review.created_at).toLocaleDateString() %></span>
+                                </div>
+                                <div class="review-rating">
+                                    <span class="stars">
+                                        <% for (let i = 0; i < review.rating; i++) { %>★<% } %>
+                                        <% for (let i = review.rating; i < 5; i++) { %>☆<% } %>
+                                    </span>
+                                    <span class="rating-value"><%= review.rating %>/5</span>
+                                </div>
+                            </div>
+                            
+                            <% if (review.title) { %>
+                                <h4 class="review-title"><%= review.title %></h4>
+                            <% } %>
+                            
+                            <p class="review-comment"><%= review.comment %></p>
+                            
+                            <!-- Edit/Delete buttons for own reviews -->
+                            <% if (isLoggedIn && userReview && userReview.id === review.id) { %>
+                                <div class="review-actions">
+                                    <a href="/reviews/<%= vehicle.id %>/<%= review.id %>/edit" class="btn-small btn-edit">Edit</a>
+                                    <form method="POST" action="/reviews/<%= review.id %>/delete" style="display: inline;">
+                                        <button type="submit" class="btn-small btn-delete" onclick="return confirm('Delete this review?')">Delete</button>
+                                    </form>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% }); %>
+                </div>
+                <% if (userReview) { %>
+                    <div class="user-review-notice">
+                        <p>You have already reviewed this vehicle. <a href="/reviews/<%= vehicle.id %>/<%= userReview.id %>/edit">Edit your review</a></p>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <div class="no-reviews">
+                    <p>No reviews yet. <% if (isLoggedIn) { %><a href="/reviews/<%= vehicle.id %>/new">Be the first to review!</a><% } else { %><a href="/login">Log in to leave a review.</a><% } %></p>
+                </div>
+            <% } %>
+        </section>
     </div>
 </main>
 <%- include('../partials/footer') %>

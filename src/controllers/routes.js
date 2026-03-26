@@ -1,27 +1,23 @@
 import { Router } from 'express';
-import { catalogPage, courseDetailPage } from './catalog/catalog.js';
+import { vehicleCatalogPage, vehicleDetailPage } from './catalog/catalog.js';
 import { homePage, aboutPage, testErrorPage } from './index.js';
-import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
 import contactRoutes from './forms/contact.js';
 import requestRoutes from './forms/requests.js';
-// import { ... } from './forms/requests.js';
 import reviewRoutes from './forms/reviews.js';
-// import { ... } from './forms/reviews.js';
 import registrationRoutes from './forms/registration.js';
 import loginRoutes from './forms/login.js';
 import { processLogout, showDashboard } from './forms/login.js';
-import { requireLogin } from '../middleware/auth.js';
+import { requireLogin, requireRole } from '../middleware/auth.js';
 
 // Create a new router instance
 const router = Router();
 
+// ============================================================================
+// MIDDLEWARE - Add route-specific stylesheets
+// ============================================================================
+
 router.use('/catalog', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/catalog.css">');
-    next();
-});
-
-router.use('/faculty', (req, res, next) => {
-    res.addStyle('<link rel="stylesheet" href="/css/faculty.css">');
     next();
 });
 
@@ -44,43 +40,67 @@ router.use('/login', (req, res, next) => {
 
 // Add service request styles to all request routes
 router.use('/requests', (req, res, next) => {
-    res.addStyle('<link rel="stylesheet" href="/css/requests.css">');
+    res.addStyle('<link rel="stylesheet" href="/css/request.css">');
     next();
 });
 
 // Add vehicle review styles to all review routes
 router.use('/reviews', (req, res, next) => {
-    res.addStyle('<link rel="stylesheet" href="/css/reviews.css">');
+    res.addStyle('<link rel="stylesheet" href="/css/review.css">');
     next();
 });
 
-// Home and basic pages
+// ============================================================================
+// PUBLIC ROUTES - Home and Info Pages
+// ============================================================================
+
 router.get('/', homePage);
 router.get('/about', aboutPage);
 
-// Course catalog routes
-router.get('/catalog', catalogPage);
-router.get('/catalog/:slugId', courseDetailPage);
+// ============================================================================
+// PUBLIC ROUTES - Vehicle Catalog
+// ============================================================================
 
-// Route to trigger a test error
-router.get('/test-error', testErrorPage);
+// Browse all vehicles or filter by category
+// GET /catalog
+// GET /catalog?category=1&sort=price_asc
+router.get('/catalog', vehicleCatalogPage);
 
-// Faculty routes for listing and detail pages
-router.get('/faculty', facultyListPage);
-router.get('/faculty/:facultySlug', facultyDetailPage);
+// View individual vehicle details with images, specs, reviews
+// GET /catalog/vehicles/1
+router.get('/catalog/vehicles/:vehicleId', vehicleDetailPage);
+
+// ============================================================================
+// PROTECTED ROUTES - User Authentication & Accounts
+// ============================================================================
+
+router.use('/register', registrationRoutes);
+router.use('/login', loginRoutes);
+router.get('/logout', processLogout);
+router.get('/dashboard', requireLogin, showDashboard);
+
+// ============================================================================
+// PROTECTED ROUTES - Contact Form (Public but saved to DB)
+// ============================================================================
 
 router.use('/contact', contactRoutes);
 
-router.use('/requests', requestRoutes);
+// ============================================================================
+// PROTECTED ROUTES - Service Requests (require login)
+// ============================================================================
 
-router.use('/reviews', reviewRoutes);
+router.use('/requests', requireLogin, requestRoutes);
 
-router.use('/register', registrationRoutes);
+// ============================================================================
+// PROTECTED ROUTES - Vehicle Reviews (require login)
+// ============================================================================
 
-router.use('/login', loginRoutes);
-router.get('/dashboard', requireLogin, showDashboard);
+router.use('/reviews', requireLogin, reviewRoutes);
 
-router.get('/logout', processLogout);
+// ============================================================================
+// ERROR TESTING
+// ============================================================================
 
+router.get('/test-error', testErrorPage);
 
 export default router;

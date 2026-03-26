@@ -1,6 +1,19 @@
-// Route handlers for static pages
-const homePage = (req, res) => {
-    res.render('home', { title: 'Home' });
+import { getFeaturedVehicles } from '../models/catalog/vehicles.js';
+
+/**
+ * Display the home page with featured vehicles
+ */
+const homePage = async (req, res, next) => {
+    try {
+        const featuredVehicles = await getFeaturedVehicles(6);
+        res.render('home', { 
+            title: 'Home',
+            featuredVehicles: featuredVehicles
+        });
+    } catch (error) {
+        console.error('Error loading home page:', error);
+        next(error);
+    }
 };
 
 const aboutPage = (req, res) => {

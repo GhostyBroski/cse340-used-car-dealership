@@ -1,16 +1,125 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 <main>
-    <h1>Course Catalog</h1>
-    <p>Browse our available courses and click on any course to see detailed information including available sections and instructors.</p>
-    <div class="course-list">
-        <% Object.values(courses).forEach(course => { %>
-            <div class="course-card">
-                <h3><a href="/catalog/<%= course.slug %>"><%= course.name %></a></h3>
-                <p class="course-id"><%= course.courseCode %> • <%= course.creditHours %> credits</p>
-                <p class="course-description"><%= course.description %></p>
+    <div class="catalog-container">
+        <!-- Sidebar: Categories and Filters -->
+        <aside class="catalog-sidebar">
+            <h2>Categories</h2>
+            <ul class="category-list">
+                <li><a href="/catalog" class="<%= !selectedCategory ? 'active' : '' %>">All Vehicles</a></li>
+                <% if (categories && categories.length > 0) { %>
+                    <% categories.forEach(category => { %>
+                        <li>
+                            <a href="/catalog?category=<%= category.id %>" class="<%= selectedCategory === category.id ? 'active' : '' %>">
+                                <%= category.name %>
+                            </a>
+                        </li>
+                    <% }); %>
+                <% } %>
+            </ul>
+            
+            <h3>Sort By</h3>
+            <div class="sort-options">
+                <a href="?<%= selectedCategory ? `category=${selectedCategory}&` : '' %>sort=year_desc" class="<%= currentSort === 'year_desc' ? 'active' : '' %>">Newest First</a>
+                <a href="?<%= selectedCategory ? `category=${selectedCategory}&` : '' %>sort=year_asc" class="<%= currentSort === 'year_asc' ? 'active' : '' %>">Oldest First</a>
+                <a href="?<%= selectedCategory ? `category=${selectedCategory}&` : '' %>sort=price_asc" class="<%= currentSort === 'price_asc' ? 'active' : '' %>">Price: Low to High</a>
+                <a href="?<%= selectedCategory ? `category=${selectedCategory}&` : '' %>sort=price_desc" class="<%= currentSort === 'price_desc' ? 'active' : '' %>">Price: High to Low</a>
+                <a href="?<%= selectedCategory ? `category=${selectedCategory}&` : '' %>sort=mileage_asc" class="<%= currentSort === 'mileage_asc' ? 'active' : '' %>">Lowest Mileage</a>
             </div>
-        <% }); %>
+        </aside>
+        
+        <!-- Main Content: Vehicle Listings -->
+        <section class="catalog-content">
+            <div class="catalog-header">
+                <h1>Vehicle Catalog</h1>
+                <% if (selectedCategory) { %>
+                    <p class="subtitle">Browse vehicles in this category</p>
+                <% } else { %>
+                    <p class="subtitle">Browse our complete inventory of quality vehicles</p>
+                <% } %>
+            </div>
+            
+            <% if (vehicles && vehicles.length > 0) { %>
+                <div class="vehicles-grid">
+                    <% vehicles.forEach(vehicle => { %>
+                        <div class="vehicle-card">
+                            <!-- Vehicle Image -->
+                            <div class="vehicle-image">
+                                <% if (vehicle.mainImage) { %>
+                                    <img src="<%= vehicle.mainImage %>" alt="<%= vehicle.displayName %>" />
+                                <% } else { %>
+                                    <img src="https://via.placeholder.com/300x200?text=<%= vehicle.make %>+<%= vehicle.model %>" alt="<%= vehicle.displayName %>" />
+                                <% } %>
+                                <% if (vehicle.isFeatured) { %>
+                                    <span class="badge featured-badge">Featured</span>
+                                <% } %>
+                            </div>
+                            
+                            <!-- Vehicle Info -->
+                            <div class="vehicle-info">
+                                <h3><a href="/catalog/vehicles/<%= vehicle.id %>"><%= vehicle.displayName %></a></h3>
+                                
+                                <div class="vehicle-meta">
+                                    <span class="category"><%= vehicle.categoryName %></span>
+                                    <span class="condition <%= vehicle.condition.toLowerCase() %>"><%= vehicle.condition %></span>
+                                </div>
+                                
+                                <div class="vehicle-specs">
+                                    <div class="spec">
+                                        <span class="label">Mileage:</span>
+                                        <span class="value"><%= vehicle.mileage.toLocaleString() %> mi</span>
+                                    </div>
+                                    <div class="spec">
+                                        <span class="label">Color:</span>
+                                        <span class="value"><%= vehicle.color || 'N/A' %></span>
+                                    </div>
+                                    <% if (vehicle.transmission) { %>
+                                        <div class="spec">
+                                            <span class="label">Trans:</span>
+                                            <span class="value"><%= vehicle.transmission %></span>
+                                        </div>
+                                    <% } %>
+                                    <% if (vehicle.drivetrain) { %>
+                                        <div class="spec">
+                                            <span class="label">Drivetrain:</span>
+                                            <span class="value"><%= vehicle.drivetrain %></span>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                
+                                <!-- Description Preview -->
+                                <% if (vehicle.description) { %>
+                                    <p class="description">
+                                        <%= vehicle.description.length > 100 ? vehicle.description.substring(0, 100) + '...' : vehicle.description %>
+                                    </p>
+                                <% } %>
+                                
+                                <!-- Rating and Price -->
+                                <div class="vehicle-footer">
+                                    <div class="price">
+                                        <span class="price-value">$<%= vehicle.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
+                                    </div>
+                                    <% if (vehicle.avgRating && vehicle.avgRating !== 'N/A') { %>
+                                        <div class="rating">
+                                            <span class="stars">★</span>
+                                            <span class="rating-value"><%= vehicle.avgRating %></span>
+                                            <span class="reviews">(<%= vehicle.reviewCount %>)</span>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                
+                                <a href="/catalog/vehicles/<%= vehicle.id %>" class="btn btn-secondary btn-full">View Details</a>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <div class="no-results">
+                    <p>No vehicles found in this category.</p>
+                    <a href="/catalog" class="btn btn-primary">View All Vehicles</a>
+                </div>
+            <% } %>
+        </section>
     </div>
 </main>
 <%- include('../partials/footer') %>
