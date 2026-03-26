@@ -61,7 +61,9 @@
                                 
                                 <div class="vehicle-meta">
                                     <span class="category"><%= vehicle.categoryName %></span>
-                                    <span class="condition <%= vehicle.condition.toLowerCase() %>"><%= vehicle.condition %></span>
+                                    <% if (vehicle.condition) { %>
+                                        <span class="condition <%= vehicle.condition.toLowerCase() %>"><%= vehicle.condition %></span>
+                                    <% } %>
                                 </div>
                                 
                                 <div class="vehicle-specs">

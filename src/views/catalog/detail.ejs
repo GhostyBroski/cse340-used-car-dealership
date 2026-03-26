@@ -46,7 +46,9 @@
                         <% if (vehicle.isFeatured) { %>
                             <span class="badge featured">Featured</span>
                         <% } %>
-                        <span class="badge condition <%= vehicle.condition.toLowerCase() %>"><%= vehicle.condition %></span>
+                        <% if (vehicle.condition) { %>
+                            <span class="badge condition <%= vehicle.condition.toLowerCase() %>"><%= vehicle.condition %></span>
+                        <% } %>
                         <span class="badge category"><%= vehicle.categoryName %></span>
                     </div>
                 </div>

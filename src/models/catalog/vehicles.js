@@ -74,7 +74,7 @@ const getAllVehicles = async (options = {}) => {
 const getVehicleById = async (vehicleId) => {
     const vehicleQuery = `
         SELECT v.id, v.make, v.model, v.year, v.vin, v.price, v.mileage,
-               v.color, v.color_code, v.engine_type, v.transmission, v.drivetrain,
+               v.condition, v.color, v.color_code, v.engine_type, v.transmission, v.drivetrain,
                v.horsepower, v.fuel_type, v.mpg_highway, v.mpg_city,
                v.seats, v.interior_color, v.interior_material,
                v.is_featured, v.is_available, v.description,
@@ -161,7 +161,7 @@ const searchVehicles = async (searchTerm, filters = {}) => {
 
     let query = `
         SELECT v.id, v.make, v.model, v.year, v.vin, v.price, v.mileage,
-               v.color, v.engine_type, v.transmission, v.drivetrain,
+               v.condition, v.color, v.engine_type, v.transmission, v.drivetrain,
                v.seats, v.is_featured, v.is_available,
                v.description, v.created_at,
                c.id as category_id, c.name as category_name,
