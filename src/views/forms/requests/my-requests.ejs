@@ -1,0 +1,62 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/header') %>
+<main class="requests-list-container">
+    <h1><%= title %></h1>
+    
+    <div class="requests-header">
+        <a href="/requests" class="btn btn-primary">Submit New Request</a>
+        <p class="subtitle">View the status of your service requests</p>
+    </div>
+
+    <% if (requests && requests.length > 0) { %>
+        <div class="requests-list-grid">
+            <% requests.forEach(request => { %>
+                <div class="request-card">
+                    <div class="request-card-header">
+                        <div class="request-id-status">
+                            <h3>Request #<%= request.id %></h3>
+                            <span class="status-badge status-<%= request.status.toLowerCase() %>"><%= request.status %></span>
+                        </div>
+                        <small class="request-date"><%= new Date(request.submittedAt).toLocaleDateString() %></small>
+                    </div>
+
+                    <div class="request-card-body">
+                        <div class="request-detail">
+                            <strong>Service Type:</strong>
+                            <p><%= request.subject %></p>
+                        </div>
+
+                        <% if (request.vehicle) { %>
+                            <div class="request-detail">
+                                <strong>Vehicle:</strong>
+                                <p><%= request.vehicle.displayName %></p>
+                            </div>
+                        <% } %>
+
+                        <% if (request.scheduledFor) { %>
+                            <div class="request-detail">
+                                <strong>Scheduled For:</strong>
+                                <p><%= new Date(request.scheduledFor).toLocaleString() %></p>
+                            </div>
+                        <% } %>
+
+                        <div class="request-detail">
+                            <strong>Submitted:</strong>
+                            <p><%= new Date(request.submittedAt).toLocaleString() %></p>
+                        </div>
+                    </div>
+
+                    <div class="request-card-footer">
+                        <a href="/requests/<%= request.id %>" class="btn btn-sm btn-view">View Details</a>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="no-requests">
+            <p>You haven't submitted any service requests yet.</p>
+            <a href="/requests" class="btn btn-primary">Submit Your First Request</a>
+        </div>
+    <% } %>
+</main>
+<%- include('../../partials/footer') %>

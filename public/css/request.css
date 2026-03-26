@@ -90,6 +90,26 @@
     line-height: 1.6;
 }
 
+/* Time picker styling */
+.time-picker {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.time-picker select {
+    flex: 1;
+    min-width: 120px;
+}
+
+.form-hint {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
 .form-info {
     padding: 1rem;
     background: #e3f2fd;
@@ -116,7 +136,11 @@
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    line-height: 1;
 }
 
 .service-request-form .btn.btn-primary,
@@ -141,6 +165,16 @@
 .service-request-form .btn.btn-secondary:hover {
     background: #2c5aa0;
     color: white;
+}
+
+/* Ensure buttons in form-actions have matching height */
+.form-actions .btn,
+.form-actions button {
+    height: 48px;
+    padding: 0 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* ============================================================================
@@ -217,14 +251,158 @@
     color: #2e7d32;
 }
 
+.status-badge.status-scheduled {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
 .status-badge.status-cancelled {
     background: #ffebee;
     color: #c62828;
 }
 
 /* ============================================================================
-   REQUESTS LIST PAGE - Table styling
+   REQUESTS LIST PAGE - Improved layout for user requests
    ============================================================================ */
+.requests-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 2rem;
+}
+
+.requests-header .subtitle {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .requests-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .requests-header .subtitle {
+        order: -1;
+    }
+}
+
+/* Card-based layout for user requests */
+.requests-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.request-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.request-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.request-card-header {
+    padding: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    background: #f9f9f9;
+}
+
+.request-id-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.request-card-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.request-date {
+    color: #999;
+    font-size: 0.85rem;
+}
+
+.request-card-body {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.request-detail {
+    margin-bottom: 1rem;
+}
+
+.request-detail:last-child {
+    margin-bottom: 0;
+}
+
+.request-detail strong {
+    display: block;
+    color: #2c5aa0;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.request-detail p {
+    margin: 0;
+    color: #555;
+    line-height: 1.4;
+}
+
+.request-card-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    background: #f9f9f9;
+}
+
+.btn-sm {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+}
+
+.btn-view {
+    background: #2c5aa0;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+    display: inline-block;
+}
+
+.btn-view:hover {
+    background: #1a3a6b;
+}
+
+.no-requests {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: #f9f9f9;
+    border-radius: 12px;
+    border: 1px dashed #ddd;
+}
+
+.no-requests p {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 0 0 1.5rem 0;
+}
+
+/* Table layout for all-requests (employee/admin view) */
 .requests-list-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -321,10 +499,18 @@
     .form-group input[type="tel"],
     .form-group input[type="email"],
     .form-group input[type="date"],
-    .form-group input[type="time"],
     .form-group select,
     .form-group textarea {
         font-size: 16px;
+    }
+
+    .time-picker {
+        flex-wrap: wrap;
+    }
+
+    .time-picker select {
+        flex: 1;
+        min-width: calc(33.333% - 0.667rem);
     }
 
     .form-actions {

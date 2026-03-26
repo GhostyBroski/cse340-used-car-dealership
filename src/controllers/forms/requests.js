@@ -63,29 +63,47 @@ const handleServiceRequestSubmission = async (req, res, next) => {
             subject,
             requestType,
             scheduledDate,
-            scheduledTime,
+            scheduledHour,
+            scheduledMinute,
+            scheduledPeriod,
             message
         } = req.body;
 
         const userId = req.session?.user?.id || null;
 
+        // Convert 12-hour time to 24-hour format
+        let hour24 = parseInt(scheduledHour);
+        if (scheduledPeriod === 'PM' && hour24 !== 12) {
+            hour24 += 12;
+        } else if (scheduledPeriod === 'AM' && hour24 === 12) {
+            hour24 = 0;
+        }
+
+        // Construct the scheduled datetime
+        const scheduledFor = new Date(`${scheduledDate}T${String(hour24).padStart(2, '0')}:${String(scheduledMinute).padStart(2, '0')}:00`);
+
         const serviceRequest = {
             name,
-            phone,
+            phone: phone || null,
             email: email || null,
             vehicleId: vehicleId ? parseInt(vehicleId) : null,
             subject,
-            message,
+            message: message || null,
             requestType: requestType || 'General',
             status: 'Submitted',
             submittedAt: new Date(),
-            scheduledFor: scheduledDate && scheduledTime ? new Date(`${scheduledDate}T${scheduledTime}`) : null,
+            scheduledFor: scheduledFor,
             userId: userId
         };
 
         await createServiceRequest(serviceRequest);
         req.flash('success', 'Thank you for submitting your service request! We will respond soon.');
-        res.redirect('/requests');
+        // Redirect back to the vehicle detail page if coming from one, otherwise to requests list
+        if (vehicleId) {
+            res.redirect(`/catalog/vehicles/${vehicleId}`);
+        } else {
+            res.redirect('/requests/my-requests');
+        }
     } catch (error) {
         console.error('Error saving service request:', error);
         req.flash('error', 'Unable to submit your request. Please try again later.');
@@ -247,22 +265,42 @@ router.post(
             .isLength({ min: 2, max: 100 }).withMessage('Name must be between 2 and 100 characters'),
         body('phone')
             .trim()
-            .notEmpty().withMessage('Phone number is required')
-            .matches(/^[\d\-\+\s\(\)]{10,20}$/).withMessage('Invalid phone number format'),
+            .optional({ checkFalsy: true }),
         body('email')
             .trim()
-            .optional()
+            .optional({ checkFalsy: true })
             .isEmail().withMessage('Invalid email format'),
+        // Custom validation: require either phone or email
+        body().custom((value, { req }) => {
+            const phone = (req.body.phone || '').trim();
+            const email = (req.body.email || '').trim();
+            
+            if (!phone && !email) {
+                throw new Error('Please provide either a phone number or email address');
+            }
+            return true;
+        }),
         body('vehicleId')
             .optional()
             .isInt({ min: 1 }).withMessage('Invalid vehicle ID'),
         body('subject')
             .trim()
-            .notEmpty().withMessage('Subject is required')
-            .isLength({ min: 3, max: 255 }).withMessage('Subject must be between 3 and 255 characters'),
+            .notEmpty().withMessage('Service type is required'),
         body('requestType')
             .optional()
             .isIn(['General', 'Maintenance', 'Inspection', 'Repair', 'Other']).withMessage('Invalid request type'),
+        body('scheduledDate')
+            .trim()
+            .notEmpty().withMessage('Preferred date is required'),
+        body('scheduledHour')
+            .notEmpty().withMessage('Please select an hour')
+            .isInt({ min: 1, max: 12 }).withMessage('Invalid hour'),
+        body('scheduledMinute')
+            .notEmpty().withMessage('Please select minutes')
+            .isInt({ min: 0, max: 59 }).withMessage('Invalid minutes'),
+        body('scheduledPeriod')
+            .notEmpty().withMessage('Please select AM or PM')
+            .isIn(['AM', 'PM']).withMessage('Invalid time period'),
         body('message')
             .trim()
             .isLength({ max: 2000 }).withMessage('Message must be less than 2000 characters')

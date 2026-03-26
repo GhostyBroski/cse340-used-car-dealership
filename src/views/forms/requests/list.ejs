@@ -1,12 +1,12 @@
 <%- include('../../partials/head') %>
 <%- include('../../partials/header') %>
-<main class=\"requests-list-container\">
+<main class="requests-list-container">
     <h1><%= title %></h1>
     
-    <a href=\"/requests\" class=\"btn btn-primary\">Submit New Request</a>
+    <a href="/requests" class="btn btn-primary">Submit New Request</a>
 
     <% if (requests && requests.length > 0) { %>
-        <table class=\"requests-table\">
+        <table class="requests-table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -23,11 +23,11 @@
                     <tr>
                         <td>#<%= request.id %></td>
                         <td><%= request.name %></td>
-                        <td><%= request.vehicle_make %> <%= request.vehicle_model %></td>
+                        <td><%= request.vehicle ? request.vehicle.displayName : 'N/A' %></td>
                         <td><%= request.subject %></td>
-                        <td><span class=\"status-badge status-<%= request.status.toLowerCase() %>\"><%= request.status %></span></td>
-                        <td><%= new Date(request.submitted_at).toLocaleDateString() %></td>
-                        <td><a href=\"/requests/<%= request.id %>\" class=\"btn btn-sm btn-view\">View</a></td>
+                        <td><span class="status-badge status-<%= request.status.toLowerCase() %>"><%= request.status %></span></td>
+                        <td><%= new Date(request.submittedAt).toLocaleDateString() %></td>
+                        <td><a href="/requests/<%= request.id %>" class="btn btn-sm btn-view">View</a></td>
                     </tr>
                 <% }); %>
             </tbody>

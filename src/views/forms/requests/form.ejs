@@ -16,12 +16,13 @@
 
         <div class="form-group">
             <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone" required placeholder="(123) 456-7890" pattern="[0-9\-\+\s\(\)]{7,15}" />
+            <input type="tel" id="phone" name="phone" placeholder="(123) 456-7890" />
         </div>
 
         <div class="form-group">
-            <label for="email">Email (Optional):</label>
+            <label for="email">Email:</label>
             <input type="email" id="email" name="email" placeholder="your.email@example.com" />
+            <small class="form-hint">Please provide either a phone number or email address so we can contact you.</small>
         </div>
 
         <% if (!vehicleId) { %>
@@ -59,8 +60,28 @@
         </div>
 
         <div class="form-group">
-            <label for="scheduledTime">Preferred Time:</label>
-            <input type="time" id="scheduledTime" name="scheduledTime" required />
+            <label>Preferred Time:</label>
+            <div class="time-picker">
+                <select id="scheduledHour" name="scheduledHour" required>
+                    <option value="">Hour</option>
+                    <% for (let i = 1; i <= 12; i++) { %>
+                        <option value="<%= i %>"><%= String(i).padStart(2, '0') %></option>
+                    <% } %>
+                </select>
+                
+                <select id="scheduledMinute" name="scheduledMinute" required>
+                    <option value="">Minute</option>
+                    <% for (let i = 0; i < 60; i += 15) { %>
+                        <option value="<%= i %>"><%= String(i).padStart(2, '0') %></option>
+                    <% } %>
+                </select>
+                
+                <select id="scheduledPeriod" name="scheduledPeriod" required>
+                    <option value="">AM/PM</option>
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                </select>
+            </div>
         </div>
 
         <div class="form-group">
@@ -74,4 +95,42 @@
         </div>
     </form>
 </main>
+
+<script>
+    // Format phone number as (123) 456-7890
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove all non-digits
+            
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    value = `(${value}`;
+                } else if (value.length <= 6) {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                } else {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                }
+            }
+            
+            e.target.value = value;
+        });
+    }
+
+    // Custom validation for phone/email requirement
+    const form = document.querySelector('.service-request-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            
+            if (!phone && !email) {
+                e.preventDefault();
+                alert('Please provide either a phone number or email address so we can contact you.');
+                return false;
+            }
+        });
+    }
+</script>
+
 <%- include('../../partials/footer') %>

@@ -6,35 +6,48 @@
     <div class="request-info">
         <div class="info-section">
             <h2>Request Details</h2>
+            <p><strong>ID:</strong> #<%= request.id %></p>
             <p><strong>Status:</strong> <span class="status-badge status-<%= request.status.toLowerCase() %>"><%= request.status %></span></p>
-            <p><strong>Submitted:</strong> <%= new Date(request.submitted_at).toLocaleString() %></p>
-            <% if (request.scheduled_for) { %>
-                <p><strong>Scheduled For:</strong> <%= new Date(request.scheduled_for).toLocaleString() %></p>
+            <p><strong>Submitted:</strong> <%= new Date(request.submittedAt).toLocaleString() %></p>
+            <% if (request.scheduledFor) { %>
+                <p><strong>Scheduled For:</strong> <%= new Date(request.scheduledFor).toLocaleString() %></p>
             <% } %>
         </div>
 
         <div class="info-section">
             <h2>Customer Information</h2>
             <p><strong>Name:</strong> <%= request.name %></p>
-            <p><strong>Phone:</strong> <%= request.phone %></p>
+            <% if (request.phone) { %>
+                <p><strong>Phone:</strong> <%= request.phone %></p>
+            <% } %>
+            <% if (request.email) { %>
+                <p><strong>Email:</strong> <%= request.email %></p>
+            <% } %>
         </div>
 
-        <div class="info-section">
-            <h2>Vehicle Information</h2>
-            <p><strong>Make:</strong> <%= request.vehicle_make %></p>
-            <p><strong>Model:</strong> <%= request.vehicle_model %></p>
-        </div>
+        <% if (request.vehicle) { %>
+            <div class="info-section">
+                <h2>Vehicle Information</h2>
+                <p><strong>Vehicle:</strong> <%= request.vehicle.displayName %></p>
+                <p><strong>VIN:</strong> <%= request.vehicle.vin %></p>
+            </div>
+        <% } %>
 
         <div class="info-section">
             <h2>Service Request</h2>
             <p><strong>Service Type:</strong> <%= request.subject %></p>
-            <div class="message-box">
-                <strong>Details:</strong>
-                <p><%= request.message || 'No additional details provided.' %></p>
-            </div>
+            <% if (request.requestType) { %>
+                <p><strong>Request Type:</strong> <%= request.requestType %></p>
+            <% } %>
+            <% if (request.message) { %>
+                <div class="message-box">
+                    <strong>Details:</strong>
+                    <p><%= request.message %></p>
+                </div>
+            <% } %>
         </div>
 
-        <% if (session && ['employee', 'admin'].includes(session.userRole)) { %>
+        <% if (canModify) { %>
             <div class="info-section employee-section">
                 <h2>Update Status</h2>
                 <form action="/requests/<%= request.id %>/status" method="POST" class="status-update-form">
@@ -43,19 +56,30 @@
                         <select id="status" name="status" required>
                             <option value="Submitted" <%= request.status === 'Submitted' ? 'selected' : '' %>>Submitted</option>
                             <option value="In Progress" <%= request.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                            <option value="Scheduled" <%= request.status === 'Scheduled' ? 'selected' : '' %>>Scheduled</option>
                             <option value="Completed" <%= request.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                            <option value="Cancelled" <%= request.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="notes">Employee Notes:</label>
-                        <textarea id="notes" name="notes" rows="3" placeholder="Add internal notes about this request"></textarea>
+                        <label for="adminNotes">Employee Notes:</label>
+                        <textarea id="adminNotes" name="adminNotes" rows="4" placeholder="Add internal notes about this request"><%= request.adminNotes || '' %></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Update Status</button>
                 </form>
             </div>
         <% } %>
+
+        <% if (request.adminNotes) { %>
+            <div class="info-section">
+                <h2>Employee Notes</h2>
+                <div class="message-box">
+                    <%= request.adminNotes %>
+                </div>
+            </div>
+        <% } %>
     </div>
 
-    <a href="/requests" class="btn btn-secondary">Back to All Requests</a>
+    <a href="<%= isOwner ? '/requests/my-requests' : '/requests/list' %>" class="btn btn-secondary">Back to Requests</a>
 </main>
 <%- include('../../partials/footer') %>
