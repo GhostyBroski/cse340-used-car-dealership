@@ -8,17 +8,17 @@ const __dirname = dirname(__filename);
 
 /**
  * Sets up the database by running the seed.sql file if needed.
- * Checks if faculty table has data - if not, runs a full re-seed.
+ * Checks if vehicles table has data - if not, runs a full re-seed.
  */
 const setupDatabase = async () => {
     /**
-     * Check if faculty table has any rows and wrap in try-catch to handle cases
+     * Check if vehicles table has any rows and wrap in try-catch to handle cases
      * where table doesn't exist yet.
      */
     let hasData = false;
     try {
         const result = await db.query(
-            "SELECT EXISTS (SELECT 1 FROM faculty LIMIT 1) as has_data"
+            "SELECT EXISTS (SELECT 1 FROM vehicles LIMIT 1) as has_data"
         );
         hasData = result.rows[0]?.has_data || false;
     } catch (error) {
@@ -34,18 +34,16 @@ const setupDatabase = async () => {
         return true;
     }
     
-    // No faculty found - run full seed
-    console.log('Seeding database...');
+    // No vehicles found - run full seed from seed.sql
+    console.log('Seeding database from seed.sql...');
     const seedPath = join(__dirname, 'sql', 'seed.sql');
-    const seedSQL = fs.readFileSync(seedPath, 'utf8');
-    await db.query(seedSQL);
-    const practicePath = join(__dirname, 'sql', 'practice.sql');
-    if (fs.existsSync(practicePath)) {
-        const practiceSQL = fs.readFileSync(practicePath, 'utf8');
-        await db.query(practiceSQL);
-        console.log('Practice database tables initialized');
+    if (fs.existsSync(seedPath)) {
+        const seedSQL = fs.readFileSync(seedPath, 'utf8');
+        await db.query(seedSQL);
+        console.log('Database schema created and seeded successfully');
+    } else {
+        console.warn('Warning: seed.sql not found at', seedPath);
     }
-    console.log('Database seeded successfully');
     
     return true;
 };
