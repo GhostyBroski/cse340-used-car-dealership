@@ -216,12 +216,13 @@ VALUES
 -- SEED DATA - USERS
 -- ============================================================================
 
--- Test users (passwords should be hashed in production - these are just for testing)
+-- Test users (passwords are hashed with bcrypt, salt rounds 10)
+-- All passwords: P@$$w0rd!
 INSERT INTO users (name, email, password, role_id) VALUES
-    ('John Customer', 'john@example.com', 'hashed_password_here', (SELECT id FROM roles WHERE role_name = 'user')),
-    ('Sarah Buyer', 'sarah@example.com', 'hashed_password_here', (SELECT id FROM roles WHERE role_name = 'user')),
-    ('Mike Employee', 'mike@dealership.com', 'hashed_password_here', (SELECT id FROM roles WHERE role_name = 'employee')),
-    ('Lisa Admin', 'admin@dealership.com', 'hashed_password_here', (SELECT id FROM roles WHERE role_name = 'admin'));
+    ('John Customer', 'john@example.com', '$2b$10$Qwj6HJiENFdh06UWoqyic.gAEgfGu4lNGuZPgBQErEPhnhfYz5UsC', (SELECT id FROM roles WHERE role_name = 'user')),
+    ('Sarah Buyer', 'sarah@example.com', '$2b$10$Qwj6HJiENFdh06UWoqyic.gAEgfGu4lNGuZPgBQErEPhnhfYz5UsC', (SELECT id FROM roles WHERE role_name = 'user')),
+    ('Mike Employee', 'mike@dealership.com', '$2b$10$Qwj6HJiENFdh06UWoqyic.gAEgfGu4lNGuZPgBQErEPhnhfYz5UsC', (SELECT id FROM roles WHERE role_name = 'employee')),
+    ('Lisa Admin', 'admin@dealership.com', '$2b$10$Qwj6HJiENFdh06UWoqyic.gAEgfGu4lNGuZPgBQErEPhnhfYz5UsC', (SELECT id FROM roles WHERE role_name = 'admin'));
 
 -- ============================================================================
 -- SEED DATA - CATEGORIES

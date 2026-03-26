@@ -16,6 +16,7 @@ const emailExists = async (email) => {
 
 /**
  * Saves a new user to the database with a hashed password.
+ * Newly registered users are automatically assigned the "user" role (role_id = 1).
  * 
  * @param {string} name - The user's full name
  * @param {string} email - The user's email address
@@ -24,9 +25,9 @@ const emailExists = async (email) => {
  */
 const saveUser = async (name, email, hashedPassword) => {
     const query = `
-        INSERT INTO users (name, email, password)
-        VALUES ($1, $2, $3)
-        RETURNING id, name, email, created_at
+        INSERT INTO users (name, email, password, role_id)
+        VALUES ($1, $2, $3, 1)
+        RETURNING id, name, email, role_id, created_at
     `;
     const result = await db.query(query, [name, email, hashedPassword]);
     return result.rows[0];
