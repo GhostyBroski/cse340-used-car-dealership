@@ -245,7 +245,12 @@
                 <% } %>
             <% } else { %>
                 <div class="no-reviews">
-                    <p>No reviews yet. <% if (isLoggedIn) { %><a href="/reviews/<%= vehicle.id %>/new">Be the first to review!</a><% } else { %><a href="/login">Log in to leave a review.</a><% } %></p>
+                    <p>No reviews yet.</p>
+                    <% if (isLoggedIn) { %>
+                        <a href="/reviews/<%= vehicle.id %>/new" class="btn btn-primary">Be the First to Review</a>
+                    <% } else { %>
+                        <a href="/login" class="btn btn-primary">Log in to Leave a Review</a>
+                    <% } %>
                 </div>
             <% } %>
         </section>

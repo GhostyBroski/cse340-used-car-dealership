@@ -7,7 +7,7 @@
    ============================================================================ */
 .featured-vehicles {
     padding: 3rem 0;
-    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    background: transparent;
 }
 
 .featured-vehicles .container {
@@ -43,7 +43,8 @@
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
+    margin-bottom: 2rem;
+
 
 .featured-vehicles .featured-welcome h2 {
     font-size: 1.8rem;
@@ -80,8 +81,8 @@
     .featured-vehicles .featured-welcome {
         position: static;
         padding: 1.5rem;
-        background: none;
-        box-shadow: none;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     .featured-vehicles .featured-welcome h2 {

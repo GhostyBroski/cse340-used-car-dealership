@@ -2,26 +2,15 @@
             <ul>
                 <!-- Public Navigation -->
                 <li><a href="<%= links.homepage %>">Home</a></li>
-                <li><a href="<%= links.catalog %>">Vehicle Catalog</a></li>
+                <li><a href="<%= links.catalog %>">Vehicles</a></li>
                 <li><a href="<%= links.contact %>">Contact</a></li>
                 
                 <!-- Authenticated User Navigation -->
                 <% if (isLoggedIn) { %>
                     <!-- All logged-in users can access dashboard and their requests -->
-                    <li><a href="<%= links.dashboard %>">Dashboard</a></li>
                     <li><a href="<%= links.myRequests %>">My Requests</a></li>
+                    <li><a href="<%= links.dashboard %>">Dashboard</a></li>
                     
-                    <!-- Employee and Admin features -->
-                    <% if (canManageRequests(userRole)) { %>
-                        <li><a href="<%= links.requestList %>">All Requests</a></li>
-                    <% } %>
-                    
-                    <!-- Admin features -->
-                    <% if (canManageCategories(userRole)) { %>
-                        <li><a href="<%= links.adminCategories %>">Categories</a></li>
-                        <li><a href="<%= links.adminVehicles %>">Vehicles</a></li>
-                        <li><a href="<%= links.adminUsers %>">Manage Users</a></li>
-                    <% } %>
                     
                     <!-- Logout link -->
                     <li><a href="<%= links.logout %>">Logout</a></li>

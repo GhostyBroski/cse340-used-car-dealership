@@ -918,4 +918,35 @@
             }
         }
     }
+
+    .no-reviews {
+        text-align: center;
+        padding: 3rem 2rem;
+        background: #f9fafb;
+        border-radius: 12px;
+        border: 1px dashed #ddd;
+
+        p {
+            color: #666;
+            font-size: 1.1rem;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            background: #2c5aa0;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background: #1a3a6b;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+            }
+        }
+    }
 }

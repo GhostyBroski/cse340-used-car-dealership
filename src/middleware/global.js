@@ -69,8 +69,7 @@ const addLocalVariables = (req, res, next) => {
     // Make req.query available to all templates
     res.locals.queryParams = { ...req.query };
 
-    // Set greeting based on time of day
-    res.locals.greeting = `<p>${getCurrentGreeting()}</p>`;
+    // Greeting removed - not needed on all pages
 
     res.locals.links = {
         homepage: "/",

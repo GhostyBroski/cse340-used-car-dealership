@@ -38,7 +38,10 @@
             <% }); %>
         </div>
     <% } else { %>
-        <p>No reviews yet. Be the first to review this vehicle!</p>
+        <div class="no-reviews">
+            <p>No reviews yet. Be the first to review this vehicle!</p>
+            <a href="/vehicles/<%= vehicleId %>/reviews/new" class="btn btn-primary">Write First Review</a>
+        </div>
     <% } %>
 
     <a href="/vehicles/<%= vehicleId %>" class="btn btn-secondary">Back to Vehicle</a>

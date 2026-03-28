@@ -17,7 +17,9 @@ import {
 } from '../../models/admin/users.js';
 import {
     getAllVehicles,
-    getVehicleById
+    getVehicleById,
+    updateVehicle,
+    createVehicle
 } from '../../models/catalog/vehicles.js';
 
 const router = Router();
@@ -220,6 +222,73 @@ const showVehicles = async (req, res, next) => {
 };
 
 /**
+ * Display form to add new vehicle
+ * GET /admin/vehicles/new
+ */
+const showAddVehicleForm = async (req, res, next) => {
+    try {
+        const categories = await getAllCategories();
+
+        res.render('admin/vehicles/add', {
+            title: 'Add New Vehicle',
+            categories: categories,
+            isEdit: false
+        });
+    } catch (error) {
+        console.error('Error loading vehicle add form:', error);
+        next(error);
+    }
+};
+
+/**
+ * Handle new vehicle creation
+ * POST /admin/vehicles
+ */
+const handleAddVehicle = async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        errors.array().forEach(error => {
+            req.flash('error', error.msg);
+        });
+        const categories = await getAllCategories();
+        return res.render('admin/vehicles/add', {
+            title: 'Add New Vehicle',
+            categories: categories,
+            isEdit: false,
+            formData: req.body
+        });
+    }
+
+    try {
+        const { year, make, model, vin, color, mileage, transmission, fuelType, price, availability, categoryId, description } = req.body;
+
+        const vehicle = await createVehicle({
+            year: parseInt(year),
+            make,
+            model,
+            vin,
+            color,
+            mileage: parseInt(mileage),
+            transmission: transmission || null,
+            fuelType: fuelType || null,
+            price: parseFloat(price),
+            isAvailable: availability === 'true' || availability === true,
+            categoryId: parseInt(categoryId),
+            description: description || null,
+            createdById: req.session.user.id
+        });
+
+        req.flash('success', `Vehicle "${vehicle.displayName}" added successfully.`);
+        res.redirect('/admin/vehicles');
+    } catch (error) {
+        console.error('Error adding vehicle:', error);
+        req.flash('error', 'Unable to add vehicle. Please try again.');
+        res.redirect('/admin/vehicles/new');
+    }
+};
+
+/**
  * Display form to edit vehicle
  * GET /admin/vehicles/:vehicleId/edit
  */
@@ -270,11 +339,16 @@ const handleUpdateVehicle = async (req, res, next) => {
             return res.redirect('/admin/vehicles');
         }
 
-        // For now, employees can only update price, description, and availability
-        // Full vehicle editing (make, model, etc.) would require admin
-        // This is a simple approach focusing on the most common edits
+        // Update vehicle with the provided fields
+        const updates = {
+            price: parseFloat(price),
+            description: description,
+            isAvailable: availability === 'true' || availability === true
+        };
 
-        res.redirect('/catalog/vehicles/' + vehicleId);
+        await updateVehicle(vehicleId, updates);
+        req.flash('success', 'Vehicle updated successfully.');
+        res.redirect('/admin/vehicles');
     } catch (error) {
         console.error('Error updating vehicle:', error);
         req.flash('error', 'Unable to update vehicle. Please try again.');
@@ -380,6 +454,51 @@ router.use(requireRole('employee'));
 
 // VEHICLE ROUTES - Available to Employee+
 router.get('/vehicles', showVehicles);
+router.get('/vehicles/new', showAddVehicleForm);
+router.post(
+    '/vehicles',
+    [
+        body('year')
+            .isInt({ min: 1900, max: 2099 }).withMessage('Year must be between 1900 and 2099'),
+        body('make')
+            .trim()
+            .notEmpty().withMessage('Make is required')
+            .isLength({ min: 1, max: 50 }).withMessage('Make must be 1-50 characters'),
+        body('model')
+            .trim()
+            .notEmpty().withMessage('Model is required')
+            .isLength({ min: 1, max: 50 }).withMessage('Model must be 1-50 characters'),
+        body('vin')
+            .trim()
+            .notEmpty().withMessage('VIN is required')
+            .isLength({ min: 17, max: 17 }).withMessage('VIN must be exactly 17 characters'),
+        body('color')
+            .trim()
+            .notEmpty().withMessage('Color is required')
+            .isLength({ min: 1, max: 50 }).withMessage('Color must be 1-50 characters'),
+        body('mileage')
+            .isInt({ min: 0 }).withMessage('Mileage must be a valid number'),
+        body('transmission')
+            .optional()
+            .trim()
+            .isLength({ max: 50 }).withMessage('Transmission must be 1-50 characters'),
+        body('fuelType')
+            .optional()
+            .trim()
+            .isLength({ max: 50 }).withMessage('Fuel type must be 1-50 characters'),
+        body('price')
+            .isFloat({ min: 0 }).withMessage('Price must be a valid number'),
+        body('availability')
+            .notEmpty().withMessage('Availability is required'),
+        body('categoryId')
+            .isInt({ min: 1 }).withMessage('Category is required'),
+        body('description')
+            .optional()
+            .trim()
+            .isLength({ max: 2000 }).withMessage('Description must be less than 2000 characters')
+    ],
+    handleAddVehicle
+);
 router.get('/vehicles/:vehicleId/edit', showEditVehicleForm);
 router.post(
     '/vehicles/:vehicleId',
