@@ -1,4 +1,5 @@
-import { getAllVehicles, getVehicleById, getFeaturedVehicles, getVehiclesByCategory, getCategories } from '../../models/catalog/vehicles.js';
+import { getAllVehicles, getVehicleById, getFeaturedVehicles, getVehiclesByCategory } from '../../models/catalog/vehicles.js';
+import { getCategories } from '../../models/admin/categories.js';
 import { getAllReviewsForVehicle } from '../../models/forms/reviews.js';
 
 /**

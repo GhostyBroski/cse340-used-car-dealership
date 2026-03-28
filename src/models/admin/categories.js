@@ -89,8 +89,14 @@ const getCategoryVehicleCount = async (categoryId) => {
     return parseInt(result.rows[0]?.vehicle_count || 0);
 };
 
+/**
+ * Get all categories (alias for getAllCategories for backward compatibility)
+ */
+const getCategories = getAllCategories;
+
 export {
     getAllCategories,
+    getCategories,
     getCategoryById,
     createCategory,
     updateCategory,

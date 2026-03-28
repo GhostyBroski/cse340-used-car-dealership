@@ -327,22 +327,6 @@ const addVehicleFeature = async (vehicleId, featureName, featureValue) => {
 };
 
 /**
- * Get all categories
- * 
- * @returns {Promise<Array>} Array of category objects
- */
-const getCategories = async () => {
-    const query = `
-        SELECT id, name, description, display_order
-        FROM categories
-        ORDER BY display_order, name
-    `;
-
-    const result = await db.query(query);
-    return result.rows;
-};
-
-/**
  * Get vehicle by VIN
  * 
  * @param {string} vin - Vehicle VIN
@@ -413,6 +397,5 @@ export {
     createVehicle,
     updateVehicle,
     addVehicleImage,
-    addVehicleFeature,
-    getCategories
+    addVehicleFeature
 };

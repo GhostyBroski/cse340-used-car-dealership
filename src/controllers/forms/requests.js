@@ -8,7 +8,8 @@ import {
     getServiceRequestsByVehicle,
     getServiceRequestsByEmployee
 } from '../../models/forms/requests.js';
-import { getVehicleById, getCategories } from '../../models/catalog/vehicles.js';
+import { getVehicleById } from '../../models/catalog/vehicles.js';
+import { getCategories } from '../../models/admin/categories.js';
 import { requireRole } from '../../middleware/auth.js';
 
 const router = Router();

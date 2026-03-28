@@ -1,4 +1,9 @@
 /**
+ * Import hasMinimumRole from auth middleware to avoid duplication
+ */
+import { hasMinimumRole } from './auth.js';
+
+/**
  * Helper function to get the current greeting based on the time of day.
  */
 const getCurrentGreeting = () => {
@@ -13,20 +18,6 @@ const getCurrentGreeting = () => {
     }
 
     return 'Good Evening!';
-};
-
-/**
- * Role-based access check function
- */
-const hasMinimumRole = (userRole, minRole) => {
-    const ROLE_HIERARCHY = {
-        admin: 3,
-        employee: 2,
-        user: 1
-    };
-    const userLevel = ROLE_HIERARCHY[userRole] || 0;
-    const minLevel = ROLE_HIERARCHY[minRole] || 0;
-    return userLevel >= minLevel;
 };
 
 const setHeadAssetsFunctionality = (res) => {
