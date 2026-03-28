@@ -22,6 +22,14 @@ import {
     updateVehicle,
     createVehicle
 } from '../../models/catalog/vehicles.js';
+import {
+    getAllServiceRequests,
+    getServiceRequestById
+} from '../../models/forms/requests.js';
+import {
+    getAllReviews,
+    getReviewById
+} from '../../models/forms/reviews.js';
 
 const router = Router();
 
@@ -498,7 +506,9 @@ const showActivity = async (req, res, next) => {
     try {
         const users = await getAllUsers();
         const categories = await getAllCategories();
-        const vehicles = await getAllVehicles();
+        const vehicles = await getAllVehicles({ availableOnly: false });
+        const serviceRequests = await getAllServiceRequests();
+        const reviews = await getAllReviews();
 
         // Calculate statistics
         const stats = {
@@ -506,8 +516,8 @@ const showActivity = async (req, res, next) => {
             employeeCount: users.filter(u => u.roleName === 'employee').length,
             totalVehicles: vehicles.length,
             totalCategories: categories.length,
-            totalRequests: 0, // Would query from service_requests table
-            totalReviews: 0   // Would query from reviews table
+            totalRequests: serviceRequests.length,
+            totalReviews: reviews.length
         };
 
         res.render('admin/activity', {
