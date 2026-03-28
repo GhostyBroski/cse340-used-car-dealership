@@ -20,6 +20,7 @@
                         min="1900"
                         max="2099"
                         placeholder="2024"
+                        value="<%= formData?.year || '' %>"
                         required>
                 </div>
 
@@ -30,6 +31,7 @@
                         id="make" 
                         name="make" 
                         placeholder="Toyota"
+                        value="<%= formData?.make || '' %>"
                         required>
                 </div>
             </div>
@@ -42,6 +44,7 @@
                         id="model" 
                         name="model" 
                         placeholder="Camry"
+                        value="<%= formData?.model || '' %>"
                         required>
                 </div>
 
@@ -53,6 +56,7 @@
                         name="vin" 
                         maxlength="17"
                         placeholder="Enter 17-character VIN"
+                        value="<%= formData?.vin || '' %>"
                         required>
                 </div>
             </div>
@@ -68,6 +72,7 @@
                         id="color" 
                         name="color" 
                         placeholder="Silver"
+                        value="<%= formData?.color || '' %>"
                         required>
                 </div>
 
@@ -79,6 +84,7 @@
                         name="mileage" 
                         min="0"
                         placeholder="45000"
+                        value="<%= formData?.mileage || '' %>"
                         required>
                 </div>
             </div>
@@ -88,9 +94,9 @@
                     <label for="transmission">Transmission</label>
                     <select id="transmission" name="transmission">
                         <option value="">Select transmission</option>
-                        <option value="Automatic">Automatic</option>
-                        <option value="Manual">Manual</option>
-                        <option value="CVT">CVT</option>
+                        <option value="Automatic" <%= formData?.transmission === 'Automatic' ? 'selected' : '' %>>Automatic</option>
+                        <option value="Manual" <%= formData?.transmission === 'Manual' ? 'selected' : '' %>>Manual</option>
+                        <option value="CVT" <%= formData?.transmission === 'CVT' ? 'selected' : '' %>>CVT</option>
                     </select>
                 </div>
 
@@ -98,11 +104,35 @@
                     <label for="fuelType">Fuel Type</label>
                     <select id="fuelType" name="fuelType">
                         <option value="">Select fuel type</option>
-                        <option value="Gasoline">Gasoline</option>
-                        <option value="Diesel">Diesel</option>
-                        <option value="Hybrid">Hybrid</option>
-                        <option value="Electric">Electric</option>
+                        <option value="Gasoline" <%= formData?.fuelType === 'Gasoline' ? 'selected' : '' %>>Gasoline</option>
+                        <option value="Diesel" <%= formData?.fuelType === 'Diesel' ? 'selected' : '' %>>Diesel</option>
+                        <option value="Hybrid" <%= formData?.fuelType === 'Hybrid' ? 'selected' : '' %>>Hybrid</option>
+                        <option value="Electric" <%= formData?.fuelType === 'Electric' ? 'selected' : '' %>>Electric</option>
                     </select>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="condition">Condition</label>
+                    <select id="condition" name="condition">
+                        <option value="">Select condition</option>
+                        <option value="Used" <%= formData?.condition === 'Used' ? 'selected' : '' %>>Used</option>
+                        <option value="Like New" <%= formData?.condition === 'Like New' ? 'selected' : '' %>>Like New</option>
+                        <option value="Fair" <%= formData?.condition === 'Fair' ? 'selected' : '' %>>Fair</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="seats">Seats</label>
+                    <input 
+                        type="number" 
+                        id="seats" 
+                        name="seats" 
+                        min="1"
+                        max="9"
+                        placeholder="5"
+                        value="<%= formData?.seats || '5' %>">
                 </div>
             </div>
 
@@ -119,6 +149,7 @@
                         min="0"
                         step="0.01"
                         placeholder="25000.00"
+                        value="<%= formData?.price || '' %>"
                         required>
                 </div>
 
@@ -126,8 +157,8 @@
                     <label for="availability">Availability *</label>
                     <select id="availability" name="availability" required>
                         <option value="">Select availability</option>
-                        <option value="true">Available for Sale</option>
-                        <option value="false">Unavailable (Hold/Sold)</option>
+                        <option value="true" <%= formData?.availability === 'true' ? 'selected' : '' %>>Available for Sale</option>
+                        <option value="false" <%= formData?.availability === 'false' ? 'selected' : '' %>>Unavailable (Hold/Sold)</option>
                     </select>
                 </div>
             </div>
@@ -139,13 +170,52 @@
                     <option value="">Select a category</option>
                     <% if (categories && categories.length > 0) { %>
                         <% categories.forEach(category => { %>
-                            <option value="<%= category.id %>"><%= category.name %></option>
+                            <option value="<%= category.id %>" <%= formData?.categoryId == category.id ? 'selected' : '' %>><%= category.name %></option>
                         <% }); %>
                     <% } %>
                 </select>
             </div>
 
+            <!-- Images -->
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #333;">Vehicle Images</h3>
+            <p style="color: #666; font-size: 0.95rem; margin: 0 0 1rem 0;">
+                Enter URLs for vehicle images. The first image will be used as the main image.
+            </p>
+
+            <div class="form-group">
+                <label for="mainImage">Main Image URL</label>
+                <input 
+                    type="url" 
+                    id="mainImage" 
+                    name="mainImage" 
+                    placeholder="https://example.com/images/vehicle-1.jpg"
+                    value="<%= formData?.mainImage || '' %>">
+                <small>This will be displayed as the primary vehicle image</small>
+            </div>
+
+            <div class="form-group">
+                <label for="image2">Additional Image 2 URL</label>
+                <input 
+                    type="url" 
+                    id="image2" 
+                    name="image2" 
+                    placeholder="https://example.com/images/vehicle-2.jpg"
+                    value="<%= formData?.image2 || '' %>">
+            </div>
+
+            <div class="form-group">
+                <label for="image3">Additional Image 3 URL</label>
+                <input 
+                    type="url" 
+                    id="image3" 
+                    name="image3" 
+                    placeholder="https://example.com/images/vehicle-3.jpg"
+                    value="<%= formData?.image3 || '' %>">
+            </div>
+
             <!-- Description -->
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #333;">Additional Information</h3>
+
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea 
@@ -153,7 +223,7 @@
                     name="description" 
                     maxlength="2000"
                     rows="6"
-                    placeholder="Describe vehicle condition, features, and history..."></textarea>
+                    placeholder="Describe vehicle condition, features, and history..."><%= formData?.description || '' %></textarea>
                 <small>Vehicle description (max 2000 characters)</small>
             </div>
 

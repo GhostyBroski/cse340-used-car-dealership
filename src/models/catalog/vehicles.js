@@ -343,6 +343,24 @@ const getCategories = async () => {
 };
 
 /**
+ * Get vehicle by VIN
+ * 
+ * @param {string} vin - Vehicle VIN
+ * @returns {Promise<Object|null>} Vehicle object or null if not found
+ */
+const getVehicleByVin = async (vin) => {
+    const query = `
+        SELECT id, make, model, year, vin
+        FROM vehicles
+        WHERE UPPER(vin) = UPPER($1)
+        LIMIT 1
+    `;
+
+    const result = await db.query(query, [vin]);
+    return result.rows.length > 0 ? result.rows[0] : null;
+};
+
+/**
  * Transform database row to camelCase vehicle object
  * 
  * @param {Object} row - Database row
@@ -388,6 +406,7 @@ const transformVehicleRow = (row) => ({
 export {
     getAllVehicles,
     getVehicleById,
+    getVehicleByVin,
     getFeaturedVehicles,
     getVehiclesByCategory,
     searchVehicles,

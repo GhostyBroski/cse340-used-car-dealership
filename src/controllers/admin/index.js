@@ -18,6 +18,7 @@ import {
 import {
     getAllVehicles,
     getVehicleById,
+    getVehicleByVin,
     updateVehicle,
     createVehicle
 } from '../../models/catalog/vehicles.js';
@@ -262,6 +263,19 @@ const handleAddVehicle = async (req, res, next) => {
 
     try {
         const { year, make, model, vin, color, mileage, transmission, fuelType, price, availability, categoryId, description } = req.body;
+
+        // Check if VIN already exists
+        const existingVehicle = await getVehicleByVin(vin);
+        if (existingVehicle) {
+            req.flash('error', `A vehicle with VIN "${vin}" already exists (${existingVehicle.year} ${existingVehicle.make} ${existingVehicle.model}).`);
+            const categories = await getAllCategories();
+            return res.render('admin/vehicles/add', {
+                title: 'Add New Vehicle',
+                categories: categories,
+                isEdit: false,
+                formData: req.body
+            });
+        }
 
         const vehicle = await createVehicle({
             year: parseInt(year),

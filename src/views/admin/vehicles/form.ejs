@@ -69,8 +69,8 @@
             <div class="form-group">
                 <label for="availability">Availability</label>
                 <select id="availability" name="availability">
-                    <option value="true" <%= vehicle.availability ? 'selected' : '' %>>Available for Sale</option>
-                    <option value="false" <%= !vehicle.availability ? 'selected' : '' %>>Unavailable (Sold or Hold)</option>
+                    <option value="true" <%= vehicle.isAvailable ? 'selected' : '' %>>Available for Sale</option>
+                    <option value="false" <%= !vehicle.isAvailable ? 'selected' : '' %>>Unavailable (Sold or Hold)</option>
                 </select>
                 <small>Set whether this vehicle is available for purchase</small>
             </div>
