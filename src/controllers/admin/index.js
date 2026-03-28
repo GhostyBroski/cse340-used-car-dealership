@@ -208,7 +208,8 @@ const handleDeleteCategory = async (req, res, next) => {
  */
 const showVehicles = async (req, res, next) => {
     try {
-        const vehicles = await getAllVehicles();
+        // Show ALL vehicles (available and unavailable) for admin management
+        const vehicles = await getAllVehicles({ availableOnly: false });
         const categories = await getAllCategories();
 
         res.render('admin/vehicles/list', {
@@ -370,6 +371,36 @@ const handleUpdateVehicle = async (req, res, next) => {
     }
 };
 
+/**
+ * Toggle vehicle availability
+ * POST /admin/vehicles/:vehicleId/toggle-availability
+ */
+const handleToggleAvailability = async (req, res, next) => {
+    const { vehicleId } = req.params;
+
+    try {
+        const vehicle = await getVehicleById(vehicleId);
+        if (!vehicle) {
+            req.flash('error', 'Vehicle not found.');
+            return res.redirect('/admin/vehicles');
+        }
+
+        // Toggle the availability status
+        const updates = {
+            isAvailable: !vehicle.isAvailable
+        };
+
+        await updateVehicle(vehicleId, updates);
+        const status = !vehicle.isAvailable ? 'Available' : 'Unavailable';
+        req.flash('success', `Vehicle marked as ${status}.`);
+        res.redirect('/admin/vehicles');
+    } catch (error) {
+        console.error('Error toggling vehicle availability:', error);
+        req.flash('error', 'Unable to update vehicle availability. Please try again.');
+        res.redirect('/admin/vehicles');
+    }
+};
+
 // ============================================================================
 // USER MANAGEMENT - Admin only
 // ============================================================================
@@ -525,10 +556,11 @@ router.post(
             .isLength({ max: 2000 }).withMessage('Description must be less than 2000 characters'),
         body('availability')
             .optional()
-            .isBoolean().withMessage('Availability must be true or false')
+            .isIn(['true', 'false']).withMessage('Availability must be true or false')
     ],
     handleUpdateVehicle
 );
+router.post('/vehicles/:vehicleId/toggle-availability', handleToggleAvailability);
 
 // CATEGORY ROUTES - Admin only
 router.use(requireRole('admin'));

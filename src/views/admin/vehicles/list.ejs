@@ -50,6 +50,11 @@
                     
                     <div class="vehicle-actions">
                         <a href="/admin/vehicles/<%= vehicle.id %>/edit" class="btn btn-sm btn-edit">Edit</a>
+                        <form method="POST" action="/admin/vehicles/<%= vehicle.id %>/toggle-availability" style="display: inline;">
+                            <button type="submit" class="btn btn-sm <%= vehicle.isAvailable ? 'btn-unavailable' : 'btn-available' %>">
+                                <%= vehicle.isAvailable ? 'Mark Unavailable' : 'Mark Available' %>
+                            </button>
+                        </form>
                         <a href="/catalog/vehicles/<%= vehicle.id %>" class="btn btn-sm btn-view">View</a>
                     </div>
                 </div>
@@ -175,6 +180,24 @@
 
 .btn-view:hover {
     background: #0b7dda;
+}
+
+.btn-available {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-available:hover {
+    background: #45a049;
+}
+
+.btn-unavailable {
+    background: #FF9800;
+    color: white;
+}
+
+.btn-unavailable:hover {
+    background: #e68900;
 }
 </style>
 
