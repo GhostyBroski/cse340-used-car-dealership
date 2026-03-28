@@ -401,6 +401,36 @@ const handleToggleAvailability = async (req, res, next) => {
     }
 };
 
+/**
+ * Toggle vehicle featured status
+ * POST /admin/vehicles/:vehicleId/toggle-featured
+ */
+const handleToggleFeatured = async (req, res, next) => {
+    const { vehicleId } = req.params;
+
+    try {
+        const vehicle = await getVehicleById(vehicleId);
+        if (!vehicle) {
+            req.flash('error', 'Vehicle not found.');
+            return res.redirect('/admin/vehicles');
+        }
+
+        // Toggle the featured status
+        const updates = {
+            isFeatured: !vehicle.isFeatured
+        };
+
+        await updateVehicle(vehicleId, updates);
+        const status = !vehicle.isFeatured ? 'Featured' : 'Not Featured';
+        req.flash('success', `Vehicle marked as ${status}.`);
+        res.redirect('/admin/vehicles');
+    } catch (error) {
+        console.error('Error toggling vehicle featured status:', error);
+        req.flash('error', 'Unable to update vehicle featured status. Please try again.');
+        res.redirect('/admin/vehicles');
+    }
+};
+
 // ============================================================================
 // USER MANAGEMENT - Admin only
 // ============================================================================
@@ -561,6 +591,7 @@ router.post(
     handleUpdateVehicle
 );
 router.post('/vehicles/:vehicleId/toggle-availability', handleToggleAvailability);
+router.post('/vehicles/:vehicleId/toggle-featured', handleToggleFeatured);
 
 // CATEGORY ROUTES - Admin only
 router.use(requireRole('admin'));

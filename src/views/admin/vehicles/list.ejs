@@ -55,6 +55,11 @@
                                 <%= vehicle.isAvailable ? 'Mark Unavailable' : 'Mark Available' %>
                             </button>
                         </form>
+                        <form method="POST" action="/admin/vehicles/<%= vehicle.id %>/toggle-featured" style="display: inline;">
+                            <button type="submit" class="btn btn-sm <%= vehicle.isFeatured ? 'btn-unfeatured' : 'btn-featured' %>">
+                                <%= vehicle.isFeatured ? 'Unfeature' : 'Feature' %>
+                            </button>
+                        </form>
                         <a href="/catalog/vehicles/<%= vehicle.id %>" class="btn btn-sm btn-view">View</a>
                     </div>
                 </div>
@@ -164,13 +169,15 @@
     padding: 1rem 1.5rem;
     border-top: 1px solid #e0e0e0;
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
 .vehicle-actions .btn {
     flex: 1;
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.5rem;
+    min-width: 0;
 }
 
 .btn-view {
@@ -198,6 +205,24 @@
 
 .btn-unavailable:hover {
     background: #e68900;
+}
+
+.btn-featured {
+    background: #9C27B0;
+    color: white;
+}
+
+.btn-featured:hover {
+    background: #7B1FA2;
+}
+
+.btn-unfeatured {
+    background: #E91E63;
+    color: white;
+}
+
+.btn-unfeatured:hover {
+    background: #C2185B;
 }
 </style>
 
