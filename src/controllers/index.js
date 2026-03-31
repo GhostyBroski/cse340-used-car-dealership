@@ -6,7 +6,7 @@ import { getFeaturedVehicles } from '../models/catalog/vehicles.js';
 const homePage = async (req, res, next) => {
     try {
         const featuredVehicles = await getFeaturedVehicles(6);
-        res.render('home', { 
+        res.render('home', {
             title: 'Home',
             featuredVehicles: featuredVehicles
         });

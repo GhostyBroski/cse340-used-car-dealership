@@ -107,11 +107,6 @@ const addLocalVariables = (req, res, next) => {
     res.locals.canModerateReviews = (userRole) => hasMinimumRole(userRole, 'employee');
     res.locals.canManageRequests = (userRole) => hasMinimumRole(userRole, 'employee');
 
-    // Randomly assign a theme class to the body
-    const themes = ['blue-theme', 'green-theme', 'red-theme'];
-    const randomTheme = themes[Math.floor(Math.random() * themes.length)];
-    res.locals.bodyClass = randomTheme;
-
     setHeadAssetsFunctionality(res)
 
     // Continue to the next middleware or route handler

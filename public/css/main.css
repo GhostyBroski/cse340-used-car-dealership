@@ -8,22 +8,10 @@
 @import url('/css/review.css');
 
 html, body {
-    background-color: lightblue;
+    background-color: #fff;
     font-family: Arial, sans-serif;
     margin: 0 auto;
-    padding: 1px;
-}
-
-html.blue-theme, body.blue-theme {
-    background-color: #e3f2fd;
-}
-
-html.green-theme, body.green-theme {
-    background-color: #e8f5e8;
-}
-
-html.red-theme, body.red-theme {
-    background-color: #ffebee;
+    padding: 0;
 }
 
 body nav ul {

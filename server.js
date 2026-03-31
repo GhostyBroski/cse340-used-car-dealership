@@ -80,6 +80,22 @@ app.use(express.json());
  */
 app.use(addLocalVariables);
 
+/**
+ * Middleware to ensure res.locals is always included in template context
+ * This allows controllers to use simple res.render(view, data) calls
+ * while still having access to all middleware-set variables
+ */
+app.use((req, res, next) => {
+    const originalRender = res.render;
+    res.render = function(view, options, callback) {
+        // Merge res.locals into the options
+        const mergedOptions = Object.assign({}, res.locals, options || {});
+        // Call the original render with merged options
+        return originalRender.call(this, view, mergedOptions, callback);
+    };
+    next();
+});
+
 app.use(flash);
 
 app.use((req, res, next) => {
