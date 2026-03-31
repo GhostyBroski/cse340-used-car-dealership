@@ -3,23 +3,6 @@
  */
 import { hasMinimumRole } from './auth.js';
 
-/**
- * Helper function to get the current greeting based on the time of day.
- */
-const getCurrentGreeting = () => {
-    const currentHour = new Date().getHours();
-
-    if (currentHour < 12) {
-        return 'Good Morning!';
-    }
-
-    if (currentHour < 18) {
-        return 'Good Afternoon!';
-    }
-
-    return 'Good Evening!';
-};
-
 const setHeadAssetsFunctionality = (res) => {
     res.locals.styles = [];
     res.locals.scripts = [];

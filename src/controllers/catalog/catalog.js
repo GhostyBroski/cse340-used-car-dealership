@@ -69,7 +69,7 @@ const vehicleDetailPage = async (req, res, next) => {
             userReview = reviews.find(r => r.user_id === userId);
         }
         
-        renderWithLocals(res, 'catalog/detail', {
+        res.render('catalog/detail', {
             title: `${vehicle.displayName}`,
             vehicle: vehicle,
             reviews: reviews,

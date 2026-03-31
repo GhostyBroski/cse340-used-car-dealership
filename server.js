@@ -80,22 +80,6 @@ app.use(express.json());
  */
 app.use(addLocalVariables);
 
-/**
- * Middleware to ensure res.locals is always included in template context
- * This allows controllers to use simple res.render(view, data) calls
- * while still having access to all middleware-set variables
- */
-app.use((req, res, next) => {
-    const originalRender = res.render;
-    res.render = function(view, options, callback) {
-        // Merge res.locals into the options
-        const mergedOptions = Object.assign({}, res.locals, options || {});
-        // Call the original render with merged options
-        return originalRender.call(this, view, mergedOptions, callback);
-    };
-    next();
-});
-
 app.use(flash);
 
 app.use((req, res, next) => {
@@ -150,13 +134,25 @@ app.use((err, req, res, next) => {
     const template = status === 404 ? '404' : '500';
     const isProd = res.locals.NODE_ENV === 'production';
     
+    // Explicitly ensure links are present for error templates
+    const errorLinks = res.locals.links || {
+        homepage: "/",
+        about: "/about",
+        catalog: "/catalog",
+        contact: "/contact",
+        login: "/login",
+        registration: "/register",
+        dashboard: "/dashboard"
+    };
+    
     // Create a complete context by copying all res.locals first, then adding error-specific values
     const context = Object.assign({}, res.locals, {
         title: status === 404 ? 'Page Not Found' : `Error ${status}`,
         message: (isProd && status >= 500) ? 'An unexpected server error occurred.' : err.message,
         error: isProd ? null : err,
         stack: isProd ? null : err.stack,
-        NODE_ENV: res.locals.NODE_ENV // Ensure NODE_ENV is preserved
+        NODE_ENV: res.locals.NODE_ENV,
+        links: errorLinks  // Explicitly ensure links are available
     });
     
     // Render the appropriate error template with fallback
