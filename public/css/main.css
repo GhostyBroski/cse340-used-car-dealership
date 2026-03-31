@@ -1,3 +1,12 @@
+/* Import all page-specific stylesheets */
+@import url('/css/home.css');
+@import url('/css/catalog.css');
+@import url('/css/contact.css');
+@import url('/css/login.css');
+@import url('/css/registration.css');
+@import url('/css/request.css');
+@import url('/css/review.css');
+
 html, body {
     background-color: lightblue;
     font-family: Arial, sans-serif;

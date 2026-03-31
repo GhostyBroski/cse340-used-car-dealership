@@ -133,14 +133,16 @@ app.use((err, req, res, next) => {
 
     const template = status === 404 ? '404' : '500';
     const isProd = res.locals.NODE_ENV === 'production';
-    // Prepare data for the template
-    const context = {
+    
+    // Create a complete context by copying all res.locals first, then adding error-specific values
+    const context = Object.assign({}, res.locals, {
         title: status === 404 ? 'Page Not Found' : `Error ${status}`,
         message: (isProd && status >= 500) ? 'An unexpected server error occurred.' : err.message,
         error: isProd ? null : err,
         stack: isProd ? null : err.stack,
-        NODE_ENV // Our WebSocket check needs this and its convenient to pass along
-    };
+        NODE_ENV: res.locals.NODE_ENV // Ensure NODE_ENV is preserved
+    });
+    
     // Render the appropriate error template with fallback
     try {
         res.status(status).render(`errors/${template}`, context);
