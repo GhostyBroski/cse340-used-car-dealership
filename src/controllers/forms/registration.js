@@ -150,7 +150,8 @@ const showAllUsers = async (req, res) => {
     res.render('forms/registration/list', {
         title: 'Registered Users',
         users,
-        user: req.session && req.session.user ? req.session.user : null
+        user: req.session && req.session.user ? req.session.user : null,
+        isLoggedIn: req.session && req.session.user ? true : false
     });
 };
 

@@ -6,26 +6,18 @@ import { hasMinimumRole } from './auth.js';
 const setHeadAssetsFunctionality = (res) => {
     res.locals.styles = [];
     res.locals.scripts = [];
-    res.addStyle = (css, priority = 0) => {
-        res.locals.styles.push({ content: css, priority });
+    res.addStyle = (css) => {
+        res.locals.styles.push(css);
     };
-    res.addScript = (js, priority = 0) => {
-        res.locals.scripts.push({ content: js, priority });
+    res.addScript = (js) => {
+        res.locals.scripts.push(js);
     };
     // These functions will be available in EJS templates
     res.locals.renderStyles = () => {
-        return res.locals.styles
-            // Sort by priority: higher numbers load first
-            .sort((a, b) => b.priority - a.priority)
-            .map(item => item.content)
-            .join('\n');
+        return res.locals.styles.join('\n');
     };
     res.locals.renderScripts = () => {
-        return res.locals.scripts
-            // Sort by priority: higher numbers load first
-            .sort((a, b) => b.priority - a.priority)
-            .map(item => item.content)
-            .join('\n');
+        return res.locals.scripts.join('\n');
     };
 };
 
@@ -82,6 +74,9 @@ const addLocalVariables = (req, res, next) => {
 
     // Add permission checking function to templates
     res.locals.hasMinimumRole = hasMinimumRole;
+    
+    // Helper function to check if user is logged in
+    res.locals.isLoggedInFn = () => req.session && req.session.user ? true : false;
     
     // Helper function to check if user can perform admin actions
     res.locals.canManageVehicles = (userRole) => hasMinimumRole(userRole, 'employee');

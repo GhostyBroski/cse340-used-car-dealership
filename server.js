@@ -65,6 +65,41 @@ startSessionCleanup();
 /**
  * Configure Express middleware
  */
+
+/**
+ * Initialize minimal res.locals FIRST - before ANY other middleware
+ * This ensures these variables exist even if an error occurs early in the request,
+ * including errors from static file serving
+ */
+app.use((req, res, next) => {
+    // Set up bare minimum template variables that might be needed for error pages
+    res.locals.currentYear = new Date().getFullYear();
+    res.locals.NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
+    res.locals.isLoggedIn = false;
+    res.locals.userRole = null;
+    res.locals.userName = null;
+    res.locals.userId = null;
+    res.locals.links = {
+        homepage: "/",
+        about: "/about",
+        catalog: "/catalog",
+        contact: "/contact",
+        login: "/login",
+        registration: "/register",
+        dashboard: "/dashboard"
+    };
+    res.locals.renderStyles = () => '';
+    res.locals.renderScripts = () => '';
+    // Provide a default flash function that returns empty messages
+    res.locals.flash = () => ({
+        success: [],
+        error: [],
+        warning: [],
+        info: []
+    });
+    next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
@@ -77,6 +112,8 @@ app.use(express.json());
  * 
  * Makes common variables available to all EJS templates without having to pass
  * them individually from each route handler
+ * 
+ * Note: This enhances the minimal setup from above with full functionality
  */
 app.use(addLocalVariables);
 
@@ -127,6 +164,7 @@ app.use((err, req, res, next) => {
         Message: ${err.message}
         Route:   ${method} ${url}
         Agent:   ${agent}
+        isLoggedIn in res.locals: ${res.locals.isLoggedIn}
         Stack:   ${err.stack}
         -----------------------------------
     `);
@@ -134,26 +172,46 @@ app.use((err, req, res, next) => {
     const template = status === 404 ? '404' : '500';
     const isProd = res.locals.NODE_ENV === 'production';
     
-    // Explicitly ensure links are present for error templates
-    const errorLinks = res.locals.links || {
-        homepage: "/",
-        about: "/about",
-        catalog: "/catalog",
-        contact: "/contact",
-        login: "/login",
-        registration: "/register",
-        dashboard: "/dashboard"
-    };
+    // Ensure critical variables are present (should already be set by early middleware)
+    if (!res.locals.currentYear) res.locals.currentYear = new Date().getFullYear();
+    if (!res.locals.NODE_ENV) res.locals.NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
+    if (!res.locals.isLoggedIn) res.locals.isLoggedIn = false;
+    if (!res.locals.userRole) res.locals.userRole = null;
+    if (!res.locals.userName) res.locals.userName = null;
+    if (!res.locals.userId) res.locals.userId = null;
+    if (!res.locals.links) {
+        res.locals.links = {
+            homepage: "/",
+            about: "/about",
+            catalog: "/catalog",
+            contact: "/contact",
+            login: "/login",
+            registration: "/register",
+            dashboard: "/dashboard"
+        };
+    }
+    if (typeof res.locals.renderStyles !== 'function') {
+        res.locals.renderStyles = () => '';
+    }
+    if (typeof res.locals.renderScripts !== 'function') {
+        res.locals.renderScripts = () => '';
+    }
+    if (typeof res.locals.flash !== 'function') {
+        res.locals.flash = () => ({
+            success: [],
+            error: [],
+            warning: [],
+            info: []
+        });
+    }
     
-    // Create a complete context by copying all res.locals first, then adding error-specific values
-    const context = Object.assign({}, res.locals, {
+    // Create context with error-specific values
+    const context = {
         title: status === 404 ? 'Page Not Found' : `Error ${status}`,
         message: (isProd && status >= 500) ? 'An unexpected server error occurred.' : err.message,
         error: isProd ? null : err,
-        stack: isProd ? null : err.stack,
-        NODE_ENV: res.locals.NODE_ENV,
-        links: errorLinks  // Explicitly ensure links are available
-    });
+        stack: isProd ? null : err.stack
+    };
     
     // Render the appropriate error template with fallback
     try {
