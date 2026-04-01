@@ -11,7 +11,7 @@ import { setupDatabase, testConnection } from './src/models/setup.js';
 
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
-import { caCert } from './src/models/db.js';
+import { caCert, pool } from './src/models/db.js';
 
 import { startSessionCleanup } from './src/utils/session-cleanup.js';
 
@@ -38,15 +38,7 @@ const pgSession = connectPgSimple(session);
 // Configure session middleware
 app.use(session({
     store: new pgSession({
-        conObject: {
-            connectionString: process.env.DB_URL,
-            // Configure SSL for session store connection (required by BYU-I databases)
-            ssl: {
-                ca: caCert,
-                rejectUnauthorized: true,
-                checkServerIdentity: () => { return undefined; }
-            }
-        },
+        pool: pool,  // Reuse the shared connection pool instead of creating a separate one
         tableName: 'session',
         createTableIfMissing: true
     }),
