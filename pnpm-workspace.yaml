@@ -1,2 +1,3 @@
-onlyBuiltDependencies:
-  - bcrypt
+# pnpm workspace configuration
+packages:
+  - .
