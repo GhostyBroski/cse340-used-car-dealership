@@ -18,7 +18,7 @@
             <% vehicles.forEach(vehicle => { %>
                 <div class="vehicle-card">
                     <% if (vehicle.image_url) { %>
-                        <img src="<%= vehicle.image_url %>" alt="<%= vehicle.displayName %>" class="vehicle-image">
+                        <img src="<%= vehicle.image_url %>" alt="<%= vehicle.displayName %>" class="vehicle-image" loading="lazy">
                     <% } else { %>
                         <div class="vehicle-image-placeholder">
                             <span>No Image</span>

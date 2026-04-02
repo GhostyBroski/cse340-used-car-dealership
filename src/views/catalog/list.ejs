@@ -46,9 +46,9 @@
                             <!-- Vehicle Image -->
                             <div class="vehicle-image">
                                 <% if (vehicle.mainImage) { %>
-                                    <img src="<%= vehicle.mainImage %>" alt="<%= vehicle.displayName %>" />
+                                    <img src="<%= vehicle.mainImage %>" alt="<%= vehicle.displayName %>" loading="lazy" />
                                 <% } else { %>
-                                    <img src="https://via.placeholder.com/300x200?text=<%= vehicle.make %>+<%= vehicle.model %>" alt="<%= vehicle.displayName %>" />
+                                    <img src="https://via.placeholder.com/300x200?text=<%= vehicle.make %>+<%= vehicle.model %>" alt="<%= vehicle.displayName %>" loading="lazy" />
                                 <% } %>
                                 <% if (vehicle.isFeatured) { %>
                                     <span class="badge featured-badge">Featured</span>

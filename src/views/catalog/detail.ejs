@@ -25,6 +25,7 @@
                                 <img src="<%= img.image_url %>" 
                                      alt="<%= img.alt_text || `${vehicle.displayName} view ${index + 1}` %>"
                                      class="thumbnail <%= index === 0 ? 'active' : '' %>"
+                                     loading="lazy"
                                      onclick="document.getElementById('mainImage').src = this.src; document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active')); this.classList.add('active');" />
                             <% }); %>
                         </div>

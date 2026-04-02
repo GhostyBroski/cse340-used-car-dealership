@@ -739,6 +739,24 @@ body h1 {
     margin-bottom: 3rem;
 }
 
+/* ============================================================================
+   RESPONSIVE IMAGES - Global optimization
+   ============================================================================ */
+
+/* Make all images responsive by default */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Prevent images from getting excessively large */
+@media (max-width: 1200px) {
+    img {
+        max-width: 100%;
+    }
+}
+
 .hero:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 28px rgba(44, 90, 160, 0.25);
