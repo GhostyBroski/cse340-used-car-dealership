@@ -15,8 +15,10 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --env-file=.env server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "init": "node --env-file=.env init.js",
+    "reset": "node --env-file=.env reset.js --confirm",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
