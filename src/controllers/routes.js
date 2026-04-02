@@ -17,36 +17,38 @@ const router = Router();
 // MIDDLEWARE - Add route-specific stylesheets
 // ============================================================================
 
+// Catalog pages need catalog and review styles
 router.use('/catalog', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/catalog.css">');
     res.addStyle('<link rel="stylesheet" href="/css/review.css">');
     next();
 });
 
-// Add contact-specific styles to all contact routes
+// Contact form pages
 router.use('/contact', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/contact.css">');
     next();
 });
 
-// Add registration-specific styles to all registration routes
+// Registration pages
 router.use('/register', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/registration.css">');
     next();
 });
 
+// Login pages
 router.use('/login', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/login.css">');
     next();
 });
 
-// Add service request styles to all request routes
+// Service request pages
 router.use('/requests', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/request.css">');
     next();
 });
 
-// Add vehicle review styles to all review routes
+// Review pages
 router.use('/reviews', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/review.css">');
     next();
@@ -56,12 +58,13 @@ router.use('/reviews', (req, res, next) => {
 // PUBLIC ROUTES - Home and Info Pages
 // ============================================================================
 
-// Add home-specific styles to home page
+// Home page needs both catalog and home styles
 router.get('/', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/catalog.css">');
     res.addStyle('<link rel="stylesheet" href="/css/home.css">');
     next();
 }, homePage);
+
 router.get('/about', aboutPage);
 
 // ============================================================================

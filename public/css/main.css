@@ -1,11 +1,4 @@
-/* Import all page-specific stylesheets */
-@import url('/css/home.css');
-@import url('/css/catalog.css');
-@import url('/css/contact.css');
-@import url('/css/login.css');
-@import url('/css/registration.css');
-@import url('/css/request.css');
-@import url('/css/review.css');
+/* Global base styles only - page-specific styles are loaded dynamically via res.addStyle() in routes.js */
 
 html, body {
     background-color: #fff;
