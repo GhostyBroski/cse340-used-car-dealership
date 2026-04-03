@@ -8,7 +8,7 @@ import db from '../db.js';
  */
 const emailExists = async (email) => {
     const query = `
-        SELECT EXISTS(SELECT 1 FROM users WHERE email = $1) as exists
+        SELECT EXISTS(SELECT 1 FROM users WHERE LOWER(email) = LOWER($1)) as exists
     `;
     const result = await db.query(query, [email]);
     return result.rows[0].exists;

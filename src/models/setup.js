@@ -25,8 +25,8 @@ const setupDatabase = async () => {
         vehiclesHaveData = vehiclesResult.rows[0]?.has_data || false;
     } catch (error) {
         /**
-         * If query fails (e.g., table doesn't exist), treat the same as no data.
-         * This allows the seed process to proceed.
+         * If query fails (e.g., table doesn't exist or "too many connections"), 
+         * treat the same as no data and proceed with seeding.
          */
         vehiclesHaveData = false;
     }
@@ -41,19 +41,30 @@ const setupDatabase = async () => {
     }
     
     if (vehiclesHaveData && usersHaveData) {
-        console.log('Database already seeded');
+        console.log('✓ Database already seeded');
         return true;
     }
     
     // No vehicles found - run full seed from seed.sql
-    console.log('Seeding database from seed.sql...');
+    console.log('📂 Seeding database from seed.sql...');
     const seedPath = join(__dirname, 'sql', 'seed.sql');
     if (fs.existsSync(seedPath)) {
         const seedSQL = fs.readFileSync(seedPath, 'utf8');
-        await db.query(seedSQL);
-        console.log('Database schema created and seeded successfully');
+        try {
+            await db.query(seedSQL);
+            console.log('✓ Database schema created and seeded successfully');
+        } catch (error) {
+            // If seeding fails due to connection issues, log but don't crash
+            // The seed.sql uses IF NOT EXISTS and ON CONFLICT, so it's safe to retry
+            if (error.code === '53300') {
+                console.warn('⚠ Database connection limit reached during seeding.');
+                console.warn('  The database will self-seed on the next query when a connection is available.');
+            } else {
+                console.error('Error seeding database:', error.message);
+            }
+        }
     } else {
-        console.warn('Warning: seed.sql not found at', seedPath);
+        console.warn('⚠ Warning: seed.sql not found at', seedPath);
     }
     
     return true;

@@ -5,23 +5,24 @@ BEGIN;
 
 -- ============================================================================
 -- DROP EXISTING TABLES (for clean reset in development)
+-- NOTE: All data tables are preserved to protect manually-added and user content
+-- Only clear extra roles beyond the core 3
 -- ============================================================================
-DROP TABLE IF EXISTS vehicle_images CASCADE;
-DROP TABLE IF EXISTS vehicle_features CASCADE;
-DROP TABLE IF EXISTS reviews CASCADE;
-DROP TABLE IF EXISTS service_requests CASCADE;
-DROP TABLE IF EXISTS vehicles CASCADE;
-DROP TABLE IF EXISTS categories CASCADE;
-DROP TABLE IF EXISTS contact_form CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS roles CASCADE;
+-- Tables are preserved to maintain data integrity across re-seeding:
+-- Users and roles: Manual accounts and role assignments
+-- Categories and vehicles: Admin-managed inventory
+-- ServiceRequests and reviews: User and customer content
+-- Contact forms: Customer inquiries
+
+-- Preserve existing roles and users, but clear stale data
+DELETE FROM roles WHERE id > 3;  -- Keep only the 3 core roles
 
 -- ============================================================================
 -- ROLES AND USERS MANAGEMENT
 -- ============================================================================
 
 -- Roles table for role-based access control (admin, employee, user)
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS roles (
     id SERIAL PRIMARY KEY,
     role_name VARCHAR(50) UNIQUE NOT NULL,
     role_description TEXT,
@@ -29,7 +30,7 @@ CREATE TABLE roles (
 );
 
 -- Users table for authentication and user profiles
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -40,7 +41,7 @@ CREATE TABLE users (
 );
 
 -- Contact form table
-CREATE TABLE contact_form (
+CREATE TABLE IF NOT EXISTS contact_form (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100),
     email VARCHAR(255),
@@ -54,7 +55,7 @@ CREATE TABLE contact_form (
 -- ============================================================================
 
 -- Categories table - vehicle types (Truck, Van, Car, SUV, etc.)
-CREATE TABLE categories (
+CREATE TABLE IF NOT EXISTS categories (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
@@ -62,7 +63,7 @@ CREATE TABLE categories (
 );
 
 -- Main vehicles table - core inventory with all essential information
-CREATE TABLE vehicles (
+CREATE TABLE IF NOT EXISTS vehicles (
     id SERIAL PRIMARY KEY,
     
     -- Vehicle identification and basic info
@@ -111,13 +112,13 @@ CREATE TABLE vehicles (
 );
 
 -- Create index for common queries
-CREATE INDEX idx_vehicles_category ON vehicles(category_id);
-CREATE INDEX idx_vehicles_is_featured ON vehicles(is_featured) WHERE is_featured = TRUE;
-CREATE INDEX idx_vehicles_is_available ON vehicles(is_available) WHERE is_available = TRUE;
-CREATE INDEX idx_vehicles_price ON vehicles(price);
+CREATE INDEX IF NOT EXISTS idx_vehicles_category ON vehicles(category_id);
+CREATE INDEX IF NOT EXISTS idx_vehicles_is_featured ON vehicles(is_featured) WHERE is_featured = TRUE;
+CREATE INDEX IF NOT EXISTS idx_vehicles_is_available ON vehicles(is_available) WHERE is_available = TRUE;
+CREATE INDEX IF NOT EXISTS idx_vehicles_price ON vehicles(price);
 
 -- Vehicle Images table - multiple images per vehicle with ordering
-CREATE TABLE vehicle_images (
+CREATE TABLE IF NOT EXISTS vehicle_images (
     id SERIAL PRIMARY KEY,
     vehicle_id INTEGER NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
     image_url TEXT NOT NULL,
@@ -126,10 +127,10 @@ CREATE TABLE vehicle_images (
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_vehicle_images_vehicle_id ON vehicle_images(vehicle_id);
+CREATE INDEX IF NOT EXISTS idx_vehicle_images_vehicle_id ON vehicle_images(vehicle_id);
 
 -- Optional: Vehicle Features table - for extensible features (color, interior options, etc.)
-CREATE TABLE vehicle_features (
+CREATE TABLE IF NOT EXISTS vehicle_features (
     id SERIAL PRIMARY KEY,
     vehicle_id INTEGER NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
     feature_name VARCHAR(100) NOT NULL,  -- e.g., "Sunroof", "Apple CarPlay", "Lane Detection"
@@ -141,7 +142,7 @@ CREATE TABLE vehicle_features (
 -- ============================================================================
 
 -- Service Requests table - customers can request service for specific vehicles
-CREATE TABLE service_requests (
+CREATE TABLE IF NOT EXISTS service_requests (
     id SERIAL PRIMARY KEY,
     
     -- Customer info
@@ -171,16 +172,16 @@ CREATE TABLE service_requests (
     CONSTRAINT valid_scheduling CHECK (scheduled_for IS NULL OR scheduled_for > submitted_at)
 );
 
-CREATE INDEX idx_service_requests_vehicle_id ON service_requests(vehicle_id);
-CREATE INDEX idx_service_requests_status ON service_requests(status);
-CREATE INDEX idx_service_requests_user_id ON service_requests(user_id);
+CREATE INDEX IF NOT EXISTS idx_service_requests_vehicle_id ON service_requests(vehicle_id);
+CREATE INDEX IF NOT EXISTS idx_service_requests_status ON service_requests(status);
+CREATE INDEX IF NOT EXISTS idx_service_requests_user_id ON service_requests(user_id);
 
 -- ============================================================================
 -- REVIEWS AND RATINGS
 -- ============================================================================
 
 -- Reviews table - customer reviews for vehicles (one review per user per vehicle)
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     vehicle_id INTEGER NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
@@ -198,9 +199,9 @@ CREATE TABLE reviews (
     UNIQUE(user_id, vehicle_id)
 );
 
-CREATE INDEX idx_reviews_vehicle_id ON reviews(vehicle_id);
-CREATE INDEX idx_reviews_user_id ON reviews(user_id);
-CREATE INDEX idx_reviews_rating ON reviews(rating);
+CREATE INDEX IF NOT EXISTS idx_reviews_vehicle_id ON reviews(vehicle_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_user_id ON reviews(user_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_rating ON reviews(rating);
 
 -- ============================================================================
 -- SEED DATA - ROLES
@@ -210,12 +211,29 @@ INSERT INTO roles (role_name, role_description)
 VALUES 
     ('user', 'Standard customer with basic access'),
     ('employee', 'Dealership employee - can manage and view vehicle data'),
-    ('admin', 'Administrator with full system access');
+    ('admin', 'Administrator with full system access')
+ON CONFLICT (role_name) DO NOTHING;
 
 -- ============================================================================
 -- SEED DATA - USERS
 -- ============================================================================
--- Users are registered manually through the application registration form
+-- Pre-seeded default accounts for shared deployments (e.g., Render demo link)
+-- Default password for all default accounts: P@$$w0rd!
+-- IMPORTANT: Change these passwords immediately after deployment
+-- NOTE: These only insert if the account doesn't already exist (by email)
+-- User-registered accounts are preserved and not deleted
+
+INSERT INTO users (name, email, password, role_id)
+SELECT 'Admin User', 'admin@example.com', '$2b$10$895sXzSJeCcjPpXQF8.hPeoHVbBgT7WBsVqzjTqCguxuAlNb03UNO', 3
+WHERE NOT EXISTS(SELECT 1 FROM users WHERE LOWER(email) = LOWER('admin@example.com'));
+
+INSERT INTO users (name, email, password, role_id)
+SELECT 'Employee User', 'employee@example.com', '$2b$10$895sXzSJeCcjPpXQF8.hPeoHVbBgT7WBsVqzjTqCguxuAlNb03UNO', 2
+WHERE NOT EXISTS(SELECT 1 FROM users WHERE LOWER(email) = LOWER('employee@example.com'));
+
+INSERT INTO users (name, email, password, role_id)
+SELECT 'Regular User', 'user@example.com', '$2b$10$895sXzSJeCcjPpXQF8.hPeoHVbBgT7WBsVqzjTqCguxuAlNb03UNO', 1
+WHERE NOT EXISTS(SELECT 1 FROM users WHERE LOWER(email) = LOWER('user@example.com'));
 
 -- ============================================================================
 -- SEED DATA - CATEGORIES
@@ -227,7 +245,8 @@ INSERT INTO categories (name, description, display_order) VALUES
     ('Truck', 'Pickup trucks and work vehicles', 3),
     ('Van', 'Minivans and cargo vans for families', 4),
     ('Coupe', 'Two-door sports and performance cars', 5),
-    ('Hatchback', 'Compact hatchbacks for city driving', 6);
+    ('Hatchback', 'Compact hatchbacks for city driving', 6)
+ON CONFLICT (name) DO NOTHING;
 
 -- ============================================================================
 -- SEED DATA - VEHICLES
@@ -334,7 +353,8 @@ VALUES
         FALSE, TRUE,
         'Luxury BMW with premium features, excellent performance. Well-maintained with full service history.',
         (SELECT id FROM users WHERE email = 'admin@dealership.com')
-    );
+    )
+ON CONFLICT (vin) DO NOTHING;
 
 -- ============================================================================
 -- SEED DATA - VEHICLE IMAGES

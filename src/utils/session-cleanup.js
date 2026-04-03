@@ -27,17 +27,19 @@ const cleanupExpiredSessions = async () => {
 
 /**
  * Starts automatic session cleanup that runs every 24 hours.
- * Runs immediately on startup to handle any sessions that expired while server was offline.
+ * Delay initial cleanup to avoid connection pool exhaustion during startup.
  */
 const startSessionCleanup = () => {
-    // Run cleanup immediately on startup (catches sessions that expired while offline)
-    cleanupExpiredSessions();
+    // Delay cleanup by 30 seconds to let server stabilize and free up connections
+    setTimeout(() => {
+        cleanupExpiredSessions();
+    }, 30000);
 
-    // Schedule cleanup to run every 12 hours
+    // Schedule cleanup to run every 12 hours after initial delay
     const twelveHours = 12 * 60 * 60 * 1000;
     setInterval(cleanupExpiredSessions, twelveHours);
 
-    console.log('Session cleanup scheduled to run every 12 hours');
+    console.log('Session cleanup scheduled to run every 12 hours (after 30s startup delay)');
 };
 
 export { startSessionCleanup };

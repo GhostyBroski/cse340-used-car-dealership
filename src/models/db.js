@@ -22,9 +22,9 @@ const caCert = fs.readFileSync(path.join(__dirname, '../../bin', 'byuicse-psql-c
  */
 const pool = new Pool({
     connectionString: process.env.DB_URL,
-    max: 4,  // 4 connections: allows some concurrency without exhausting the DB
-    min: 0,  // Don't keep idle connections
-    idleTimeoutMillis: 20000,  // Close idle connections after 20 seconds
+    max: 3,  // 3 connections: very conservative for Render free tier (usually 4-5 total limit)
+    min: 0,  // Don't keep any idle connections - release immediately after use
+    idleTimeoutMillis: 5000,  // Close idle connections after just 5 seconds
     connectionTimeoutMillis: 5000,  // Timeout new connections after 5 seconds
     statement_timeout: 30000,  // Cancel queries running longer than 30 seconds
     ssl: {
