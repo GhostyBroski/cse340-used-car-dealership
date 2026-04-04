@@ -38,14 +38,15 @@ The application uses PostgreSQL with the following core tables:
 | Table | Purpose | Key Relationships |
 |---|---|---|
 | `roles` | Role definitions (admin, employee, user) | 1-to-M with users |
-| `users` | User accounts and authentication | M-to-1 with roles; 1-to-M with reviews, service_requests |
+| `users` | User accounts and authentication | M-to-1 with roles; 1-to-M with reviews, service_requests, contact_form |
 | `categories` | Vehicle categories (Sedan, SUV, Truck, etc.) | 1-to-M with vehicles |
 | `vehicles` | Vehicle inventory with specifications | M-to-1 with categories; 1-to-M with images, features, reviews, service_requests |
 | `vehicle_images` | Multiple images per vehicle | M-to-1 with vehicles |
 | `vehicle_features` | Extensible features (equipment, options) | M-to-1 with vehicles |
 | `reviews` | Customer ratings and comments | M-to-1 with users and vehicles |
 | `service_requests` | Service appointment requests | M-to-1 with users and vehicles |
-| `contact_form` | Customer contact form submissions | Standalone inquiry tracking |
+| `contact_form` | Customer contact form submissions | M-to-1 with users (optional); tracks inquiry source |
+| `session` | Express session store (created by connect-pg-simple) | Stores active user sessions for authentication |
 
 ---
 

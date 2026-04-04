@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- Contact form table
 CREATE TABLE IF NOT EXISTS contact_form (
     id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,  -- Optional: track if submitted by logged-in user
     name VARCHAR(100),
     email VARCHAR(255),
     subject VARCHAR(255) NOT NULL,
