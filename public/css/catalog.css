@@ -8,7 +8,9 @@
     gap: 2rem;
     max-width: 1400px;
     margin: 0 auto;
+    margin-left: 20px;
     padding: 2rem;
+    padding-left: 3rem;
 }
 
 /* ============================================================================
@@ -16,24 +18,27 @@
    ============================================================================ */
 .catalog-sidebar {
     flex: 0 0 250px;
-    background: #f9f9f9;
+    background: var(--color-white);
+    border: 2px solid var(--color-cornflower-light);
     padding: 1.5rem;
-    border-radius: 12px;
+    border-radius: 16px;
     height: fit-content;
     position: sticky;
     top: 20px;
+    box-shadow: 0 4px 15px rgba(100, 149, 237, 0.15);
 
     h2, h3 {
-        color: #333;
+        color: var(--color-darkblue);
         font-size: 1.2rem;
         margin-top: 0;
         margin-bottom: 1rem;
-        border-bottom: 2px solid #2c5aa0;
-        padding-bottom: 0.5rem;
+        border-bottom: 3px solid var(--color-cornflower);
+        padding-bottom: 0.7rem;
+        font-weight: 700;
     }
 
     h3 {
-        font-size: 1rem;
+        font-size: 1.05rem;
         margin-top: 1.5rem;
     }
 
@@ -44,26 +49,29 @@
         margin: 0;
 
         li {
-            margin: 0.25rem 0;
+            margin: 0.5rem 0;
 
             a {
                 display: block;
-                padding: 0.75rem 1rem;
-                color: #555;
+                padding: 0.85rem 1.2rem;
+                color: var(--color-text-secondary);
                 text-decoration: none;
-                border-radius: 6px;
+                border-radius: 12px;
                 transition: all 0.3s ease;
+                font-weight: 500;
 
                 &:hover {
-                    background: #e3f2fd;
-                    color: #2c5aa0;
+                    background: rgba(100, 149, 237, 0.15);
+                    color: var(--color-cornflower);
                     font-weight: 600;
+                    transform: translateX(5px);
                 }
 
                 &.active {
-                    background: #2c5aa0;
-                    color: #fff;
+                    background: linear-gradient(135deg, var(--color-cornflower) 0%, var(--color-darkblue-light) 100%);
+                    color: var(--color-white);
                     font-weight: 600;
+                    box-shadow: 0 4px 12px rgba(100, 149, 237, 0.3);
                 }
             }
         }
@@ -73,28 +81,31 @@
     .sort-options {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.7rem;
 
         a {
-            padding: 0.75rem 1rem;
-            color: #555;
+            padding: 0.85rem 1rem;
+            color: var(--color-text-secondary);
             text-decoration: none;
-            border-radius: 6px;
-            border: 1px solid #ddd;
+            border-radius: 12px;
+            border: 2px solid var(--color-border);
             transition: all 0.3s ease;
             text-align: center;
+            font-weight: 500;
+            background-color: var(--color-white);
 
             &:hover {
-                background: #e3f2fd;
-                color: #2c5aa0;
-                border-color: #2c5aa0;
+                background: rgba(100, 149, 237, 0.1);
+                color: var(--color-cornflower);
+                border-color: var(--color-cornflower);
             }
 
             &.active {
-                background: #2c5aa0;
-                color: #fff;
-                border-color: #2c5aa0;
+                background: linear-gradient(135deg, var(--color-cornflower) 0%, var(--color-darkblue-light) 100%);
+                color: var(--color-white);
+                border-color: transparent;
                 font-weight: 600;
+                box-shadow: 0 4px 12px rgba(100, 149, 237, 0.3);
             }
         }
     }
@@ -113,14 +124,15 @@
     margin-bottom: 2rem;
 
     h1 {
-        color: #333;
-        font-size: 2rem;
+        color: var(--color-darkblue);
+        font-size: 2.2rem;
         margin: 0 0 0.5rem 0;
+        font-weight: 700;
     }
 
     .subtitle {
-        color: #666;
-        font-size: 1.1rem;
+        color: var(--color-text-secondary);
+        font-size: 1.15rem;
         margin: 0;
     }
 }

@@ -8,24 +8,26 @@
 .request-form-container {
     max-width: 700px;
     margin: 0 auto;
+    margin-left: calc(50% - 350px + 20px);
     padding: 2rem;
 }
 
 .request-form-container h1 {
     font-size: 2rem;
-    color: #333;
+    color: var(--color-darkblue);
     margin-bottom: 2rem;
+    font-weight: 700;
 }
 
 /* ============================================================================
    SERVICE REQUEST FORM - Form styling
    ============================================================================ */
 .service-request-form {
-    background: white;
+    background: var(--color-white);
     padding: 2.5rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 2px solid var(--color-cornflower-light);
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(100, 149, 237, 0.15);
 }
 
 .form-group {
@@ -36,7 +38,7 @@
 
 .form-group label {
     font-size: 1.05rem;
-    color: #333;
+    color: var(--color-text-primary);
     font-weight: 600;
     margin-bottom: 0.75rem;
 }
@@ -49,11 +51,12 @@
 .form-group select,
 .form-group textarea {
     padding: 0.875rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
     font-size: 1rem;
     font-family: inherit;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    background-color: var(--color-white);
 }
 
 .form-group input[type="text"]:focus,
@@ -64,8 +67,8 @@
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #2c5aa0;
-    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+    border-color: var(--color-cornflower);
+    box-shadow: 0 0 0 4px rgba(100, 149, 237, 0.1);
 }
 
 .form-group select {
@@ -81,7 +84,7 @@
 
 .form-group select option {
     padding: 0.5rem;
-    color: #333;
+    color: var(--color-text-primary);
 }
 
 .form-group textarea {
@@ -105,17 +108,17 @@
 .form-hint {
     display: block;
     font-size: 0.85rem;
-    color: #666;
+    color: var(--color-text-secondary);
     margin-top: 0.5rem;
     font-style: italic;
 }
 
 .form-info {
-    padding: 1rem;
-    background: #e3f2fd;
-    border-left: 4px solid #2c5aa0;
-    border-radius: 6px;
-    color: #1a3a6b;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.1), rgba(30, 58, 111, 0.05));
+    border-left: 4px solid var(--color-cornflower);
+    border-radius: 12px;
+    color: var(--color-darkblue);
     margin-bottom: 2rem;
 }
 
@@ -130,7 +133,7 @@
 .service-request-form button {
     padding: 0.875rem 2rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1.05rem;
     font-weight: 600;
     text-decoration: none;
@@ -141,30 +144,31 @@
     justify-content: center;
     height: 48px;
     line-height: 1;
+    box-shadow: 0 2px 8px rgba(100, 149, 237, 0.15);
 }
 
 .service-request-form .btn.btn-primary,
 .service-request-form button[type="submit"] {
-    background: #2c5aa0;
-    color: white;
+    background: linear-gradient(135deg, var(--color-cornflower), var(--color-darkblue-light));
+    color: var(--color-white);
 }
 
-.service-request-form .btn.btn-primary:hover,
-.service-request-form button[type="submit"]:hover {
-    background: #1a3a6b;
+.service-request-form button[type="submit"]:hover,
+.service-request-form .btn.btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+    box-shadow: 0 4px 14px rgba(100, 149, 237, 0.3);
 }
 
 .service-request-form .btn.btn-secondary {
-    background: #e3f2fd;
-    color: #2c5aa0;
-    border: 1px solid #2c5aa0;
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.15), rgba(30, 58, 111, 0.1));
+    color: var(--color-cornflower);
+    border: 2px solid var(--color-cornflower-light);
 }
 
 .service-request-form .btn.btn-secondary:hover {
-    background: #2c5aa0;
-    color: white;
+    background: linear-gradient(135deg, var(--color-cornflower), var(--color-darkblue-light));
+    color: var(--color-white);
+    border-color: var(--color-darkblue);
 }
 
 /* Ensure buttons in form-actions have matching height */
@@ -188,21 +192,21 @@
 
 .request-detail-container h1 {
     font-size: 2rem;
-    color: #333;
+    color: var(--color-darkblue);
     margin-bottom: 2rem;
 }
 
 .request-info {
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
+    background: var(--color-white);
+    border: 2px solid var(--color-cornflower-light);
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 15px rgba(100, 149, 237, 0.15);
 }
 
 .info-section {
     padding: 2rem;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 2px solid var(--color-border);
 }
 
 .info-section:last-child {
@@ -211,54 +215,59 @@
 
 .info-section h2 {
     font-size: 1.3rem;
-    color: #333;
+    color: var(--color-darkblue);
     margin: 0 0 1.5rem 0;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #2c5aa0;
+    border-bottom: 3px solid var(--color-cornflower);
 }
 
 .info-section p {
     margin: 0.75rem 0;
-    color: #555;
+    color: var(--color-text-primary);
     line-height: 1.6;
 }
 
 .info-section strong {
-    color: #333;
+    color: var(--color-text-primary);
     font-weight: 600;
 }
 
 .status-badge {
     display: inline-block;
     padding: 0.5rem 1rem;
-    border-radius: 20px;
+    border-radius: 12px;
     font-weight: 600;
     font-size: 0.9rem;
 }
 
 .status-badge.status-submitted {
-    background: #e3f2fd;
-    color: #2c5aa0;
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.15), rgba(30, 58, 111, 0.1));
+    color: var(--color-cornflower);
+    border: 2px solid var(--color-cornflower-light);
 }
 
 .status-badge.status-in-progress {
-    background: #fff3e0;
+    background: linear-gradient(135deg, rgba(230, 81, 0, 0.15), rgba(230, 81, 0, 0.1));
     color: #e65100;
+    border: 2px solid #ffb74d;
 }
 
 .status-badge.status-completed {
-    background: #e8f5e9;
+    background: linear-gradient(135deg, rgba(46, 125, 50, 0.15), rgba(46, 125, 50, 0.1));
     color: #2e7d32;
+    border: 2px solid #81c784;
 }
 
 .status-badge.status-scheduled {
-    background: #f3e5f5;
+    background: linear-gradient(135deg, rgba(106, 27, 154, 0.15), rgba(106, 27, 154, 0.1));
     color: #6a1b9a;
+    border: 2px solid #ba68c8;
 }
 
 .status-badge.status-cancelled {
-    background: #ffebee;
+    background: linear-gradient(135deg, rgba(198, 40, 40, 0.15), rgba(198, 40, 40, 0.1));
     color: #c62828;
+    border: 2px solid #ffb3b3;
 }
 
 /* ============================================================================
@@ -273,7 +282,7 @@
 }
 
 .requests-header .subtitle {
-    color: #666;
+    color: var(--color-text-secondary);
     font-size: 1rem;
     margin: 0;
 }

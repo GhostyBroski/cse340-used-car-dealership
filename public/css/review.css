@@ -8,7 +8,7 @@
 .reviews-section {
     margin-top: 4rem;
     padding-top: 3rem;
-    border-top: 2px solid #eee;
+    border-top: 3px solid var(--color-cornflower-light);
 }
 
 .reviews-header {
@@ -21,26 +21,27 @@
 
 .reviews-header h2 {
     font-size: 1.8rem;
-    color: #333;
+    color: var(--color-darkblue);
     margin: 0;
+    font-weight: 700;
 }
 
 .btn-leave-review {
     padding: 0.75rem 2rem;
-    background: #2c5aa0;
-    color: white;
+    background: linear-gradient(135deg, var(--color-cornflower), var(--color-darkblue-light));
+    color: var(--color-white);
     text-decoration: none;
-    border-radius: 25px;
+    border-radius: 12px;
     font-weight: 600;
     display: inline-block;
     transition: all 0.3s ease;
     white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(100, 149, 237, 0.25);
 }
 
 .btn-leave-review:hover {
-    background: #1a3a6b;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+    box-shadow: 0 6px 18px rgba(100, 149, 237, 0.4);
 }
 
 /* ============================================================================
@@ -54,15 +55,16 @@
 
 .review-card {
     padding: 2rem;
-    background: #f9f9f9;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
+    background: var(--color-white);
+    border: 2px solid var(--color-cornflower-light);
+    border-radius: 16px;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(100, 149, 237, 0.1);
 }
 
 .review-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border-color: #2c5aa0;
+    box-shadow: 0 6px 20px rgba(100, 149, 237, 0.2);
+    transform: translateY(-2px);
 }
 
 /* Review header with reviewer info and rating */
@@ -89,12 +91,13 @@
 }
 
 .reviewer-info strong {
-    color: #333;
+    color: var(--color-text-primary);
     font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .review-date {
-    color: #999;
+    color: var(--color-text-secondary);
     font-size: 0.9rem;
 }
 
@@ -112,7 +115,7 @@
 }
 
 .rating-value {
-    color: #2c5aa0;
+    color: var(--color-cornflower);
     font-weight: 600;
     font-size: 1rem;
 }
@@ -120,13 +123,13 @@
 /* Review title and comment */
 .review-title {
     font-size: 1.2rem;
-    color: #333;
+    color: var(--color-text-primary);
     margin: 1rem 0 0.75rem 0;
     font-weight: 600;
 }
 
 .review-comment {
-    color: #555;
+    color: var(--color-text-primary);
     font-size: 1rem;
     line-height: 1.6;
     margin: 0 0 1.5rem 0;
@@ -137,13 +140,13 @@
     display: flex;
     gap: 0.75rem;
     padding-top: 1rem;
-    border-top: 1px solid #e0e0e0;
+    border-top: 2px solid var(--color-border);
 }
 
 .btn-small {
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.9rem;
     font-weight: 600;
     text-decoration: none;
@@ -153,25 +156,29 @@
 }
 
 .btn-edit {
-    background: #e3f2fd;
-    color: #2c5aa0;
-    border: 1px solid #2c5aa0;
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.15), rgba(30, 58, 111, 0.1));
+    color: var(--color-cornflower);
+    border: 2px solid var(--color-cornflower-light);
+    transition: all 0.3s ease;
 }
 
 .btn-edit:hover {
-    background: #2c5aa0;
-    color: white;
+    background: linear-gradient(135deg, var(--color-cornflower), var(--color-darkblue-light));
+    color: var(--color-white);
+    border-color: var(--color-darkblue);
 }
 
 .btn-delete {
-    background: #ffebee;
+    background: linear-gradient(135deg, rgba(198, 40, 40, 0.15), rgba(198, 40, 40, 0.1));
     color: #c62828;
-    border: 1px solid #c62828;
+    border: 2px solid #ffb3b3;
+    transition: all 0.3s ease;
 }
 
 .btn-delete:hover {
-    background: #c62828;
-    color: white;
+    background: linear-gradient(135deg, #e53935, #c62828);
+    color: var(--color-white);
+    border-color: #c62828;
 }
 
 /* ============================================================================
@@ -180,26 +187,26 @@
 .no-reviews {
     padding: 3rem 2rem;
     text-align: center;
-    background: #f9f9f9;
-    border-radius: 12px;
-    border: 1px dashed #ddd;
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.08), rgba(30, 58, 111, 0.05));
+    border-radius: 16px;
+    border: 2px dashed var(--color-cornflower-light);
 }
 
 .no-reviews p {
-    color: #666;
+    color: var(--color-text-secondary);
     font-size: 1.1rem;
     margin: 0;
 }
 
 .no-reviews a {
-    color: #2c5aa0;
+    color: var(--color-cornflower);
     font-weight: 600;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .no-reviews a:hover {
-    color: #1a3a6b;
+    color: var(--color-darkblue);
     text-decoration: underline;
 }
 
@@ -208,27 +215,27 @@
    ============================================================================ */
 .user-review-notice {
     padding: 1.5rem;
-    background: #e3f2fd;
-    border-left: 4px solid #2c5aa0;
-    border-radius: 6px;
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.1), rgba(30, 58, 111, 0.05));
+    border-left: 4px solid var(--color-cornflower);
+    border-radius: 12px;
     margin-top: 2rem;
 }
 
 .user-review-notice p {
-    color: #1a3a6b;
+    color: var(--color-darkblue);
     font-weight: 500;
     margin: 0;
 }
 
 .user-review-notice a {
-    color: #2c5aa0;
+    color: var(--color-cornflower);
     font-weight: 600;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .user-review-notice a:hover {
-    color: #1a3a6b;
+    color: var(--color-darkblue);
     text-decoration: underline;
 }
 
@@ -238,21 +245,23 @@
 .review-form-container {
     max-width: 700px;
     margin: 0 auto;
+    margin-left: calc(50% - 350px + 20px);
     padding: 2rem;
 }
 
 .review-form-container h1 {
     font-size: 2rem;
-    color: #333;
+    color: var(--color-darkblue);
     margin-bottom: 2rem;
+    font-weight: 700;
 }
 
 .review-form {
-    background: white;
+    background: var(--color-white);
     padding: 2.5rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 2px solid var(--color-cornflower-light);
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(100, 149, 237, 0.15);
 }
 
 /* Form group styling */
@@ -264,7 +273,7 @@
 
 .form-group label {
     font-size: 1.05rem;
-    color: #333;
+    color: var(--color-text-primary);
     font-weight: 600;
     margin-bottom: 0.75rem;
 }
@@ -273,29 +282,30 @@
 .form-group input[type="text"],
 .form-group textarea {
     padding: 0.875rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
     font-size: 1rem;
     font-family: inherit;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    background-color: var(--color-white);
 }
 
 .form-group select:focus,
 .form-group input[type="text"]:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #2c5aa0;
-    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+    border-color: var(--color-cornflower);
+    box-shadow: 0 0 0 4px rgba(100, 149, 237, 0.1);
 }
 
 .form-group select {
     cursor: pointer;
-    background-color: white;
+    background-color: var(--color-white);
 }
 
 .form-group select option {
     padding: 0.5rem;
-    color: #333;
+    color: var(--color-text-primary);
 }
 
 .form-group textarea {
@@ -309,39 +319,39 @@
 .review-form button {
     padding: 0.875rem 2rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1.05rem;
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
     display: inline-block;
+    box-shadow: 0 2px 8px rgba(100, 149, 237, 0.15);
 }
 
 .review-form .btn.btn-primary,
 .review-form button[type="submit"] {
-    background: #2c5aa0;
-    color: white;
+    background: linear-gradient(135deg, var(--color-cornflower), var(--color-darkblue-light));
+    color: var(--color-white);
     margin-right: 1rem;
     margin-bottom: 0;
 }
 
 .review-form .btn.btn-primary:hover,
 .review-form button[type="submit"]:hover {
-    background: #1a3a6b;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+    box-shadow: 0 4px 14px rgba(100, 149, 237, 0.3);
 }
 
 .review-form .btn.btn-secondary {
-    background: #e3f2fd;
-    color: #2c5aa0;
-    border: 1px solid #2c5aa0;
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.15), rgba(30, 58, 111, 0.1));
+    color: var(--color-cornflower);
+    border: 2px solid var(--color-cornflower-light);
 }
 
 .review-form .btn.btn-secondary:hover {
-    background: #2c5aa0;
-    color: white;
+    background: linear-gradient(135deg, var(--color-cornflower), var(--color-darkblue-light));
+    color: var(--color-white);
 }
 
 .review-form > div:last-child {

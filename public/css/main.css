@@ -1,10 +1,26 @@
+/* ============================================================================
+   GLOBAL COLORS & DESIGN TOKENS
+   ============================================================================ */
+:root {
+    --color-white: #FFFFFF;
+    --color-cornflower: #6495ED;
+    --color-cornflower-light: #7FA6F0;
+    --color-darkblue: #1e3a6f;
+    --color-darkblue-light: #2c5aa0;
+    --color-text-primary: #222222;
+    --color-text-secondary: #666666;
+    --color-border: #E0E0E0;
+}
+
 /* Global base styles only - page-specific styles are loaded dynamically via res.addStyle() in routes.js */
 
 html, body {
-    background-color: #fff;
-    font-family: Arial, sans-serif;
+    background-color: var(--color-white);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0 auto;
     padding: 0;
+    padding-left: 20px;
+    color: var(--color-text-primary);
 }
 
 body nav ul {
@@ -19,18 +35,20 @@ body nav li {
 
 body nav a {
     text-decoration: none;
-    color: #333;
+    color: var(--color-darkblue);
     font-size: 24px;
     font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 body nav a:hover {
-    color: #0066cc;
+    color: var(--color-cornflower);
 }
 
 body h1 {
     font-size: 50px;
-    color: #222;
+    color: var(--color-darkblue);
+    padding-left: 20px;
 }
 
 #about-us-grid {
@@ -52,12 +70,12 @@ body h1 {
 
 #about-us-grid h2 {
     font-size: 48px;
-    color: #222;
+    color: var(--color-darkblue);
 }
 
 #about-us-grid h3 {
     font-size: 30px;
-    color: #333;
+    color: var(--color-darkblue-light);
 }
 
 #Who {
@@ -78,7 +96,7 @@ body h1 {
 #about-us-grid p {
     font-size: 16px;
     line-height: 1.5;
-    color: #333;
+    color: var(--color-text-secondary);
 }
 
 #p1 {
@@ -715,7 +733,7 @@ body h1 {
 
 .featured-section {
     padding: 3rem 0;
-    background: linear-gradient(135deg, #f5f7fa 0%, #f9fafb 100%);
+    background: transparent;
 }
 
 .featured-container {
@@ -786,6 +804,41 @@ img {
 .hero-content .btn {
     align-self: flex-start;
     margin-top: 0.5rem;
+    background: var(--color-cornflower);
+    color: var(--color-white);
+    padding: 0.85rem 2.2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(100, 149, 237, 0.3);
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.hero-content .btn:hover {
+    background: var(--color-darkblue-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(100, 149, 237, 0.4);
+}
+
+.hero-content .btn-primary {
+    background: var(--color-cornflower) !important;
+    color: var(--color-white) !important;
+    padding: 0.85rem 2.2rem !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(100, 149, 237, 0.3) !important;
+    transition: all 0.3s ease !important;
+    display: inline-block !important;
+}
+
+.hero-content .btn-primary:hover {
+    background: var(--color-darkblue-light) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 18px rgba(100, 149, 237, 0.4) !important;
 }
 
 /* Featured Vehicles Section */
@@ -797,39 +850,44 @@ img {
 
 /* Welcome Section */
 .featured-welcome {
-    background: white;
-    border-radius: 12px;
+    background: var(--color-white);
+    border-radius: 20px;
     padding: 2rem;
-    border-left: 5px solid #2c5aa0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding-left: 3rem;
+    border: 2px solid var(--color-cornflower-light);
+    box-shadow: 0 4px 15px rgba(100, 149, 237, 0.15);
+    margin-left: 20px;
 }
 
 .featured-welcome h2 {
-    color: #333;
+    color: var(--color-darkblue);
     font-size: 1.6rem;
     margin: 0 0 1rem 0;
     font-weight: 700;
 }
 
 .featured-welcome p {
-    color: #666;
+    color: var(--color-text-secondary);
     font-size: 1rem;
     line-height: 1.6;
     margin: 0 0 1.5rem 0;
 }
 
 .featured-welcome .btn {
-    background: #2c5aa0;
-    color: white;
+    background: linear-gradient(135deg, var(--color-cornflower) 0%, var(--color-darkblue-light) 100%);
+    color: var(--color-white);
     padding: 0.75rem 2rem;
-    border-radius: 6px;
+    border-radius: 12px;
     text-decoration: none;
     display: inline-block;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(100, 149, 237, 0.3);
 }
 
 .featured-welcome .btn:hover {
-    background: #1a3a6b;
+    background: linear-gradient(135deg, var(--color-darkblue-light) 0%, var(--color-darkblue) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(100, 149, 237, 0.4);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
 }
@@ -879,7 +937,7 @@ img {
 
     .featured-welcome {
         padding: 1.5rem;
-        border-left-width: 4px;
+        padding-left: 2rem;
     }
 
     .featured-welcome h2 {
