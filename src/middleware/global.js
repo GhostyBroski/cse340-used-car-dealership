@@ -41,7 +41,6 @@ const addLocalVariables = (req, res, next) => {
         homepage: "/",
         about: "/about",
         catalog: "/catalog",
-        faculty: "/faculty",
         contact: "/contact",
         contactResponses: "/contact/responses",
         requests: "/requests",
