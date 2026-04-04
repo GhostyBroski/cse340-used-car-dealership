@@ -138,6 +138,8 @@ CREATE TABLE IF NOT EXISTS vehicle_features (
     feature_value VARCHAR(255)  -- e.g., "Yes", "Panoramic", specific details
 );
 
+CREATE INDEX IF NOT EXISTS idx_vehicle_features_vehicle_id ON vehicle_features(vehicle_id);
+
 -- ============================================================================
 -- CUSTOMER SERVICE AND FEEDBACK
 -- ============================================================================
